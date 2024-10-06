@@ -1,0 +1,9 @@
+#This script display all the argument
+#!/bin/bash
+
+echo "Name of the program: $0"
+
+echo "Number of args: $#"
+
+echo "The args: $*"
+

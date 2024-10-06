@@ -1,0 +1,1263 @@
+.: directory -- with stat
+.: directory -- with lstat
+
+..: directory -- with stat
+..: directory -- with lstat
+
+rsyslog.d: directory -- with stat
+rsyslog.d: directory -- with lstat
+
+plymouth: directory -- with stat
+plymouth: directory -- with lstat
+
+zlogin: regular file -- with stat
+zlogin: regular file -- with lstat
+
+papersize: regular file -- with stat
+papersize: regular file -- with lstat
+
+hba.conf.031218-10_35_58.bak: regular file -- with stat
+hba.conf.031218-10_35_58.bak: regular file -- with lstat
+
+krb5.conf._before_ipa_client: regular file -- with stat
+krb5.conf._before_ipa_client: regular file -- with lstat
+
+lightdm: directory -- with stat
+lightdm: directory -- with lstat
+
+X11: directory -- with stat
+X11: directory -- with lstat
+
+snmp: directory -- with stat
+snmp: directory -- with lstat
+
+yum.conf: regular file -- with stat
+yum.conf: regular file -- with lstat
+
+wpa_supplicant: directory -- with stat
+wpa_supplicant: directory -- with lstat
+
+latrace.d: directory -- with stat
+latrace.d: directory -- with lstat
+
+ld.so.conf.d: directory -- with stat
+ld.so.conf.d: directory -- with lstat
+
+iproute2: directory -- with stat
+iproute2: directory -- with lstat
+
+libpaper.d: directory -- with stat
+libpaper.d: directory -- with lstat
+
+rc.local: regular file -- with stat
+rc.local: symbolic link -- with lstat
+
+centos-release: regular file -- with stat
+centos-release: regular file -- with lstat
+
+anacrontab: regular file -- with stat
+anacrontab: regular file -- with lstat
+
+fwupd: directory -- with stat
+fwupd: directory -- with lstat
+
+statetab: regular file -- with stat
+statetab: regular file -- with lstat
+
+unbound: directory -- with stat
+unbound: directory -- with lstat
+
+qemu-ga: directory -- with stat
+qemu-ga: directory -- with lstat
+
+sudo.conf: regular file -- with stat
+sudo.conf: regular file -- with lstat
+
+brltty.conf: regular file -- with stat
+brltty.conf: regular file -- with lstat
+
+nsswitch.conf.ipabkp: regular file -- with stat
+nsswitch.conf.ipabkp: regular file -- with lstat
+
+omreg.ini: regular file -- with stat
+omreg.ini: regular file -- with lstat
+
+redhat-release: regular file -- with stat
+redhat-release: symbolic link -- with lstat
+
+postfix: directory -- with stat
+postfix: directory -- with lstat
+
+tmpfiles.d: directory -- with stat
+tmpfiles.d: directory -- with lstat
+
+cron.d: directory -- with stat
+cron.d: directory -- with lstat
+
+dracut.conf.d: directory -- with stat
+dracut.conf.d: directory -- with lstat
+
+xdg: directory -- with stat
+xdg: directory -- with lstat
+
+popt.d: directory -- with stat
+popt.d: directory -- with lstat
+
+audisp: directory -- with stat
+audisp: directory -- with lstat
+
+sgml: directory -- with stat
+sgml: directory -- with lstat
+
+sudoers: regular file -- with stat
+sudoers: regular file -- with lstat
+
+openldap: directory -- with stat
+openldap: directory -- with lstat
+
+system-release: regular file -- with stat
+system-release: symbolic link -- with lstat
+
+resolv.conf: regular file -- with stat
+resolv.conf: regular file -- with lstat
+
+scl: directory -- with stat
+scl: directory -- with lstat
+
+zshenv: regular file -- with stat
+zshenv: regular file -- with lstat
+
+gss: directory -- with stat
+gss: directory -- with lstat
+
+mtools.conf: regular file -- with stat
+mtools.conf: regular file -- with lstat
+
+sestatus.conf: regular file -- with stat
+sestatus.conf: regular file -- with lstat
+
+ksysguarddrc: regular file -- with stat
+ksysguarddrc: regular file -- with lstat
+
+lynx.cfg: regular file -- with stat
+lynx.cfg: regular file -- with lstat
+
+festival: directory -- with stat
+festival: directory -- with lstat
+
+ppp: directory -- with stat
+ppp: directory -- with lstat
+
+hba.conf: regular file -- with stat
+hba.conf: regular file -- with lstat
+
+auto.master._20230106-153909: regular file -- with stat
+auto.master._20230106-153909: regular file -- with lstat
+
+dleyna-server-service.conf: regular file -- with stat
+dleyna-server-service.conf: regular file -- with lstat
+
+smartmontools: directory -- with stat
+smartmontools: directory -- with lstat
+
+hba.conf.060419-16_58_28.bak: regular file -- with stat
+hba.conf.060419-16_58_28.bak: regular file -- with lstat
+
+cron.deny: regular file -- with stat
+cron.deny: regular file -- with lstat
+
+xinetd.d: directory -- with stat
+xinetd.d: directory -- with lstat
+
+chkconfig.d: directory -- with stat
+chkconfig.d: directory -- with lstat
+
+issue.181018: regular file -- with stat
+issue.181018: regular file -- with lstat
+
+inputrc: regular file -- with stat
+inputrc: regular file -- with lstat
+
+rc2.d: directory -- with stat
+rc2.d: symbolic link -- with lstat
+
+1: regular file -- with stat
+1: regular file -- with lstat
+
+networks: regular file -- with stat
+networks: regular file -- with lstat
+
+chrony.keys: regular file -- with stat
+chrony.keys: regular file -- with lstat
+
+grub.d: directory -- with stat
+grub.d: directory -- with lstat
+
+aliases: regular file -- with stat
+aliases: regular file -- with lstat
+
+asound.conf: regular file -- with stat
+asound.conf: regular file -- with lstat
+
+binfmt.d: directory -- with stat
+binfmt.d: directory -- with lstat
+
+GREP_COLORS: regular file -- with stat
+GREP_COLORS: regular file -- with lstat
+
+auto.misc: regular file -- with stat
+auto.misc: regular file -- with lstat
+
+sssd: directory -- with stat
+sssd: directory -- with lstat
+
+yum: directory -- with stat
+yum: directory -- with lstat
+
+fstab: regular file -- with stat
+fstab: regular file -- with lstat
+
+nanorc: regular file -- with stat
+nanorc: regular file -- with lstat
+
+fcoe: directory -- with stat
+fcoe: directory -- with lstat
+
+yum.repos.d: directory -- with stat
+yum.repos.d: directory -- with lstat
+
+DIR_COLORS.256color: regular file -- with stat
+DIR_COLORS.256color: regular file -- with lstat
+
+cupshelpers: directory -- with stat
+cupshelpers: directory -- with lstat
+
+cron.monthly: directory -- with stat
+cron.monthly: directory -- with lstat
+
+locale.conf: regular file -- with stat
+locale.conf: regular file -- with lstat
+
+yp.conf: regular file -- with stat
+yp.conf: regular file -- with lstat
+
+php.d: directory -- with stat
+php.d: directory -- with lstat
+
+gssproxy: directory -- with stat
+gssproxy: directory -- with lstat
+
+lynx-site.cfg: regular file -- with stat
+lynx-site.cfg: regular file -- with lstat
+
+setroubleshoot: directory -- with stat
+setroubleshoot: directory -- with lstat
+
+ipsec.d: directory -- with stat
+ipsec.d: directory -- with lstat
+
+rc0.d: directory -- with stat
+rc0.d: symbolic link -- with lstat
+
+exports: regular file -- with stat
+exports: regular file -- with lstat
+
+DIR_COLORS.lightbgcolor: regular file -- with stat
+DIR_COLORS.lightbgcolor: regular file -- with lstat
+
+passwd-: regular file -- with stat
+passwd-: regular file -- with lstat
+
+pulse: directory -- with stat
+pulse: directory -- with lstat
+
+ld.so.conf: regular file -- with stat
+ld.so.conf: regular file -- with lstat
+
+mail.rc: regular file -- with stat
+mail.rc: regular file -- with lstat
+
+subversion: directory -- with stat
+subversion: directory -- with lstat
+
+dconf: directory -- with stat
+dconf: directory -- with lstat
+
+sudo-ldap.conf: regular file -- with stat
+sudo-ldap.conf: regular file -- with lstat
+
+libblockdev: directory -- with stat
+libblockdev: directory -- with lstat
+
+xrdb: directory -- with stat
+xrdb: directory -- with lstat
+
+crontab: regular file -- with stat
+crontab: regular file -- with lstat
+
+vpnc: directory -- with stat
+vpnc: directory -- with lstat
+
+idmapd.conf: regular file -- with stat
+idmapd.conf: regular file -- with lstat
+
+rsyncd.conf: regular file -- with stat
+rsyncd.conf: regular file -- with lstat
+
+group-: regular file -- with stat
+group-: regular file -- with lstat
+
+multipath: directory -- with stat
+multipath: directory -- with lstat
+
+firewalld: directory -- with stat
+firewalld: directory -- with lstat
+
+host.conf: regular file -- with stat
+host.conf: regular file -- with lstat
+
+vimrc: regular file -- with stat
+vimrc: regular file -- with lstat
+
+statetab.d: directory -- with stat
+statetab.d: directory -- with lstat
+
+cgconfig.d: directory -- with stat
+cgconfig.d: directory -- with lstat
+
+rdma: directory -- with stat
+rdma: directory -- with lstat
+
+sysctl.conf.rpmnew: regular file -- with stat
+sysctl.conf.rpmnew: regular file -- with lstat
+
+vconsole.conf: regular file -- with stat
+vconsole.conf: regular file -- with lstat
+
+login.defs.rpmnew: regular file -- with stat
+login.defs.rpmnew: regular file -- with lstat
+
+chrony.conf.rpmnew: regular file -- with stat
+chrony.conf.rpmnew: regular file -- with lstat
+
+.pwd.lock: regular file -- with stat
+.pwd.lock: regular file -- with lstat
+
+prelink.conf: regular file -- with stat
+prelink.conf: regular file -- with lstat
+
+mfs: directory -- with stat
+mfs: directory -- with lstat
+
+rc1.d: directory -- with stat
+rc1.d: symbolic link -- with lstat
+
+jvm: directory -- with stat
+jvm: directory -- with lstat
+
+sysctl.conf: regular file -- with stat
+sysctl.conf: regular file -- with lstat
+
+subgid: regular file -- with stat
+subgid: regular file -- with lstat
+
+UPower: directory -- with stat
+UPower: directory -- with lstat
+
+exports.d: directory -- with stat
+exports.d: directory -- with lstat
+
+dbus-1: directory -- with stat
+dbus-1: directory -- with lstat
+
+trusted-key.key: regular file -- with stat
+trusted-key.key: regular file -- with lstat
+
+a2ps: directory -- with stat
+a2ps: directory -- with lstat
+
+pbm2ppa.conf: regular file -- with stat
+pbm2ppa.conf: regular file -- with lstat
+
+openvpn: directory -- with stat
+openvpn: directory -- with lstat
+
+issue.net.ORIG: regular file -- with stat
+issue.net.ORIG: regular file -- with lstat
+
+bluetooth: directory -- with stat
+bluetooth: directory -- with lstat
+
+hosts: regular file -- with stat
+hosts: regular file -- with lstat
+
+mate-settings-daemon: directory -- with stat
+mate-settings-daemon: directory -- with lstat
+
+opt: directory -- with stat
+opt: directory -- with lstat
+
+fonts: directory -- with stat
+fonts: directory -- with lstat
+
+maven: directory -- with stat
+maven: directory -- with lstat
+
+motd_05-10-2016: regular file -- with stat
+motd_05-10-2016: regular file -- with lstat
+
+tuned: directory -- with stat
+tuned: directory -- with lstat
+
+NetworkManager: directory -- with stat
+NetworkManager: directory -- with lstat
+
+lsb-release.d: directory -- with stat
+lsb-release.d: directory -- with lstat
+
+krb5.conf.d: directory -- with stat
+krb5.conf.d: directory -- with lstat
+
+motd.160525: regular file -- with stat
+motd.160525: regular file -- with lstat
+
+glvnd: directory -- with stat
+glvnd: directory -- with lstat
+
+ipsec.conf: regular file -- with stat
+ipsec.conf: regular file -- with lstat
+
+sudoers.lecture: regular file -- with stat
+sudoers.lecture: regular file -- with lstat
+
+hba.conf.020119-09_31_23.bak: regular file -- with stat
+hba.conf.020119-09_31_23.bak: regular file -- with lstat
+
+krb5.keytab: regular file -- with stat
+krb5.keytab: regular file -- with lstat
+
+sos.conf: regular file -- with stat
+sos.conf: regular file -- with lstat
+
+fprintd.conf: regular file -- with stat
+fprintd.conf: regular file -- with lstat
+
+nsswitch.conf: regular file -- with stat
+nsswitch.conf: regular file -- with lstat
+
+hba.conf.051018-11_34_42.bak: regular file -- with stat
+hba.conf.051018-11_34_42.bak: regular file -- with lstat
+
+pcp.env: regular file -- with stat
+pcp.env: regular file -- with lstat
+
+gnome-vfs-2.0: directory -- with stat
+gnome-vfs-2.0: directory -- with lstat
+
+modprobe.d: directory -- with stat
+modprobe.d: directory -- with lstat
+
+gconf: directory -- with stat
+gconf: directory -- with lstat
+
+autofs.conf: regular file -- with stat
+autofs.conf: regular file -- with lstat
+
+cron.weekly: directory -- with stat
+cron.weekly: directory -- with lstat
+
+hostname: regular file -- with stat
+hostname: regular file -- with lstat
+
+depmod.d: directory -- with stat
+depmod.d: directory -- with lstat
+
+rc3.d: directory -- with stat
+rc3.d: symbolic link -- with lstat
+
+alsa: directory -- with stat
+alsa: directory -- with lstat
+
+php.ini: regular file -- with stat
+php.ini: regular file -- with lstat
+
+hba.conf.060418-15_45_59.bak: regular file -- with stat
+hba.conf.060418-15_45_59.bak: regular file -- with lstat
+
+auto.master._before_ipa_client: regular file -- with stat
+auto.master._before_ipa_client: regular file -- with lstat
+
+systemd: directory -- with stat
+systemd: directory -- with lstat
+
+a2ps-site.cfg: regular file -- with stat
+a2ps-site.cfg: regular file -- with lstat
+
+geoclue: directory -- with stat
+geoclue: directory -- with lstat
+
+cups: directory -- with stat
+cups: directory -- with lstat
+
+portreserve: directory -- with stat
+portreserve: directory -- with lstat
+
+shells.rpmnew: regular file -- with stat
+shells.rpmnew: regular file -- with lstat
+
+terminfo: directory -- with stat
+terminfo: directory -- with lstat
+
+DIR_COLORS: regular file -- with stat
+DIR_COLORS: regular file -- with lstat
+
+cgrules.conf: regular file -- with stat
+cgrules.conf: regular file -- with lstat
+
+kernel: directory -- with stat
+kernel: directory -- with lstat
+
+ant.conf: regular file -- with stat
+ant.conf: regular file -- with lstat
+
+default: directory -- with stat
+default: directory -- with lstat
+
+auto.master: regular file -- with stat
+auto.master: regular file -- with lstat
+
+certmonger: directory -- with stat
+certmonger: directory -- with lstat
+
+ipsec.secrets: regular file -- with stat
+ipsec.secrets: regular file -- with lstat
+
+gdbinit.d: directory -- with stat
+gdbinit.d: directory -- with lstat
+
+gcrypt: directory -- with stat
+gcrypt: directory -- with lstat
+
+krb5.conf._bak: regular file -- with stat
+krb5.conf._bak: regular file -- with lstat
+
+cgsnapshot_blacklist.conf: regular file -- with stat
+cgsnapshot_blacklist.conf: regular file -- with lstat
+
+aliases.rpmnew: regular file -- with stat
+aliases.rpmnew: regular file -- with lstat
+
+cron.daily: directory -- with stat
+cron.daily: directory -- with lstat
+
+profile.d: directory -- with stat
+profile.d: directory -- with lstat
+
+\: regular file -- with stat
+\: regular file -- with lstat
+
+hba.conf.020419-06_18_42.bak: regular file -- with stat
+hba.conf.020419-06_18_42.bak: regular file -- with lstat
+
+chrony.conf: regular file -- with stat
+chrony.conf: regular file -- with lstat
+
+polkit-1: directory -- with stat
+polkit-1: directory -- with lstat
+
+rc4.d: directory -- with stat
+rc4.d: symbolic link -- with lstat
+
+sasl2: directory -- with stat
+sasl2: directory -- with lstat
+
+login.defs: regular file -- with stat
+login.defs: regular file -- with lstat
+
+netconfig: regular file -- with stat
+netconfig: regular file -- with lstat
+
+printcap: regular file -- with stat
+printcap: regular file -- with lstat
+
+dracut.conf: regular file -- with stat
+dracut.conf: regular file -- with lstat
+
+Trolltech.conf: regular file -- with stat
+Trolltech.conf: regular file -- with lstat
+
+inittab: regular file -- with stat
+inittab: regular file -- with lstat
+
+grub2.cfg: symbolic link -- with stat
+grub2.cfg: symbolic link -- with lstat
+
+hba.conf.050918-10_36_17.bak: regular file -- with stat
+hba.conf.050918-10_36_17.bak: regular file -- with lstat
+
+redhat-lsb: directory -- with stat
+redhat-lsb: directory -- with lstat
+
+pcp.conf: regular file -- with stat
+pcp.conf: regular file -- with lstat
+
+libibverbs.d: directory -- with stat
+libibverbs.d: directory -- with lstat
+
+.updated: regular file -- with stat
+.updated: regular file -- with lstat
+
+ld.so.cache: regular file -- with stat
+ld.so.cache: regular file -- with lstat
+
+selinux: directory -- with stat
+selinux: directory -- with lstat
+
+radvd.conf: regular file -- with stat
+radvd.conf: regular file -- with lstat
+
+cifs-utils: directory -- with stat
+cifs-utils: directory -- with lstat
+
+os-release: regular file -- with stat
+os-release: symbolic link -- with lstat
+
+bash_completion.d: directory -- with stat
+bash_completion.d: directory -- with lstat
+
+auto.master._20220314-163753: regular file -- with stat
+auto.master._20220314-163753: regular file -- with lstat
+
+dnsmasq.d: directory -- with stat
+dnsmasq.d: directory -- with lstat
+
+xml: directory -- with stat
+xml: directory -- with lstat
+
+nsswitch.conf.orig: regular file -- with stat
+nsswitch.conf.orig: regular file -- with lstat
+
+kdump.conf: regular file -- with stat
+kdump.conf: regular file -- with lstat
+
+html2psrc: regular file -- with stat
+html2psrc: regular file -- with lstat
+
+brltty: directory -- with stat
+brltty: directory -- with lstat
+
+hba.conf.051319-13_47_57.bak: regular file -- with stat
+hba.conf.051319-13_47_57.bak: regular file -- with lstat
+
+akonadi: directory -- with stat
+akonadi: directory -- with lstat
+
+ssh: directory -- with stat
+ssh: directory -- with lstat
+
+hba.conf.121918-08_02_10.bak: regular file -- with stat
+hba.conf.121918-08_02_10.bak: regular file -- with lstat
+
+protocols: regular file -- with stat
+protocols: regular file -- with lstat
+
+system-release-cpe: regular file -- with stat
+system-release-cpe: regular file -- with lstat
+
+ntp.conf: regular file -- with stat
+ntp.conf: regular file -- with lstat
+
+PackageKit: directory -- with stat
+PackageKit: directory -- with lstat
+
+localtime: regular file -- with stat
+localtime: symbolic link -- with lstat
+
+hp: directory -- with stat
+hp: directory -- with lstat
+
+pm: directory -- with stat
+pm: directory -- with lstat
+
+odbcinst.ini: regular file -- with stat
+odbcinst.ini: regular file -- with lstat
+
+krb5.conf._20230106-153909: regular file -- with stat
+krb5.conf._20230106-153909: regular file -- with lstat
+
+tcsd.conf: regular file -- with stat
+tcsd.conf: regular file -- with lstat
+
+highlight: directory -- with stat
+highlight: directory -- with lstat
+
+samba: directory -- with stat
+samba: directory -- with lstat
+
+egl: directory -- with stat
+egl: directory -- with lstat
+
+zlogout: regular file -- with stat
+zlogout: regular file -- with lstat
+
+aliases.db: regular file -- with stat
+aliases.db: regular file -- with lstat
+
+nsswitch.conf._before_ipa_client: regular file -- with stat
+nsswitch.conf._before_ipa_client: regular file -- with lstat
+
+hosts.deny: regular file -- with stat
+hosts.deny: regular file -- with lstat
+
+rsyslog.conf: regular file -- with stat
+rsyslog.conf: regular file -- with lstat
+
+adjtime: regular file -- with stat
+adjtime: regular file -- with lstat
+
+motd: regular file -- with stat
+motd: regular file -- with lstat
+
+rpc: regular file -- with stat
+rpc: regular file -- with lstat
+
+profile: regular file -- with stat
+profile: regular file -- with lstat
+
+rc5.d: directory -- with stat
+rc5.d: symbolic link -- with lstat
+
+hba.conf.061418-09_28_20.bak: regular file -- with stat
+hba.conf.061418-09_28_20.bak: regular file -- with lstat
+
+bashrc: regular file -- with stat
+bashrc: regular file -- with lstat
+
+hba.conf.013119-17_52_52.bak: regular file -- with stat
+hba.conf.013119-17_52_52.bak: regular file -- with lstat
+
+modules-load.d: directory -- with stat
+modules-load.d: directory -- with lstat
+
+hba.conf.010518-21_37_10.bak: regular file -- with stat
+hba.conf.010518-21_37_10.bak: regular file -- with lstat
+
+makedumpfile.conf.sample: regular file -- with stat
+makedumpfile.conf.sample: regular file -- with lstat
+
+subuid: regular file -- with stat
+subuid: regular file -- with lstat
+
+nfs.conf: regular file -- with stat
+nfs.conf: regular file -- with lstat
+
+gshadow: regular file -- with stat
+gshadow: regular file -- with lstat
+
+rwtab: regular file -- with stat
+rwtab: regular file -- with lstat
+
+rc6.d: directory -- with stat
+rc6.d: symbolic link -- with lstat
+
+e2fsck.conf: regular file -- with stat
+e2fsck.conf: regular file -- with lstat
+
+ethertypes: regular file -- with stat
+ethertypes: regular file -- with lstat
+
+mke2fs.conf: regular file -- with stat
+mke2fs.conf: regular file -- with lstat
+
+pam.d: directory -- with stat
+pam.d: directory -- with lstat
+
+mailcap: regular file -- with stat
+mailcap: regular file -- with lstat
+
+screenrc: regular file -- with stat
+screenrc: regular file -- with lstat
+
+shadow: regular file -- with stat
+shadow: regular file -- with lstat
+
+enscript.cfg: regular file -- with stat
+enscript.cfg: regular file -- with lstat
+
+mtab: regular file -- with stat
+mtab: symbolic link -- with lstat
+
+cockpit: directory -- with stat
+cockpit: directory -- with lstat
+
+issue: regular file -- with stat
+issue: regular file -- with lstat
+
+krb5.conf._20230124-093436: regular file -- with stat
+krb5.conf._20230124-093436: regular file -- with lstat
+
+csh.cshrc: regular file -- with stat
+csh.cshrc: regular file -- with lstat
+
+filesystems: regular file -- with stat
+filesystems: regular file -- with lstat
+
+auto.master.d: directory -- with stat
+auto.master.d: directory -- with lstat
+
+wgetrc: regular file -- with stat
+wgetrc: regular file -- with lstat
+
+pkcs11: directory -- with stat
+pkcs11: directory -- with lstat
+
+favicon.png: regular file -- with stat
+favicon.png: symbolic link -- with lstat
+
+slp.spi: regular file -- with stat
+slp.spi: regular file -- with lstat
+
+bonobo-activation: directory -- with stat
+bonobo-activation: directory -- with lstat
+
+pnm2ppa.conf: regular file -- with stat
+pnm2ppa.conf: regular file -- with lstat
+
+nsswitch.conf._20220314-163753: regular file -- with stat
+nsswitch.conf._20220314-163753: regular file -- with lstat
+
+libuser.conf: regular file -- with stat
+libuser.conf: regular file -- with lstat
+
+oddjobd.conf.d: directory -- with stat
+oddjobd.conf.d: directory -- with lstat
+
+Pegasus: directory -- with stat
+Pegasus: directory -- with lstat
+
+xinetd.conf: regular file -- with stat
+xinetd.conf: regular file -- with lstat
+
+zprofile: regular file -- with stat
+zprofile: regular file -- with lstat
+
+auto.master._20230124-093436: regular file -- with stat
+auto.master._20230124-093436: regular file -- with lstat
+
+logrotate.d: directory -- with stat
+logrotate.d: directory -- with lstat
+
+dhcp: directory -- with stat
+dhcp: directory -- with lstat
+
+gdbinit: regular file -- with stat
+gdbinit: regular file -- with lstat
+
+hba.conf.110718-16_59_33.bak: regular file -- with stat
+hba.conf.110718-16_59_33.bak: regular file -- with lstat
+
+nsswitch.conf._20230106-153909: regular file -- with stat
+nsswitch.conf._20230106-153909: regular file -- with lstat
+
+nslcd.conf: regular file -- with stat
+nslcd.conf: regular file -- with lstat
+
+udisks2: directory -- with stat
+udisks2: directory -- with lstat
+
+logwatch: directory -- with stat
+logwatch: directory -- with lstat
+
+modulefiles: directory -- with stat
+modulefiles: directory -- with lstat
+
+slp.conf: regular file -- with stat
+slp.conf: regular file -- with lstat
+
+issue.net: regular file -- with stat
+issue.net: symbolic link -- with lstat
+
+virtuoso: directory -- with stat
+virtuoso: directory -- with lstat
+
+purple: directory -- with stat
+purple: directory -- with lstat
+
+vmware-tools: directory -- with stat
+vmware-tools: directory -- with lstat
+
+nsswitch.conf.rpmnew: regular file -- with stat
+nsswitch.conf.rpmnew: regular file -- with lstat
+
+gshadow-: regular file -- with stat
+gshadow-: regular file -- with lstat
+
+foomatic: directory -- with stat
+foomatic: directory -- with lstat
+
+openmpi-x86_64: directory -- with stat
+openmpi-x86_64: directory -- with lstat
+
+acpi: directory -- with stat
+acpi: directory -- with lstat
+
+hba.conf.051719-14_42_48.bak: regular file -- with stat
+hba.conf.051719-14_42_48.bak: regular file -- with lstat
+
+passwd: regular file -- with stat
+passwd: regular file -- with lstat
+
+hosts.allow: regular file -- with stat
+hosts.allow: regular file -- with lstat
+
+hba.conf.010919-12_58_44.bak: regular file -- with stat
+hba.conf.010919-12_58_44.bak: regular file -- with lstat
+
+avahi: directory -- with stat
+avahi: directory -- with lstat
+
+machine-id: regular file -- with stat
+machine-id: regular file -- with lstat
+
+extlinux.conf: symbolic link -- with stat
+extlinux.conf: symbolic link -- with lstat
+
+ssl: directory -- with stat
+ssl: directory -- with lstat
+
+cgconfig.conf: regular file -- with stat
+cgconfig.conf: regular file -- with lstat
+
+gimp: directory -- with stat
+gimp: directory -- with lstat
+
+audit: directory -- with stat
+audit: directory -- with lstat
+
+ant.d: directory -- with stat
+ant.d: directory -- with lstat
+
+man_db.conf: regular file -- with stat
+man_db.conf: regular file -- with lstat
+
+logrotate.conf: regular file -- with stat
+logrotate.conf: regular file -- with lstat
+
+abrt: directory -- with stat
+abrt: directory -- with lstat
+
+telegraf: directory -- with stat
+telegraf: directory -- with lstat
+
+passwd.161006: regular file -- with stat
+passwd.161006: regular file -- with lstat
+
+cron.hourly: directory -- with stat
+cron.hourly: directory -- with lstat
+
+nsswitch.conf.bak: regular file -- with stat
+nsswitch.conf.bak: regular file -- with lstat
+
+elinks.conf: regular file -- with stat
+elinks.conf: regular file -- with lstat
+
+lynx.lss: regular file -- with stat
+lynx.lss: regular file -- with lstat
+
+mime.types: regular file -- with stat
+mime.types: regular file -- with lstat
+
+auto.smb: regular file -- with stat
+auto.smb: regular file -- with lstat
+
+request-key.conf: regular file -- with stat
+request-key.conf: regular file -- with lstat
+
+.java: directory -- with stat
+.java: directory -- with lstat
+
+lvm: directory -- with stat
+lvm: directory -- with lstat
+
+sysctl.d: directory -- with stat
+sysctl.d: directory -- with lstat
+
+my.cnf: regular file -- with stat
+my.cnf: regular file -- with lstat
+
+krb5.conf._20220314-163753: regular file -- with stat
+krb5.conf._20220314-163753: regular file -- with lstat
+
+nfsmount.conf: regular file -- with stat
+nfsmount.conf: regular file -- with lstat
+
+sudoers.d: directory -- with stat
+sudoers.d: directory -- with lstat
+
+rc.d: directory -- with stat
+rc.d: directory -- with lstat
+
+fail2ban: directory -- with stat
+fail2ban: directory -- with lstat
+
+oddjobd.conf: regular file -- with stat
+oddjobd.conf: regular file -- with lstat
+
+java: directory -- with stat
+java: directory -- with lstat
+
+prelink.conf.d: directory -- with stat
+prelink.conf.d: directory -- with lstat
+
+motd.d: directory -- with stat
+motd.d: directory -- with lstat
+
+qemu-kvm: directory -- with stat
+qemu-kvm: directory -- with lstat
+
+gnupg: directory -- with stat
+gnupg: directory -- with lstat
+
+nsswitch.conf._20230124-093436: regular file -- with stat
+nsswitch.conf._20230124-093436: regular file -- with lstat
+
+hba.conf.081318-11_45_04.bak: regular file -- with stat
+hba.conf.081318-11_45_04.bak: regular file -- with lstat
+
+centos-release-upstream: regular file -- with stat
+centos-release-upstream: regular file -- with lstat
+
+flatpak: directory -- with stat
+flatpak: directory -- with lstat
+
+issue.NEW: regular file -- with stat
+issue.NEW: regular file -- with lstat
+
+shadow-: regular file -- with stat
+shadow-: regular file -- with lstat
+
+kdump.conf.rpmnew: regular file -- with stat
+kdump.conf.rpmnew: regular file -- with lstat
+
+firefox: directory -- with stat
+firefox: directory -- with lstat
+
+iscsi: directory -- with stat
+iscsi: directory -- with lstat
+
+setuptool.d: directory -- with stat
+setuptool.d: directory -- with lstat
+
+numad.conf: regular file -- with stat
+numad.conf: regular file -- with lstat
+
+environment: regular file -- with stat
+environment: regular file -- with lstat
+
+idmapd.conf._bak: regular file -- with stat
+idmapd.conf._bak: regular file -- with lstat
+
+auto.net: regular file -- with stat
+auto.net: regular file -- with lstat
+
+idmapd.conf.ipabkp: regular file -- with stat
+idmapd.conf.ipabkp: regular file -- with lstat
+
+filezilla: directory -- with stat
+filezilla: directory -- with lstat
+
+skel: directory -- with stat
+skel: directory -- with lstat
+
+kderc: regular file -- with stat
+kderc: regular file -- with lstat
+
+ImageMagick-6: directory -- with stat
+ImageMagick-6: directory -- with lstat
+
+pcp: directory -- with stat
+pcp: directory -- with lstat
+
+jvm-commmon: directory -- with stat
+jvm-commmon: directory -- with lstat
+
+kde4rc: regular file -- with stat
+kde4rc: regular file -- with lstat
+
+ghostscript: directory -- with stat
+ghostscript: directory -- with lstat
+
+ntp: directory -- with stat
+ntp: directory -- with lstat
+
+services: regular file -- with stat
+services: regular file -- with lstat
+
+sound: directory -- with stat
+sound: directory -- with lstat
+
+GeoIP.conf: regular file -- with stat
+GeoIP.conf: regular file -- with lstat
+
+updatedb.conf: regular file -- with stat
+updatedb.conf: regular file -- with lstat
+
+auto.master.orig: regular file -- with stat
+auto.master.orig: regular file -- with lstat
+
+pinforc: regular file -- with stat
+pinforc: regular file -- with lstat
+
+rpm: directory -- with stat
+rpm: directory -- with lstat
+
+libnl: directory -- with stat
+libnl: directory -- with lstat
+
+auto.direct: regular file -- with stat
+auto.direct: regular file -- with lstat
+
+krb5.conf.ipabkp: regular file -- with stat
+krb5.conf.ipabkp: regular file -- with lstat
+
+openwsman: directory -- with stat
+openwsman: directory -- with lstat
+
+ipa: directory -- with stat
+ipa: directory -- with lstat
+
+python: directory -- with stat
+python: directory -- with lstat
+
+alternatives: directory -- with stat
+alternatives: directory -- with lstat
+
+autofs_ldap_auth.conf: regular file -- with stat
+autofs_ldap_auth.conf: regular file -- with lstat
+
+csh.login: regular file -- with stat
+csh.login: regular file -- with lstat
+
+chrony.keys.rpmnew: regular file -- with stat
+chrony.keys.rpmnew: regular file -- with lstat
+
+my.cnf.d: directory -- with stat
+my.cnf.d: directory -- with lstat
+
+crypttab: regular file -- with stat
+crypttab: regular file -- with lstat
+
+security: directory -- with stat
+security: directory -- with lstat
+
+dnsmasq.conf: regular file -- with stat
+dnsmasq.conf: regular file -- with lstat
+
+lsm: directory -- with stat
+lsm: directory -- with lstat
+
+fuse.conf: regular file -- with stat
+fuse.conf: regular file -- with lstat
+
+pki: directory -- with stat
+pki: directory -- with lstat
+
+group: regular file -- with stat
+group: regular file -- with lstat
+
+ksmtuned.conf: regular file -- with stat
+ksmtuned.conf: regular file -- with lstat
+
+sane.d: directory -- with stat
+sane.d: directory -- with lstat
+
+udev: directory -- with stat
+udev: directory -- with lstat
+
+securetty: regular file -- with stat
+securetty: regular file -- with lstat
+
+oddjob: directory -- with stat
+oddjob: directory -- with lstat
+
+virc: regular file -- with stat
+virc: regular file -- with lstat
+
+a2ps.cfg: regular file -- with stat
+a2ps.cfg: regular file -- with lstat
+
+sudoers.rpmnew: regular file -- with stat
+sudoers.rpmnew: regular file -- with lstat
+
+sysconfig: directory -- with stat
+sysconfig: directory -- with lstat
+
+magic: regular file -- with stat
+magic: regular file -- with lstat
+
+init.d: directory -- with stat
+init.d: symbolic link -- with lstat
+
+at.deny: regular file -- with stat
+at.deny: regular file -- with lstat
+
+auto.direct.170106: regular file -- with stat
+auto.direct.170106: regular file -- with lstat
+
+libaudit.conf: regular file -- with stat
+libaudit.conf: regular file -- with lstat
+
+krb5.conf: regular file -- with stat
+krb5.conf: regular file -- with lstat
+
+libreport: directory -- with stat
+libreport: directory -- with lstat
+
+nscd.conf: regular file -- with stat
+nscd.conf: regular file -- with lstat
+
+libvirt: directory -- with stat
+libvirt: directory -- with lstat
+
+speech-dispatcher: directory -- with stat
+speech-dispatcher: directory -- with lstat
+
+zshrc: regular file -- with stat
+zshrc: regular file -- with lstat
+
+gdm: directory -- with stat
+gdm: directory -- with lstat
+
+jwhois.conf: regular file -- with stat
+jwhois.conf: regular file -- with lstat
+
+request-key.d: directory -- with stat
+request-key.d: directory -- with lstat
+
+groff: directory -- with stat
+groff: directory -- with lstat
+
+target: directory -- with stat
+target: directory -- with lstat
+
+edac: directory -- with stat
+edac: directory -- with lstat
+
+omreg.cfg: regular file -- with stat
+omreg.cfg: symbolic link -- with lstat
+
+shells: regular file -- with stat
+shells: regular file -- with lstat
+
+issue.d: directory -- with stat
+issue.d: directory -- with lstat
+
+kde: directory -- with stat
+kde: directory -- with lstat
+
+issue.ORIG: regular file -- with stat
+issue.ORIG: regular file -- with lstat
+
+rwtab.d: directory -- with stat
+rwtab.d: directory -- with lstat
+

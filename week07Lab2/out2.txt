@@ -1,0 +1,9 @@
+ Reading the directory: /etc
+ Total Count of Regular File: 235
+ Total Count of Directory: 183
+ Total Count of Character Special: 0
+ Total Count of Block Special: 0
+ Total Count of Symbolick Link: 19
+ Total Count of Socket: 0
+ Total Count of Other Files: 0
+ Total Count of Directory Entries Processed: 437

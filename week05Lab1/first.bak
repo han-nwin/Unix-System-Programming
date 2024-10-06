@@ -1,0 +1,3 @@
+#This script display the first parameter after it is called
+#!/bin/bash
+echo "$1"

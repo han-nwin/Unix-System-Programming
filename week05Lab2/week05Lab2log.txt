@@ -1,0 +1,195 @@
+Pre-authentication banner message from server:
+|                       University of Texas at Dallas
+|                       Department of Computer Science
+|
+|                 Use of UTD Information Systems is subject to
+|           the UTD Information Security and Acceptable Use Policy.
+|
+|   Pursuant to Texas Administrative Code 202:
+|   (1) Unauthorized use is prohibited;
+|   (2) Usage may be subject to security testing and monitoring;
+|   (3) Misuse is subject to criminal prosecution; and
+|   (4) No expectation of privacy except as otherwise provided by applicable
+|       privacy laws.
+|
+|        ATTENTION: utdnetid != utdnetid@utdallas.edu (UTD != Google!)
+|
+|  ***** This system will require a connection to the GlobalProtect VPN startin
+> g
+|  on the following dates:
+|
+|  cslinux1.utdallas.edu - June 15, 2020
+|  cslinux2.utdallas.edu - June 22, 2020
+|
+|  ***** GlobalProtect VPN Instructions: https://www.utdallas.edu/oit/howto/vpn
+> /
+|
+End of banner message from server
+Keyboard-interactive authentication prompts from server:
+| Password:
+End of keyboard-interactive prompts from server
+    +----------------------------------------------------------------------+
+    ¦                 • MobaXterm Personal Edition v24.2 •                 ¦
+    ¦               (SSH client, X server and network tools)               ¦
+    ¦                                                                      ¦
+    ¦ ? SSH session to txn200004@cslinux2.utdallas.edu                     ¦
+    ¦   • Direct SSH      :  ?                                             ¦
+    ¦   • SSH compression :  ?                                             ¦
+    ¦   • SSH-browser     :  ?                                             ¦
+    ¦   • X11-forwarding  :  ?  (remote display is forwarded through SSH)  ¦
+    ¦                                                                      ¦
+    ¦ ? For more info, ctrl+click on help or visit our website.            ¦
+    +----------------------------------------------------------------------+
+
+Last login: Sun Sep 15 12:54:12 2024 from 10.50.240.42
+
+                       ***---***---***---***---***---***
+                    csgrads1.utdallas.edu - CentOS Linux 7.9
+                 --All CS Graduate Students should use csgrads1--
+                      cs1.utdallas.edu - CentOS Linux 7.9
+                      cs2.utdallas.edu - CentOS Linux 7.9
+                       ***---***---***---***---***---***
+
+This system is for use by CS students who need a general purpose Linux system
+to complete homework assignments.  Computationally or resource intensive
+simulations will be throttled automatically.
+
+Thank you,
+CS Lab Manager
+cs-labs@utdallas.edu
+
+               /scratch disk space can be used for temporary files.
+      All files within /scratch will be erased on a regular basis (Sunday 0300).
+
+{cslinux2:~} mkdir week05Lab2 && cd week05Lab2
+{cslinux2:~/week05Lab2} vim all
+{cslinux2:~/week05Lab2} chmod u+x all
+{cslinux2:~/week05Lab2} ./all
+Name of the program: ./all
+Number of args: 0
+The args:
+{cslinux2:~/week05Lab2} ./all arg1
+Name of the program: ./all
+Number of args: 1
+The args: arg1
+{cslinux2:~/week05Lab2} ./all arg1 arg2 arg3 arg4 arg5
+Name of the program: ./all
+Number of args: 5
+The args: arg1 arg2 arg3 arg4 arg5
+{cslinux2:~/week05Lab2} ln -s all linkto
+{cslinux2:~/week05Lab2} ./linkto arg1 arg2
+Name of the program: ./linkto
+Number of args: 2
+The args: arg1 arg2
+{cslinux2:~/week05Lab2} vim myname
+{cslinux2:~/week05Lab2} chmod 700 myname
+{cslinux2:~/week05Lab2} ./myname
+Enter your name: Tan Han Nguyen
+Hello Tan Han Nguyen
+{cslinux2:~/week05Lab2} cp myname myname2
+{cslinux2:~/week05Lab2} vim myname2
+{cslinux2:~/week05Lab2} cat myname2
+#This script ask for user's name and export it to a file PID.name
+#!/bin/bash
+
+#Prompt
+echo -n "Enter your name: "
+
+#Get input
+read name
+
+#Write output to file PID.name
+echo "$name" > "$$.name"
+
+#Display the content of PID.name
+cat "$$.name"
+{cslinux2:~/week05Lab2} ./myname2
+Enter your name: Tan Han Nguyen
+Tan Han Nguyen
+{cslinux2:~/week05Lab2} ls
+20573.name  all  linkto  myname  myname2
+{cslinux2:~/week05Lab2} vim looper
+{cslinux2:~/week05Lab2} chmod 700 looper
+{cslinux2:~/week05Lab2} ./looper arg1 arg2 arg3
+arg1
+arg2
+arg3
+{cslinux2:~/week05Lab2} cp looper looper2
+{cslinux2:~/week05Lab2} vim looper2
+{cslinux2:~/week05Lab2} cat looper2
+#Script that display command-line arguments using for loop
+#!/bin/bash
+
+for arg in "$@"
+do
+  echo "$arg"
+done
+{cslinux2:~/week05Lab2} ./looper2 arg1 arg2 arg3
+arg1
+arg2
+arg3
+{cslinux2:~/week05Lab2} vim ifthen
+{cslinux2:~/week05Lab2} chmod 700 ifthen
+{cslinux2:~/week05Lab2} ./ifthen
+>>
+Where is your input?
+{cslinux2:~/week05Lab2} ./ifthen
+>>This is my input
+You entered: This is my input
+{cslinux2:~/week05Lab2} vim echomyvar
+{cslinux2:~/week05Lab2} chmod 700 echomyvar
+{cslinux2:~/week05Lab2} cat echomyvar
+#Script that display PID number and value of myvar
+#!/bin/bash
+
+#Display PID
+echo "The PID of this process is $$"
+#Display the value of myvar
+echo "The value of myvar is: $myvar"
+
+{cslinux2:~/week05Lab2} echo $$
+16469
+{cslinux2:~/week05Lab2} ./echomyvar
+The PID of this process is 21162
+The value of myvar is:
+{cslinux2:~/week05Lab2} myvar="999" ./echomyvar
+The PID of this process is 21295
+The value of myvar is: 999
+{cslinux2:~/week05Lab2} echo $myvar
+
+{cslinux2:~/week05Lab2} myvar="888"
+{cslinux2:~/week05Lab2} ./echomyvar
+The PID of this process is 21337
+The value of myvar is:
+{cslinux2:~/week05Lab2} export myvar
+{cslinux2:~/week05Lab2} ./echomyvar
+The PID of this process is 21389
+The value of myvar is: 888
+{cslinux2:~/week05Lab2} echo $$
+16469
+{cslinux2:~/week05Lab2} export | grep myvar
+declare -x myvar="888"
+{cslinux2:~/week05Lab2} export -n myvar
+{cslinux2:~/week05Lab2} echo $myvar
+888
+{cslinux2:~/week05Lab2} ./echomyvar
+The PID of this process is 21451
+The value of myvar is:
+{cslinux2:~/week05Lab2} unset myvar
+{cslinux2:~/week05Lab2} echo $myvar
+
+{cslinux2:~/week05Lab2} date
+Sun Sep 15 15:59:59 CDT 2024
+{cslinux2:~/week05Lab2} hostname
+cslinux2.utdallas.edu
+{cslinux2:~/week05Lab2} uname -a
+Linux cslinux2.utdallas.edu 3.10.0-1160.119.1.el7.x86_64 #1 SMP Tue Jun 4 14:43:51 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux
+{cslinux2:~/week05Lab2} exit
+logout
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+Session stopped
+    - Press <Return> to exit tab
+    - Press R to restart session
+    - Press S to save terminal output to file

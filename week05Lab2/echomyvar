@@ -1,0 +1,8 @@
+#Script that display PID number and value of myvar
+#!/bin/bash
+
+#Display PID
+echo "The PID of this process is $$"
+#Display the value of myvar
+echo "The value of myvar is: $myvar"
+

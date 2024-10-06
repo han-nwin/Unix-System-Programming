@@ -1,0 +1,186 @@
+Pre-authentication banner message from server:
+|                       University of Texas at Dallas
+|                       Department of Computer Science
+|
+|                 Use of UTD Information Systems is subject to
+|           the UTD Information Security and Acceptable Use Policy.
+|
+|   Pursuant to Texas Administrative Code 202:
+|   (1) Unauthorized use is prohibited;
+|   (2) Usage may be subject to security testing and monitoring;
+|   (3) Misuse is subject to criminal prosecution; and
+|   (4) No expectation of privacy except as otherwise provided by applicable
+|       privacy laws.
+|
+|        ATTENTION: utdnetid != utdnetid@utdallas.edu (UTD != Google!)
+|
+|  ***** This system will require a connection to the GlobalProtect VPN startin
+> g
+|  on the following dates:
+|
+|  cslinux1.utdallas.edu - June 15, 2020
+|  cslinux2.utdallas.edu - June 22, 2020
+|
+|  ***** GlobalProtect VPN Instructions: https://www.utdallas.edu/oit/howto/vpn
+> /
+|
+End of banner message from server
+Keyboard-interactive authentication prompts from server:
+| Password:
+End of keyboard-interactive prompts from server
+    +----------------------------------------------------------------------+
+    ¦                 • MobaXterm Personal Edition v24.2 •                 ¦
+    ¦               (SSH client, X server and network tools)               ¦
+    ¦                                                                      ¦
+    ¦ ? SSH session to txn200004@cslinux2.utdallas.edu                     ¦
+    ¦   • Direct SSH      :  ?                                             ¦
+    ¦   • SSH compression :  ?                                             ¦
+    ¦   • SSH-browser     :  ?                                             ¦
+    ¦   • X11-forwarding  :  ?  (remote display is forwarded through SSH)  ¦
+    ¦                                                                      ¦
+    ¦ ? For more info, ctrl+click on help or visit our website.            ¦
+    +----------------------------------------------------------------------+
+
+Last login: Sat Sep 21 17:27:43 2024 from 10.50.240.144
+
+                       ***---***---***---***---***---***
+                    csgrads1.utdallas.edu - CentOS Linux 7.9
+                 --All CS Graduate Students should use csgrads1--
+                      cs1.utdallas.edu - CentOS Linux 7.9
+                      cs2.utdallas.edu - CentOS Linux 7.9
+                       ***---***---***---***---***---***
+
+This system is for use by CS students who need a general purpose Linux system
+to complete homework assignments.  Computationally or resource intensive
+simulations will be throttled automatically.
+
+Thank you,
+CS Lab Manager
+cs-labs@utdallas.edu
+
+               /scratch disk space can be used for temporary files.
+      All files within /scratch will be erased on a regular basis (Sunday 0300).
+
+{cslinux2:~} mkdir week06Lab2; cd week06Lab2
+{cslinux2:~/week06Lab2} cat simple-shell0.c
+// shell1.c
+// simple shell example using system call for command processing
+//
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main()
+{
+    char line[256];
+    char prompt[] = "sh1 % ";
+
+    /* spit out the prompt */
+    printf("%s", prompt );
+
+    /* Try getting input. If error or EOF, exit */
+    while( fgets(line, sizeof line, stdin) != NULL )
+    {
+        /* fgets leaves '\n' in input buffer. ditch it */
+        line[strlen(line)-1] = '\0';
+        system( line );       // easy shell to be worked.
+        printf("%s", prompt );
+    }
+    return 0;
+}
+{cslinux2:~/week06Lab2} vim myshell.c
+{cslinux2:~/week06Lab2} cat myshell.c
+//myshell.c
+//This program is a simple shell program
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h> //for strcmp()
+
+int main() {
+        char line[256];
+        char prompt[] = "{myshell}$ ";
+
+        //Print the first prompt
+        printf("%s", prompt);
+
+        //The loop
+        while(fgets(line, sizeof(line), stdin) != NULL){
+                //Remove \n from output of fgets
+                line[strlen(line) - 1] = '\0';
+
+                if (strcasecmp(line, "exit") == 0) {
+                        break;
+                }
+                else if(strcmp(line,"listall") == 0){
+                        system("ls -la");
+                }
+                else if(strcmp(line, "showme") == 0){
+                        system("w | grep \"txn\"");
+                }
+                else {
+                        system(line);
+                }
+        printf("%s", prompt); //Prompt again
+        }
+        return 0;
+}
+{cslinux2:~/week06Lab2} gcc myshell.c -o myshell
+{cslinux2:~/week06Lab2} ./myshell
+{myshell}$ date; hostname
+Sat Sep 21 17:44:19 CDT 2024
+cslinux2.utdallas.edu
+{myshell}$ ls -l
+total 72
+-rwx--x--x 1 txn200004 se 8664 Sep 21 17:44 myshell
+-rw------- 1 txn200004 se  673 Sep 21 17:43 myshell.c
+-rw------- 1 txn200004 se  579 Sep 21 17:33 simple-shell0.c
+{myshell}$ whoami
+txn200004
+{myshell}$ who | grep `whoami`
+txn200004 pts/6        2024-09-21 17:31 (10.50.240.144)
+{myshell}$ listall
+total 136
+drwx--x--x  2 txn200004 se   85 Sep 21 17:44 .
+drwx--x--x 24 txn200004 se 1349 Sep 21 17:43 ..
+-rwx--x--x  1 txn200004 se 8664 Sep 21 17:44 myshell
+-rw-------  1 txn200004 se  673 Sep 21 17:43 myshell.c
+-rw-------  1 txn200004 se  579 Sep 21 17:33 simple-shell0.c
+{myshell}$ showme
+txn20000 pts/6    10.50.240.144    17:31    6.00s  0.19s  0.02s w
+{myshell}$ ls -l myshell*
+-rwx--x--x 1 txn200004 se 8664 Sep 21 17:44 myshell
+-rw------- 1 txn200004 se  673 Sep 21 17:43 myshell.c
+{myshell}$ head myshell.c
+//myshell.c
+//This program is a simple shell program
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h> //for strcmp()
+
+int main() {
+        char line[256];
+{myshell}$ exit
+{cslinux2:~/week06Lab2} date
+Sat Sep 21 17:45:16 CDT 2024
+{cslinux2:~/week06Lab2} ls -l
+total 72
+-rwx--x--x 1 txn200004 se 8664 Sep 21 17:44 myshell
+-rw------- 1 txn200004 se  673 Sep 21 17:43 myshell.c
+-rw------- 1 txn200004 se  579 Sep 21 17:33 simple-shell0.c
+{cslinux2:~/week06Lab2} uname -a
+Linux cslinux2.utdallas.edu 3.10.0-1160.119.1.el7.x86_64 #1 SMP Tue Jun 4 14:43:51 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux
+{cslinux2:~/week06Lab2} exit
+logout
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Session stopped
+    - Press <Return> to exit tab
+    - Press R to restart session
+    - Press S to save terminal output to file

@@ -1,0 +1,9 @@
+ Reading the directory: ./
+ Total Count of Regular File: 5
+ Total Count of Directory: 2
+ Total Count of Character Special: 0
+ Total Count of Block Special: 0
+ Total Count of Symbolick Link: 0
+ Total Count of Socket: 0
+ Total Count of Other Files: 0
+ Total Count of Directory Entries Processed: 7

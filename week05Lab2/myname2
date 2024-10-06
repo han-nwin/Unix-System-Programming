@@ -1,0 +1,14 @@
+#This script ask for user's name and export it to a file PID.name
+#!/bin/bash
+
+#Prompt
+echo -n "Enter your name: "
+
+#Get input
+read name
+
+#Write output to file PID.name
+echo "$name" > "$$.name"
+
+#Display the content of PID.name
+cat "$$.name"

@@ -1,0 +1,7 @@
+#This script copies the file named by its first argument to a file with the same name but with an extension of .bak
+#!/bin/bash -eux
+
+#Copy the file to .bak file
+cp "$1" "$1.bak"
+#Announce if it's successful
+echo "File '$1' has been copied to '$1.bak'"

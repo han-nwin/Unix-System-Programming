@@ -1,0 +1,11 @@
+# This script displays current date and time, home directory and PATH value
+#!/bin/bash
+
+#Display current date and time
+echo "The current date and time: $(date)"
+
+#Display home directory 
+echo "Home directory: $HOME"
+
+#Display value of PATH
+echo "PATH: $PATH"

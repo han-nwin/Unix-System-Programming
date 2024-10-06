@@ -1,0 +1,352 @@
+Pre-authentication banner message from server:
+|                       University of Texas at Dallas
+|                       Department of Computer Science
+|
+|                 Use of UTD Information Systems is subject to
+|           the UTD Information Security and Acceptable Use Policy.
+|
+|   Pursuant to Texas Administrative Code 202:
+|   (1) Unauthorized use is prohibited;
+|   (2) Usage may be subject to security testing and monitoring;
+|   (3) Misuse is subject to criminal prosecution; and
+|   (4) No expectation of privacy except as otherwise provided by applicable
+|       privacy laws.
+|
+|        ATTENTION: utdnetid != utdnetid@utdallas.edu (UTD != Google!)
+|
+|  ***** This system will require a connection to the GlobalProtect VPN startin
+> g
+|  on the following dates:
+|
+|  cslinux1.utdallas.edu - June 15, 2020
+|  cslinux2.utdallas.edu - June 22, 2020
+|
+|  ***** GlobalProtect VPN Instructions: https://www.utdallas.edu/oit/howto/vpn
+> /
+|
+End of banner message from server
+Keyboard-interactive authentication prompts from server:
+| Password:
+End of keyboard-interactive prompts from server
+    +----------------------------------------------------------------------+
+    ¦                 • MobaXterm Personal Edition v24.2 •                 ¦
+    ¦               (SSH client, X server and network tools)               ¦
+    ¦                                                                      ¦
+    ¦ ? SSH session to txn200004@cslinux2.utdallas.edu                     ¦
+    ¦   • Direct SSH      :  ?                                             ¦
+    ¦   • SSH compression :  ?                                             ¦
+    ¦   • SSH-browser     :  ?                                             ¦
+    ¦   • X11-forwarding  :  ?  (remote display is forwarded through SSH)  ¦
+    ¦                                                                      ¦
+    ¦ ? For more info, ctrl+click on help or visit our website.            ¦
+    +----------------------------------------------------------------------+
+
+Last login: Sun Sep 29 17:19:01 2024 from 10.50.240.58
+
+                       ***---***---***---***---***---***
+                    csgrads1.utdallas.edu - CentOS Linux 7.9
+                 --All CS Graduate Students should use csgrads1--
+                      cs1.utdallas.edu - CentOS Linux 7.9
+                      cs2.utdallas.edu - CentOS Linux 7.9
+                       ***---***---***---***---***---***
+
+This system is for use by CS students who need a general purpose Linux system
+to complete homework assignments.  Computationally or resource intensive
+simulations will be throttled automatically.
+
+Thank you,
+CS Lab Manager
+cs-labs@utdallas.edu
+
+               /scratch disk space can be used for temporary files.
+      All files within /scratch will be erased on a regular basis (Sunday 0300).
+
+{cslinux2:~} mkdir week07Lab1; cd week07Lab1
+{cslinux2:~/week07Lab1} cat tryShell.c
+/*  tryShell.c
+    source:     www.csl.mtu.edu/cs4411.ck/www/NOTES/process/fork/exec.html
+*/
+
+#include <stdio.h>
+#include <sys/types.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+#define MAX 1024
+
+void  parse(char *line, char **argv)
+{
+     while (*line != '\0') {    /* if not the end of line */
+          while (*line == ' ' || *line == '\t' || *line == '\n')
+               *line++ = '\0';  /* replace white spaces with 0*/
+          *argv++ = line;       /* save the argument position */
+          while (*line != '\0' && *line != ' ' &&
+                 *line != '\t' && *line != '\n')
+               line++;      /* skip the argument until ...    */
+     }
+     *argv = '\0';          /* mark the end of argument list  */
+}
+
+void  execute(char **argv)
+{
+     pid_t  pid;
+     int    status;
+
+     if ((pid = fork()) < 0) {    /* fork a child process    */
+          printf("*** ERROR: forking child process failed\n");
+          exit(1);
+     }
+     else if (pid == 0) {          /* for the child process: */
+          if (execvp(*argv, argv) < 0) {     /* exec command  */
+               printf("*** ERROR: exec failed\n");
+               exit(1);
+          }
+     }
+     else {                            /* for the parent: */
+          while (wait(&status) != pid) /* wait for completion */
+               ;
+     }
+}
+
+
+void  main(void)
+{
+     char  line[MAX];      /* the input line                 */
+     char  *argv[64];       /* the command line argument      */
+
+     while (1) {            /* repeat until done ....         */
+          printf("Shell -> ");   /* display a prompt          */
+            if (fgets(line, MAX, stdin) != 0){
+               line[strcspn(line, "\n")] = '\0';
+                  printf("\n");
+
+        // Place your code here to check the command is "exit"
+     //   to terminate the shell.
+
+
+                  parse(line, argv);     /* parse the line      */
+                  execute(argv);        /* otherwise, execute cmd  */
+         }
+     }
+}
+{cslinux2:~/week07Lab1} vim tryShell1.c
+{cslinux2:~/week07Lab1} gcc tryShell1.c -o tryShell1
+tryShell1.c: In function ‘main’:
+tryShell1.c:109:19: error: expected ‘;’ before ‘l’
+    argv[1] = "-la"l
+                   ^
+{cslinux2:~/week07Lab1} vim tryShell1.c
+{cslinux2:~/week07Lab1} gcc tryShell1.c -o tryShell1
+/usr/tmp/ccgxEwmq.o: In function `main':
+tryShell1.c:(.text+0x43b): undefined reference to `expanded_wildcards'
+collect2: error: ld returned 1 exit status
+{cslinux2:~/week07Lab1} vim tryShell1.c
+{cslinux2:~/week07Lab1} gcc tryShell1.c -o tryShell1
+{cslinux2:~/week07Lab1} cat tryShell1.c
+/* tryShell1.c
+ * A simple shell program that uses child process an exec
+ */
+#include <stdio.h>
+#include <sys/types.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h> //for strcasecmp
+#include <glob.h> // to expaln wildcard
+
+// Function to parse line input into array of arguments
+void parse(char *line, char**argv) {
+        //Checking the line char by char until null
+        while(*line != '\0'){
+                //Check if it's a white space -> replace it with '\0'
+                while (*line == ' ' || *line == '\t' || *line == '\n'){
+                        *line++ = '\0'; //replace and move to next char
+                }
+
+        *argv++ = line; // assign non-white space char to *argv and move *argb to next index
+                //Now skip the rest of the argumen until the start of next argument
+                while(*line != '\0' && *line != ' '&& *line != '\t' && *line != '\n'){
+                        line++;
+                }
+        }
+        *argv = NULL; //Mark the end of the argument array
+}
+
+
+//Function to execute command using child process
+void execute(char **argv){
+        pid_t pid;
+        int status;
+
+        //Call a child process, then check its pid
+        //pid < 0 = forking failed
+        if ((pid = fork()) < 0){
+                printf("**ERROR: Forking child process failed \n");
+                exit(1);
+        }
+        else if (pid == 0){
+                if(execvp(*argv, argv) < 0){
+                        printf("**ERROR: exec failed\n");
+                        exit(1);
+                }
+        }
+        else{
+                //Waiting for the child completion
+                while(wait(&status) != pid);
+        }
+}
+
+//Function to expand wildcard
+int expand_wildcards(char **argv, char *expanded_argv[]) {
+        glob_t glob_results;
+        int i = 0;
+        int j = 0;
+        size_t k;
+
+        //Iterate through each argument in argv
+        while (argv[i] != NULL){
+                glob_t globbuf;
+
+                //Apply glob to each argument
+                if(glob(argv[i], 0, NULL, &globbuf) == 0){
+                        for(k = 0; k < globbuf.gl_pathc; k++){
+                                expanded_argv[j++] = strdup(globbuf.gl_pathv[k]); //Expand wildcard
+                        }
+                        globfree(&globbuf); //Free memory allocated by flob
+                }
+                else {
+                        //If no match, just copy the argument as is
+                        expanded_argv[j++] = strdup(argv[i]);
+
+                }
+        i++;//move to next argument
+        }
+        expanded_argv[j] = NULL; // null terminator at the end
+        return j; //Return number of expanded arguments
+
+}
+
+//Define buffer size
+#define MAX_LINE 4096
+
+int main(void){
+        char line[MAX_LINE];
+        char *prompt = "{tryShell1}$ ";
+        char *argv[64]; // maximum 64 argument
+        char *expanded_argv[64]; //Array to hold expanded wildcard arguments
+
+        //first prompt
+        printf("%s", prompt); // prinyt the prompt
+        //The loop
+        while(fgets(line, sizeof(line), stdin) != NULL){
+                //Remove \n from fgets
+                line[strlen(line) - 1] = '\0';
+
+                //Parse the line into array of arguments
+                parse(line, argv);
+
+                //exit case
+                if(strcasecmp(argv[0], "exit") == 0){
+                        break;
+                }
+                //listall case
+                else if (strcasecmp(argv[0], "listall") == 0){
+                        argv[0] = "ls";
+                        argv[1] = "-la";
+                        argv[2] = NULL; //Mark the end of the argv array
+                        execute(argv);
+                        printf("%s", prompt); // prompt after exec
+                        continue; // skip to next loop
+                }
+                //compile
+                else if (strcasecmp(argv[0], "compile") == 0){
+                        argv[0] = "gcc";
+                        //Skip argv[1]
+                        argv[2] = "-o";
+
+                        //Getting the output file name from argv[1]
+                        size_t name_length = strlen(argv[1]) - 2; // not getting .c
+                        char *output_name = strndup(argv[1], name_length); // Duplicate the "program"
+                        argv[3] = output_name;
+
+                        argv[4] = NULL;
+
+                        //expand wildcards
+                        expand_wildcards(argv, expanded_argv);
+
+                        execute(expanded_argv); // execute
+                        printf("%s", prompt); // Prompt again
+                        continue; //Skip to next loop
+
+                }
+                //expand wildcards
+                expand_wildcards(argv, expanded_argv);
+                execute(expanded_argv); //child execute other commands
+
+                printf("%s", prompt); //prompt again
+        }
+        return 0;
+
+}
+{cslinux2:~/week07Lab1} ./tryShell1
+{tryShell1}$ date
+Mon Sep 30 21:21:23 CDT 2024
+{tryShell1}$ whoami
+txn200004
+{tryShell1}$ uname -a
+Linux cslinux2.utdallas.edu 3.10.0-1160.119.1.el7.x86_64 #1 SMP Tue Jun 4 14:43:51 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux
+{tryShell1}$ ls -l tryShell1.c
+-rw------- 1 txn200004 se 3610 Sep 30 21:21 tryShell1.c
+{tryShell1}$ head tryShell1.c
+/* tryShell1.c
+ * A simple shell program that uses child process an exec
+ */
+#include <stdio.h>
+#include <sys/types.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h> //for strcasecmp
+#include <glob.h> // to expaln wildcard
+
+{tryShell1}$ compile tryShell1.c
+{tryShell1}$ compile tryShell.c
+{tryShell1}$ compile hello.c
+{tryShell1}$ ./hello
+Hello World
+{tryShell1}$ ls -l hello*
+-rwx--x--x 1 txn200004 se 8408 Sep 30 21:21 hello
+-rw------- 1 txn200004 se  185 Sep 30 20:35 hello.c
+{tryShell1}$ listall
+total 184
+drwx--x--x  2 txn200004 se   132 Sep 30 21:21 .
+drwx--x--x 26 txn200004 se  1406 Sep 30 21:21 ..
+-rwx--x--x  1 txn200004 se  8408 Sep 30 21:21 hello
+-rw-------  1 txn200004 se   185 Sep 30 20:35 hello.c
+-rwx--x--x  1 txn200004 se  8880 Sep 30 21:21 tryShell
+-rwx--x--x  1 txn200004 se 13224 Sep 30 21:21 tryShell1
+-rw-------  1 txn200004 se  3610 Sep 30 21:21 tryShell1.c
+-rw-------  1 txn200004 se  2031 Sep 30 20:35 tryShell.c
+{tryShell1}$ date
+Mon Sep 30 21:22:10 CDT 2024
+{tryShell1}$ exit
+{cslinux2:~/week07Lab1} date
+Mon Sep 30 21:22:38 CDT 2024
+{cslinux2:~/week07Lab1} ls -l
+total 120
+-rwx--x--x 1 txn200004 se  8408 Sep 30 21:21 hello
+-rw------- 1 txn200004 se   185 Sep 30 20:35 hello.c
+-rwx--x--x 1 txn200004 se  8880 Sep 30 21:21 tryShell
+-rwx--x--x 1 txn200004 se 13224 Sep 30 21:21 tryShell1
+-rw------- 1 txn200004 se  3610 Sep 30 21:21 tryShell1.c
+-rw------- 1 txn200004 se  2031 Sep 30 20:35 tryShell.c
+{cslinux2:~/week07Lab1} uname -a
+Linux cslinux2.utdallas.edu 3.10.0-1160.119.1.el7.x86_64 #1 SMP Tue Jun 4 14:43:51 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux
+{cslinux2:~/week07Lab1} exit
+logout
+
+-----------------------------------------------------------------------------------------------------------
+
+Session stopped
+    - Press <Return> to exit tab
+    - Press R to restart session
+    - Press S to save terminal output to file

@@ -1,0 +1,7 @@
+#Script that display command-line arguments using for loop
+#!/bin/bash
+
+for arg in "$@"
+do
+  echo "$arg"
+done

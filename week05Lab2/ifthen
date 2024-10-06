@@ -1,0 +1,15 @@
+#Script that get and display user prompt
+#!/bin/bash
+
+#Prompt
+echo -n  ">>"
+
+#Read input
+read input
+
+if test -n "$input"
+then
+  echo "You entered: $input"
+else
+    echo "Where is your input?"
+fi

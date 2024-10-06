@@ -1,0 +1,11 @@
+#This script ask for user's name and say hello to them
+#!/bin/bash
+
+#Prompt
+echo -n "Enter your name: "
+
+#Get input
+read name
+
+#Display
+echo "Hello $name"

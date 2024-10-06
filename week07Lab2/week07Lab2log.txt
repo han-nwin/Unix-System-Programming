@@ -1,0 +1,241 @@
+Pre-authentication banner message from server:
+|                       University of Texas at Dallas
+|                       Department of Computer Science
+|
+|                 Use of UTD Information Systems is subject to
+|           the UTD Information Security and Acceptable Use Policy.
+|
+|   Pursuant to Texas Administrative Code 202:
+|   (1) Unauthorized use is prohibited;
+|   (2) Usage may be subject to security testing and monitoring;
+|   (3) Misuse is subject to criminal prosecution; and
+|   (4) No expectation of privacy except as otherwise provided by applicable
+|       privacy laws.
+|
+|        ATTENTION: utdnetid != utdnetid@utdallas.edu (UTD != Google!)
+|
+|  ***** This system will require a connection to the GlobalProtect VPN startin
+> g
+|  on the following dates:
+|
+|  cslinux1.utdallas.edu - June 15, 2020
+|  cslinux2.utdallas.edu - June 22, 2020
+|
+|  ***** GlobalProtect VPN Instructions: https://www.utdallas.edu/oit/howto/vpn
+> /
+|
+End of banner message from server
+Keyboard-interactive authentication prompts from server:
+| Password:
+End of keyboard-interactive prompts from server
+    +----------------------------------------------------------------------+
+    ¦                 • MobaXterm Personal Edition v24.2 •                 ¦
+    ¦               (SSH client, X server and network tools)               ¦
+    ¦                                                                      ¦
+    ¦ ? SSH session to txn200004@cslinux2.utdallas.edu                     ¦
+    ¦   • Direct SSH      :  ?                                             ¦
+    ¦   • SSH compression :  ?                                             ¦
+    ¦   • SSH-browser     :  ?                                             ¦
+    ¦   • X11-forwarding  :  ?  (remote display is forwarded through SSH)  ¦
+    ¦                                                                      ¦
+    ¦ ? For more info, ctrl+click on help or visit our website.            ¦
+    +----------------------------------------------------------------------+
+
+Last login: Tue Oct  1 21:54:46 2024 from 10.50.241.34
+
+                       ***---***---***---***---***---***
+                    csgrads1.utdallas.edu - CentOS Linux 7.9
+                 --All CS Graduate Students should use csgrads1--
+                      cs1.utdallas.edu - CentOS Linux 7.9
+                      cs2.utdallas.edu - CentOS Linux 7.9
+                       ***---***---***---***---***---***
+
+This system is for use by CS students who need a general purpose Linux system
+to complete homework assignments.  Computationally or resource intensive
+simulations will be throttled automatically.
+
+Thank you,
+CS Lab Manager
+cs-labs@utdallas.edu
+
+               /scratch disk space can be used for temporary files.
+      All files within /scratch will be erased on a regular basis (Sunday 0300).
+
+{cslinux2:~} mkdir week07Lab2; cd week07Lab2
+{cslinux2:~/week07Lab2} gcc ls1.c -o ls1
+{cslinux2:~/week07Lab2} ./ls1 ./
+.: directory -- with stat
+.: directory -- with lstat
+
+..: directory -- with stat
+..: directory -- with lstat
+
+ls1: regular file -- with stat
+ls1: regular file -- with lstat
+
+ls1.c: regular file -- with stat
+ls1.c: regular file -- with lstat
+
+{cslinux2:~/week07Lab2} ./ls1 /etc > out1.txt
+Can't stat grub2.cfg: Permission denied
+Can't stat extlinux.conf: No such file or directory
+{cslinux2:~/week07Lab2} .ls1 /etc | wc
+bash: .ls1: command not found...
+      0       0       0
+{cslinux2:~/week07Lab2} ./ls1 /etc | wc
+Can't stat grub2.cfg: Permission denied
+Can't stat extlinux.conf: No such file or directory
+   1311    4870   33807
+{cslinux2:~/week07Lab2} ls -l
+total 72
+-rwx--x--x 1 txn200004 se 13176 Oct  1 22:48 ls1
+-rw------- 1 txn200004 se  2290 Oct  1 22:47 ls1.c
+-rw------- 1 txn200004 se 33807 Oct  1 22:48 out1.txt
+{cslinux2:~/week07Lab2} cp ls1.c ls2.c
+{cslinux2:~/week07Lab2} vim ls2.c
+{cslinux2:~/week07Lab2} vim ls2.c
+{cslinux2:~/week07Lab2} vim ls2.c
+{cslinux2:~/week07Lab2} gcc ls2.c -o ls2
+{cslinux2:~/week07Lab2} cat ls2.c
+/* This still very simple ls with lstat and stat calls
+   for the file information in a directory.
+
+ */
+
+#include <sys/types.h>
+#include <sys/stat.h>
+
+#include <dirent.h>
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+int
+main(int argc, char **argv) {
+
+        DIR *dp;
+        struct dirent *dirp;
+        int regCount = 0;
+        int dirCount = 0;
+        int charCount = 0;
+        int blockCount = 0;
+        int fifoCount = 0;
+        int symlCount = 0;
+        int socCount = 0;
+        int otherCount = 0;
+        int totalCount = 0;
+
+        if (argc != 2) {
+                fprintf(stderr, "usage: %s dir_name\n", argv[0]);
+                exit(EXIT_FAILURE);
+        }
+
+        if ((dp = opendir(argv[1])) == NULL ) {
+                fprintf(stderr, "can't open '%s': %s\n", argv[1], strerror(errno));
+                exit(EXIT_FAILURE);
+        }
+
+        if (chdir(argv[1]) == -1) {
+                fprintf(stderr, "can't chdir to '%s': %s\n", argv[1], strerror(errno));
+                exit(EXIT_FAILURE);
+        }
+
+        while ((dirp = readdir(dp)) != NULL ) {
+                totalCount++;
+
+                struct stat sb;
+                if(stat(dirp->d_name, &sb) == -1){
+                        fprintf(stderr, "not for stat %s: %s\n", dirp->d_name, strerror(errno));
+                }
+                if (lstat(dirp->d_name, &sb) == -1) {
+                        fprintf(stderr,"not for stat %s: %s\n", dirp->d_name,
+                                                strerror(errno));
+                        continue;
+                }
+                //printf("%s: ", dirp->d_name);
+                if (S_ISREG(sb.st_mode))
+                        regCount++;
+                else if (S_ISDIR(sb.st_mode))
+                        dirCount++;
+                else if (S_ISCHR(sb.st_mode))
+                        charCount++;
+                else if (S_ISBLK(sb.st_mode))
+                        blockCount++;
+                else if (S_ISFIFO(sb.st_mode))
+                        fifoCount++;
+                else if (S_ISLNK(sb.st_mode))
+                        symlCount++;
+                else if (S_ISSOCK(sb.st_mode))
+                        socCount++;
+                else
+                        otherCount++;
+
+        }
+        printf(" Reading the directory: %s\n", argv[1]);
+        printf(" Total Count of Regular File: %d\n", regCount);
+        printf(" Total Count of Directory: %d\n", dirCount);
+        printf(" Total Count of Character Special: %d\n", charCount);
+        printf(" Total Count of Block Special: %d\n", blockCount);
+        printf(" Total Count of Symbolick Link: %d\n", symlCount);
+        printf(" Total Count of Socket: %d\n", socCount);
+        printf(" Total Count of Other Files: %d\n", otherCount);
+        printf(" Total Count of Directory Entries Processed: %d\n", totalCount);
+        closedir(dp);
+        exit(EXIT_SUCCESS);
+}
+{cslinux2:~/week07Lab2} ./ls2 ./
+ Reading the directory: ./
+ Total Count of Regular File: 5
+ Total Count of Directory: 2
+ Total Count of Character Special: 0
+ Total Count of Block Special: 0
+ Total Count of Symbolick Link: 0
+ Total Count of Socket: 0
+ Total Count of Other Files: 0
+ Total Count of Directory Entries Processed: 7
+{cslinux2:~/week07Lab2} ./ls2 ./ > out1.txt
+{cslinux2:~/week07Lab2} ./ls2 /etc > out2.txt
+not for stat grub2.cfg: Permission denied
+not for stat extlinux.conf: No such file or directory
+{cslinux2:~/week07Lab2} tail -30 out2.txt
+ Reading the directory: /etc
+ Total Count of Regular File: 235
+ Total Count of Directory: 183
+ Total Count of Character Special: 0
+ Total Count of Block Special: 0
+ Total Count of Symbolick Link: 19
+ Total Count of Socket: 0
+ Total Count of Other Files: 0
+ Total Count of Directory Entries Processed: 437
+{cslinux2:~/week07Lab2} ls -l
+total 144
+-rwx--x--x 1 txn200004 se 13176 Oct  1 22:48 ls1
+-rw------- 1 txn200004 se  2290 Oct  1 22:47 ls1.c
+-rwx--x--x 1 txn200004 se 13128 Oct  1 23:26 ls2
+-rw------- 1 txn200004 se  2257 Oct  1 23:26 ls2.c
+-rw------- 1 txn200004 se   296 Oct  1 23:26 out1.txt
+-rw------- 1 txn200004 se   305 Oct  1 23:27 out2.txt
+{cslinux2:~/week07Lab2} date
+Tue Oct  1 23:28:56 CDT 2024
+{cslinux2:~/week07Lab2} ls -l
+total 168
+-rwx--x--x 1 txn200004 se 13176 Oct  1 22:48 ls1
+-rw------- 1 txn200004 se  2290 Oct  1 22:47 ls1.c
+-rwx--x--x 1 txn200004 se 13128 Oct  1 23:26 ls2
+-rw------- 1 txn200004 se  2257 Oct  1 23:26 ls2.c
+-rw------- 1 txn200004 se   296 Oct  1 23:26 out1.txt
+-rw------- 1 txn200004 se 31911 Oct  1 23:28 out1.txt.archive
+-rw------- 1 txn200004 se   305 Oct  1 23:27 out2.txt
+{cslinux2:~/week07Lab2} uname -a
+Linux cslinux2.utdallas.edu 3.10.0-1160.119.1.el7.x86_64 #1 SMP Tue Jun 4 14:43:51 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux
+{cslinux2:~/week07Lab2} exit
+logout
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Session stopped
+    - Press <Return> to exit tab
+    - Press R to restart session
+    - Press S to save terminal output to file
