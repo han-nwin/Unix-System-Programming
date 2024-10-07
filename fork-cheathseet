@@ -1,0 +1,21 @@
+For your review - fork() examples
+A commentary on the following example of fork().
+#1. How many processes will be there (running) at the end of the following code segment.
+     fork(); fork();
+          Answer: 4 total including the original process. After the first fork(), there will be the parent and child process - total 2. Each process will do fork() resulting in 2 processes.  
+#2. How many processes will be there (running) at the end of the following code segment.
+     fork(); fork(); fork();
+          Answer: 8 total including the original process. After the first fork(), there will be the parent and child process - total 2. Each process will do fork() resulting in 2 processes.  After the second fork, there are 4 processes. After the third fork, there are 8 processes.
+
+#3. How many processes will be there at the end of the following code segment.
+if (pid=fork() && pid2 = fork()) {fork();}
+if (pid=fork() && pid2 = fork()) {fork();}
+if (pid=fork() && pid2 = fork()) {fork();}
+One way to help is to try this program (to write this code and try it yourself with print statement at the end of all the if’s to count how many processes will be there at the end).
+============
+The first fork will create one so we have two processes now.
+    if (pid=fork() && pid2 = fork()) {fork();}
+pid will set: child will get 0 (so the child process will be drop out here as it fails for it is set to be false) and the parent will get pid of child > 0. So parent process will go on for the rest of the if-conditional. Next,
+     ... && pid2 = fork()) {fork();}
+Next it forks again. So 3 total processes now. Again pid will set: child will get 0 and parent will get pid of child >0. So parent process will go on for the rest of the if-conditional. It will do the last fork. So now total 4. 
+So each if will have 4 processes each time of "if" statement. That is, 1 => 4 (each 1 to 4) => so with the next if: 16 => and then 16*4 = 64 processes at the end.
