@@ -14,37 +14,56 @@ int main(int argc, char** argv){
 	
 	int count = 1; //parent already run so count = 1 
 	switch(caseNum) {
-		case 1:
-			pid_t pid = fork();
-			if (pid < 0) {
-				perror("Fork failed");
-			}
-			//Child process 
-			else if (pid == 0) {
-				printf("Child process: pid = %ld\n", (long)getpid());
-				count++;
-				exit(0);
-			}
-			//Parent process
-			else {
-				wait(NULL); //wait for the child to finish
-				printf("Parent process: pid = %ld\n", (long)getpid());
-				count ++;
-				printf("Number of processes run: %d\n", count);
-			}
-			break;
-		case 2:
-			break;
-		case 3:
-			break;	
-		case 4:
-			break;
-		case 5:
-			break;
-		default:
-			fprintf(stderr, "Invalid argument (1 - 5)");
-			return 1;
-	}
-	return 0;
+              case 1:
+                  printf("Case #1\n");
+                  fork();  // Creates 1 child process
+                  printf("PID: %d, Parent PID: %d\n", getpid(), getppid());
+                  break;
+
+              case 2:
+                  printf("Case #2\n");
+                  fork();
+                  fork();
+                  printf("PID: %d, Parent PID: %d\n", getpid(), getppid());
+                  break;
+              case 3:
+                  printf("Case #3\n");
+                  fork();
+                  fork();
+                  fork();
+                  printf("PID: %d, Parent PID: %d\n", getpid(), getppid());
+                  break;
+
+              case 4:
+                  printf("Case #4\n");
+                  if (fork() && fork()) { 
+                      fork(); 
+                  }
+                  if (fork() && fork()) { 
+                      fork(); 
+                  }
+                  if (fork() && fork()) { 
+                      fork(); 
+                  }
+                  printf("PID: %d, Parent PID: %d\n", getpid(), getppid());
+                  break;
+
+              case 5:
+                  printf("Case #5\n");
+                  for (int i = 1; i < 5; i++) {
+                      fork();  // Loop to fork 4 times
+                  }
+                  printf("PID: %d, Parent PID: %d\n", getpid(), getppid());
+                  break;
+
+              default:
+                  fprintf(stderr, "Invalid argument (1 - 5)\n");
+                  return 1;
+          }
+          
+    // Print termination statement
+    printf("End of tryFork for case #%d (PID: %d)\n", caseNum, getpid());
+    
+    return 0;
 }
 
