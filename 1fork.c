@@ -6,14 +6,14 @@ int main() {
     pid_t pid, pid2;
 
     // First set of fork operations
-    if ((pid = fork()) && (pid2 = fork())) {
+    if ((pid = fork()) || (pid2 = fork())) {
         fork();
     }
 
     // Second set of fork operations
-    //if ((pid = fork()) && (pid2 = fork())) {
-      //  fork();
-    //}
+    if ((pid = fork()) || (pid2 = fork())) {
+        fork();
+    }
 
     // Third set of fork operations
 //    if ((pid = fork()) && (pid2 = fork())) {
