@@ -115,7 +115,7 @@ int expand_wildcards(char** argv, char* expanded_argv[]) {
 int main(void){
 	char line[MAX_LINE];
 	char line_backup[MAX_LINE];
-	char* prompt = "{myShell1}$ ";
+	char* prompt = "{myShell2}$ ";
 	char* argv[64]; // maximum 64 argument
 	char* expanded_argv[64]; //Array to hold expanded wildcard arguments
 	int has_redir = 0;
@@ -181,6 +181,7 @@ int main(void){
                         char* input_file = NULL;
                         char* output_file = NULL;
                         char* argv2[64];  // Array to hold the actual command without redirection parts
+                        int i = 0; // Index for argv
                         int j = 0;  // Index for argv2
 
                         // Parse the arguments and look for redirection
@@ -349,8 +350,9 @@ int main(void){
                             i++; // Move to the next command
                         }
                         // Free memory allocated by strdup
-                        for (int i = 0; i < command_count; i++) {
-                                free(command_array[i]);  // Free each command duplicated by strdup
+                        int j = 0;
+                        for (j = 0; j < command_count; j++) {
+                                free(command_array[j]);  // Free each command duplicated by strdup
                         }
                         
                         printf("%s", prompt); // Prompt again
