@@ -185,7 +185,7 @@ int main(void){
                         int j = 0;  // Index for argv2
 
                         // Parse the arguments and look for redirection
-                        for (int i = 0; argv[i] != NULL; i++) {
+                        for (i = 0; argv[i] != NULL; i++) {
                             if (strcmp(argv[i], "<") == 0) {
                                 // Input redirection: store the filename
                                 input_file = argv[i + 1];
