@@ -350,8 +350,7 @@ int main(void){
                             i++; // Move to the next command
                         }
                         // Free memory allocated by strdup
-                        int j = 0;
-                        for (j = 0; j < command_count; j++) {
+                        for (int j = 0; j < command_count; j++) {
                                 free(command_array[j]);  // Free each command duplicated by strdup
                         }
                         
