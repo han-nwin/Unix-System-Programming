@@ -181,11 +181,10 @@ int main(void){
                         char* input_file = NULL;
                         char* output_file = NULL;
                         char* argv2[64];  // Array to hold the actual command without redirection parts
-                        int i = 0; // Index for argv
                         int j = 0;  // Index for argv2
 
                         // Parse the arguments and look for redirection
-                        for (i = 0; argv[i] != NULL; i++) {
+                        for (int i = 0; argv[i] != NULL; i++) {
                             if (strcmp(argv[i], "<") == 0) {
                                 // Input redirection: store the filename
                                 input_file = argv[i + 1];
