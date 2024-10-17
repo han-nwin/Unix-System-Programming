@@ -174,9 +174,6 @@ int main(void){
 		}
 		// < > case
 		else if ((strchr(line_backup, '<') != NULL) || (strchr(line_backup, '>') != NULL)) {
-		        //Save the original stdin and stdout
-                        int original_stdin = dup(STDIN_FILENO);
-                        int original_stdout = dup(STDOUT_FILENO);
                         // Variables to store file redirection paths
                         char* input_file = NULL;
                         char* output_file = NULL;
@@ -201,28 +198,29 @@ int main(void){
                             }
                         }
                         argv2[j] = NULL;  // Null-terminate the argv2 array
-                      
-                        // Handle input redirection
-                        if (input_file != NULL) {
-                            fileRedir("<", input_file); // call redirect function
-                        }
+                        
+                        pid_t pid = fork(); //call a child process 
+                        if(pid == 0){// child process redirect and execute the commands
+                            // Handle input redirection
+                            if (input_file != NULL) {
+                                fileRedir("<", input_file); // call redirect function
+                            }
 
-                        // Handle output redirection
-                        if (output_file != NULL) {
-                            fileRedir(">", output_file); // call redirect function
-                        }
+                            // Handle output redirection
+                            if (output_file != NULL) {
+                                fileRedir(">", output_file); // call redirect function
+                            }
 
-                        // Expand wildcards and execute the command
-                        expand_wildcards(argv2, expanded_argv);
-                        execute(expanded_argv);
-                        //Restore the original stdin and stdout 
-                        //If not restoring, it will read '/0' (EOF) and terminate the program
-                        dup2(original_stdin, STDIN_FILENO);
-                        dup2(original_stdout, STDOUT_FILENO);
-                        close(original_stdin);
-                        close(original_stdout);
-                        printf("%s", prompt); // Prompt again
-                        continue;
+                            // Expand wildcards and execute the command
+                            expand_wildcards(argv2, expanded_argv);
+                            execute(expanded_argv);
+                            exit(0);
+
+                        } else if (pid > 0){//Parent process wait for child to end 
+                            wait(NULL); //wait 
+                            printf("%s", prompt); // Prompt again
+                            continue;
+                        }
                 }
                 // ; case
                 else if (strchr(line_backup, ';') != NULL) {
