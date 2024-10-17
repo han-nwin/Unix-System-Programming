@@ -326,9 +326,9 @@ int main(void){
                                 expand_wildcards(argv, expanded_argv);
                                 //NOTE: NOT using execute() because it interferes with the child process here.
                                 if(execvp(*argv, argv) < 0){
-			            printf("**ERROR: exec failed\n");
-			            exit(1);
-		                }
+                                    printf("**ERROR: exec failed\n");
+                                    exit(1);
+                                }
                                 
                             } else {  //Parent process
                                 //Close the previous pipe in the parent
