@@ -9,7 +9,6 @@ int main(int argc, char** argv){
 		fprintf(stderr, "Usage: %s <number of child>\n", argv[0]);
 		return 1;
 	}
-	printf("Name: Tan Han Nguyen\nNetID: TXN200004\nCourse/section: SE3377.001\nLab: Week 08 Lab 1\n");
 	system("date;whoami;ps;ls -l"); //print header
 	
 	int caseNum = atoi(argv[1]); // capture argument to in

@@ -1,0 +1,336 @@
+Pre-authentication banner message from server:
+|                       University of Texas at Dallas
+|                       Department of Computer Science
+|
+|                 Use of UTD Information Systems is subject to
+|           the UTD Information Security and Acceptable Use Policy.
+|
+|   Pursuant to Texas Administrative Code 202:
+|   (1) Unauthorized use is prohibited;
+|   (2) Usage may be subject to security testing and monitoring;
+|   (3) Misuse is subject to criminal prosecution; and
+|   (4) No expectation of privacy except as otherwise provided by applicable
+|       privacy laws.
+|
+|        ATTENTION: utdnetid != utdnetid@utdallas.edu (UTD != Google!)
+|
+|  ***** This system will require a connection to the GlobalProtect VPN startin
+> g
+|  on the following dates:
+|
+|  cslinux1.utdallas.edu - June 15, 2020
+|  cslinux2.utdallas.edu - June 22, 2020
+|
+|  ***** GlobalProtect VPN Instructions: https://www.utdallas.edu/oit/howto/vpn
+> /
+|
+End of banner message from server
+Keyboard-interactive authentication prompts from server:
+| Password:
+End of keyboard-interactive prompts from server
+    +----------------------------------------------------------------------+
+    ¦                 • MobaXterm Personal Edition v24.2 •                 ¦
+    ¦               (SSH client, X server and network tools)               ¦
+    ¦                                                                      ¦
+    ¦ ? SSH session to txn200004@cslinux2.utdallas.edu                     ¦
+    ¦   • Direct SSH      :  ?                                             ¦
+    ¦   • SSH compression :  ?                                             ¦
+    ¦   • SSH-browser     :  ?                                             ¦
+    ¦   • X11-forwarding  :  ?  (remote display is forwarded through SSH)  ¦
+    ¦                                                                      ¦
+    ¦ ? For more info, ctrl+click on help or visit our website.            ¦
+    +----------------------------------------------------------------------+
+
+Last login: Thu Oct 10 14:46:47 2024 from 10.176.201.252
+
+                       ***---***---***---***---***---***
+                    csgrads1.utdallas.edu - CentOS Linux 7.9
+                 --All CS Graduate Students should use csgrads1--
+                      cs1.utdallas.edu - CentOS Linux 7.9
+                      cs2.utdallas.edu - CentOS Linux 7.9
+                       ***---***---***---***---***---***
+
+This system is for use by CS students who need a general purpose Linux system
+to complete homework assignments.  Computationally or resource intensive
+simulations will be throttled automatically.
+
+Thank you,
+CS Lab Manager
+cs-labs@utdallas.edu
+
+               /scratch disk space can be used for temporary files.
+      All files within /scratch will be erased on a regular basis (Sunday 0300).
+
+{cslinux2:~} mkdir week08Lab1; cd week08Lab1
+{cslinux2:~/week08Lab1} vim tryFork.c
+{cslinux2:~/week08Lab1} cat tryFork.c
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+
+int main(int argc, char** argv){
+        if(argc != 2){
+                fprintf(stderr, "Usage: %s <number of child>\n", argv[0]);
+                return 1;
+        }
+        printf("Name: Tan Han Nguyen\nNetID: TXN200004\nCourse/section: SE3377.001\nLab: Week 08 Lab 1\n");
+        system("date;whoami;ps;ls -l"); //print header
+
+        int caseNum = atoi(argv[1]); // capture argument to in
+        printf("Case Number: %d\n", caseNum);
+
+        pid_t ppid = getppid(); //Store the parent's parent ID to use later at the end
+        switch(caseNum) {
+              case 1:
+                  fork();  // Creates 1 child process
+                  printf("PID: %d, Parent PID: %d\n", getpid(), getppid());
+                  break;
+
+              case 2:
+                  fork();
+                  fork();
+                  printf("PID: %d, Parent PID: %d\n", getpid(), getppid());
+                  break;
+              case 3:
+                  fork();
+                  fork();
+                  fork();
+                  printf("PID: %d, Parent PID: %d\n", getpid(), getppid());
+                  break;
+
+              case 4:
+                  if (fork() && fork()) {
+                      fork();
+                  }
+                  if (fork() && fork()) {
+                      fork();
+                  }
+                  if (fork() && fork()) {
+                      fork();
+                  }
+                  printf("PID: %d, Parent PID: %d\n", getpid(), getppid());
+                  break;
+
+              case 5:
+                  for (int i = 1; i < 5; i++) {
+                      fork();  // Loop to fork 4 times
+                  }
+                  printf("PID: %d, Parent PID: %d\n", getpid(), getppid());
+                  break;
+
+              default:
+                  fprintf(stderr, "Invalid argument (1 - 5)\n");
+                  return 1;
+          }
+    // Wait for all child processes to finish
+    while (wait(NULL) > 0);
+
+    // Print termination statement
+    if(getppid() == ppid){
+        printf("End of tryFork for case #%d (PID: %d)\n", caseNum, getpid());
+    }
+
+
+    return 0;
+}
+
+{cslinux2:~/week08Lab1} gcc tryFork.c -o tryFork -std=gnu99
+{cslinux2:~/week08Lab1} ./tryFork 1
+Name: Tan Han Nguyen
+NetID: TXN200004
+Course/section: SE3377.001
+Lab: Week 08 Lab 1
+Thu Oct 10 20:57:21 CDT 2024
+txn200004
+  PID TTY          TIME CMD
+17732 pts/0    00:00:00 bash
+18000 pts/0    00:00:00 tryFork
+18001 pts/0    00:00:00 sh
+18004 pts/0    00:00:00 ps
+total 48
+-rwx--x--x 1 txn200004 se 8848 Oct 10 20:57 tryFork
+-rw------- 1 txn200004 se 2235 Oct 10 20:54 tryFork.c
+Case Number: 1
+PID: 18000, Parent PID: 17732
+PID: 18006, Parent PID: 18000
+End of tryFork for case #1 (PID: 18000)
+{cslinux2:~/week08Lab1} ./tryFork 2
+Name: Tan Han Nguyen
+NetID: TXN200004
+Course/section: SE3377.001
+Lab: Week 08 Lab 1
+Thu Oct 10 20:57:26 CDT 2024
+txn200004
+  PID TTY          TIME CMD
+17732 pts/0    00:00:00 bash
+18007 pts/0    00:00:00 tryFork
+18008 pts/0    00:00:00 sh
+18011 pts/0    00:00:00 ps
+total 48
+-rwx--x--x 1 txn200004 se 8848 Oct 10 20:57 tryFork
+-rw------- 1 txn200004 se 2235 Oct 10 20:54 tryFork.c
+Case Number: 2
+PID: 18007, Parent PID: 17732
+PID: 18014, Parent PID: 18007
+PID: 18013, Parent PID: 18007
+PID: 18015, Parent PID: 18013
+End of tryFork for case #2 (PID: 18007)
+{cslinux2:~/week08Lab1} ./tryFork 3
+Name: Tan Han Nguyen
+NetID: TXN200004
+Course/section: SE3377.001
+Lab: Week 08 Lab 1
+Thu Oct 10 20:57:34 CDT 2024
+txn200004
+  PID TTY          TIME CMD
+17732 pts/0    00:00:00 bash
+18016 pts/0    00:00:00 tryFork
+18017 pts/0    00:00:00 sh
+18020 pts/0    00:00:00 ps
+total 48
+-rwx--x--x 1 txn200004 se 8848 Oct 10 20:57 tryFork
+-rw------- 1 txn200004 se 2235 Oct 10 20:54 tryFork.c
+Case Number: 3
+PID: 18016, Parent PID: 17732
+PID: 18024, Parent PID: 18016
+PID: 18023, Parent PID: 18016
+PID: 18026, Parent PID: 18023
+PID: 18022, Parent PID: 18016
+PID: 18025, Parent PID: 18022
+PID: 18028, Parent PID: 18025
+PID: 18027, Parent PID: 18022
+End of tryFork for case #3 (PID: 18016)
+{cslinux2:~/week08Lab1} ./tryFork 4
+Name: Tan Han Nguyen
+NetID: TXN200004
+Course/section: SE3377.001
+Lab: Week 08 Lab 1
+Thu Oct 10 20:57:40 CDT 2024
+txn200004
+  PID TTY          TIME CMD
+17732 pts/0    00:00:00 bash
+18030 pts/0    00:00:00 tryFork
+18031 pts/0    00:00:00 sh
+18034 pts/0    00:00:00 ps
+total 48
+-rwx--x--x 1 txn200004 se 8848 Oct 10 20:57 tryFork
+-rw------- 1 txn200004 se 2235 Oct 10 20:54 tryFork.c
+Case Number: 4
+PID: 18046, Parent PID: 18039
+PID: 18048, Parent PID: 18041
+PID: 18049, Parent PID: 18040
+PID: 18041, Parent PID: 18037
+PID: 18064, Parent PID: 18042
+PID: 18062, Parent PID: 18044
+PID: 18039, Parent PID: 18036
+PID: 18036, Parent PID: 18030
+PID: 18042, Parent PID: 18036
+PID: 18061, Parent PID: 18037
+PID: 18040, Parent PID: 18030
+PID: 18071, Parent PID: 18039
+PID: 18045, Parent PID: 18037
+PID: 18030, Parent PID: 17732
+PID: 18075, Parent PID: 18036
+PID: 18037, Parent PID: 18030
+PID: 18082, Parent PID: 18030
+PID: 18063, Parent PID: 18036
+PID: 18069, Parent PID: 18045
+PID: 18053, Parent PID: 18042
+PID: 18066, Parent PID: 18041
+PID: 18074, Parent PID: 18040
+PID: 18081, Parent PID: 18037
+PID: 18047, Parent PID: 18036
+PID: 18050, Parent PID: 18030
+PID: 18038, Parent PID: 18030
+PID: 18070, Parent PID: 18037
+PID: 18077, Parent PID: 18042
+PID: 18054, Parent PID: 18036
+PID: 18058, Parent PID: 18030
+PID: 18083, Parent PID: 18044
+PID: 18043, Parent PID: 18030
+PID: 18093, Parent PID: 18051
+PID: 18090, Parent PID: 18038
+PID: 18044, Parent PID: 18038
+PID: 18057, Parent PID: 18045
+PID: 18060, Parent PID: 18040
+PID: 18055, Parent PID: 18039
+PID: 18094, Parent PID: 18051
+PID: 18079, Parent PID: 18047
+PID: 18088, Parent PID: 18047
+PID: 18056, Parent PID: 18041
+PID: 18051, Parent PID: 18037
+PID: 18095, Parent PID: 18051
+PID: 18067, Parent PID: 18047
+PID: 18085, Parent PID: 18043
+PID: 18068, Parent PID: 18050
+PID: 18080, Parent PID: 18045
+PID: 18089, Parent PID: 18050
+PID: 18072, Parent PID: 18030
+PID: 18096, Parent PID: 18052
+PID: 18059, Parent PID: 18043
+PID: 18078, Parent PID: 18038
+PID: 18065, Parent PID: 18038
+PID: 18087, Parent PID: 18065
+PID: 18098, Parent PID: 18052
+PID: 18076, Parent PID: 18044
+PID: 18073, Parent PID: 18043
+PID: 18091, Parent PID: 18065
+PID: 18092, Parent PID: 18065
+PID: 18084, Parent PID: 18050
+PID: 18086, Parent PID: 18038
+PID: 18097, Parent PID: 18052
+PID: 18052, Parent PID: 18038
+End of tryFork for case #4 (PID: 18030)
+{cslinux2:~/week08Lab1} ./tryFork 5
+Name: Tan Han Nguyen
+NetID: TXN200004
+Course/section: SE3377.001
+Lab: Week 08 Lab 1
+Thu Oct 10 20:57:44 CDT 2024
+txn200004
+  PID TTY          TIME CMD
+17732 pts/0    00:00:00 bash
+18102 pts/0    00:00:00 tryFork
+18103 pts/0    00:00:00 sh
+18106 pts/0    00:00:00 ps
+total 48
+-rwx--x--x 1 txn200004 se 8848 Oct 10 20:57 tryFork
+-rw------- 1 txn200004 se 2235 Oct 10 20:54 tryFork.c
+Case Number: 5
+PID: 18102, Parent PID: 17732
+PID: 18109, Parent PID: 18102
+PID: 18115, Parent PID: 18102
+PID: 18116, Parent PID: 18109
+PID: 18112, Parent PID: 18108
+PID: 18108, Parent PID: 18102
+PID: 18119, Parent PID: 18112
+PID: 18120, Parent PID: 18110
+PID: 18113, Parent PID: 18109
+PID: 18111, Parent PID: 18102
+PID: 18121, Parent PID: 18113
+PID: 18110, Parent PID: 18108
+PID: 18122, Parent PID: 18114
+PID: 18117, Parent PID: 18108
+PID: 18118, Parent PID: 18111
+PID: 18114, Parent PID: 18110
+End of tryFork for case #5 (PID: 18102)
+
+{cslinux2:~/week08Lab1} date
+Thu Oct 10 20:59:36 CDT 2024
+{cslinux2:~/week08Lab1} ls -l
+total 48
+-rwx--x--x 1 txn200004 se 8848 Oct 10 20:57 tryFork
+-rw------- 1 txn200004 se 2235 Oct 10 20:54 tryFork.c
+{cslinux2:~/week08Lab1} uname -a
+Linux cslinux2.utdallas.edu 3.10.0-1160.119.1.el7.x86_64 #1 SMP Tue Jun 4 14:43:51 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux
+{cslinux2:~/week08Lab1} exit
+logout
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Session stopped
+    - Press <Return> to exit tab
+    - Press R to restart session
+    - Press S to save terminal output to file
