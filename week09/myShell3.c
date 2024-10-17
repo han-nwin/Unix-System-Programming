@@ -148,6 +148,7 @@ void mysig_handler(int signal) {
         exit(0);  // exit the shell 
     } else {
         printf("Caught Signal: %d\n", signal);
+        exit(0);
     }
 }
 
@@ -172,7 +173,7 @@ int main(void) {
     // the loop
     while (fgets(line, sizeof(line), stdin) != NULL) {
         //Turn off the alarm because there's input 
-        my_alarm(0);
+        alarm(0);
         // remove \n from fgets
         line[strlen(line) - 1] = '\0';
 
@@ -401,7 +402,7 @@ int main(void) {
         else if (strcmp(argv[0], "alarm") == 0) {
             int seconds = atoi(argv[1]);
             if (seconds >= 0) {
-                my_alarm(seconds);
+                alarm(seconds);
             }
             else {
                 printf("Invalid alarm time\n");
