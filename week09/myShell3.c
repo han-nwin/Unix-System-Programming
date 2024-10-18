@@ -147,7 +147,7 @@ void mysig_handler(int signal) {
         printf("Alarm Triggered! Shell terminated due to inactivity.\n");
         exit(0);  // exit the shell 
     } else {
-        printf("Caught Signal: %d\n", signal);
+        //printf("Caught Signal: %d\n", signal);
         exit(0);
     }
 }
