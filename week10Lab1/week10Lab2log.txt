@@ -1,0 +1,1017 @@
+Pre-authentication banner message from server:
+|                       University of Texas at Dallas
+|                       Department of Computer Science
+|
+|                 Use of UTD Information Systems is subject to
+|           the UTD Information Security and Acceptable Use Policy.
+|
+|   Pursuant to Texas Administrative Code 202:
+|   (1) Unauthorized use is prohibited;
+|   (2) Usage may be subject to security testing and monitoring;
+|   (3) Misuse is subject to criminal prosecution; and
+|   (4) No expectation of privacy except as otherwise provided by applicable
+|       privacy laws.
+|
+|        ATTENTION: utdnetid != utdnetid@utdallas.edu (UTD != Google!)
+|
+|  ***** This system will require a connection to the GlobalProtect VPN startin
+> g
+|  on the following dates:
+|
+|  cslinux1.utdallas.edu - June 15, 2020
+|  cslinux2.utdallas.edu - June 22, 2020
+|
+|  ***** GlobalProtect VPN Instructions: https://www.utdallas.edu/oit/howto/vpn
+> /
+|
+End of banner message from server
+Keyboard-interactive authentication prompts from server:
+| Password:
+End of keyboard-interactive prompts from server
+    +----------------------------------------------------------------------+
+    ¦                 • MobaXterm Personal Edition v24.2 •                 ¦
+    ¦               (SSH client, X server and network tools)               ¦
+    ¦                                                                      ¦
+    ¦ ? SSH session to txn200004@cslinux2.utdallas.edu                     ¦
+    ¦   • Direct SSH      :  ?                                             ¦
+    ¦   • SSH compression :  ?                                             ¦
+    ¦   • SSH-browser     :  ?                                             ¦
+    ¦   • X11-forwarding  :  ?  (remote display is forwarded through SSH)  ¦
+    ¦                                                                      ¦
+    ¦ ? For more info, ctrl+click on help or visit our website.            ¦
+    +----------------------------------------------------------------------+
+
+Last login: Mon Oct 21 20:23:22 2024 from 10.50.240.134
+
+                       ***---***---***---***---***---***
+                    csgrads1.utdallas.edu - CentOS Linux 7.9
+                 --All CS Graduate Students should use csgrads1--
+                      cs1.utdallas.edu - CentOS Linux 7.9
+                      cs2.utdallas.edu - CentOS Linux 7.9
+                       ***---***---***---***---***---***
+
+This system is for use by CS students who need a general purpose Linux system
+to complete homework assignments.  Computationally or resource intensive
+simulations will be throttled automatically.
+
+Thank you,
+CS Lab Manager
+cs-labs@utdallas.edu
+
+               /scratch disk space can be used for temporary files.
+      All files within /scratch will be erased on a regular basis (Sunday 0300).
+
+{cslinux2:~} mkdir week10Lab1; cd week10Lab1
+{cslinux2:~/week10Lab1} gcc dot1m.c -o dot1m -std=gnu99 -lpthread
+{cslinux2:~/week10Lab1} gcc dot1s.c -o dot1s -std=gnu99 -lpthread
+{cslinux2:~/week10Lab1} time ./dot1s
+Sum =  1000000.000000
+
+real    0m0.303s
+user    0m0.185s
+sys     0m0.099s
+{cslinux2:~/week10Lab1} time ./dot1m
+Thread 0 did 0 to 100000:  mysum=100000.000000 global sum=100000.000000
+Thread 3 did 300000 to 400000:  mysum=100000.000000 global sum=400000.000000
+Thread 2 did 200000 to 300000:  mysum=100000.000000 global sum=200000.000000
+Thread 1 did 100000 to 200000:  mysum=100000.000000 global sum=300000.000000
+Thread 4 did 400000 to 500000:  mysum=100000.000000 global sum=500000.000000
+Thread 5 did 500000 to 600000:  mysum=100000.000000 global sum=600000.000000
+Thread 6 did 600000 to 700000:  mysum=100000.000000 global sum=700000.000000
+Thread 7 did 700000 to 800000:  mysum=100000.000000 global sum=800000.000000
+Thread 8 did 800000 to 900000:  mysum=100000.000000 global sum=900000.000000
+Thread 9 did 900000 to 1000000:  mysum=100000.000000 global sum=1000000.000000
+Sum =  1000000.000000
+
+real    0m0.212s
+user    0m0.097s
+sys     0m0.111s
+{cslinux2:~/week10Lab1} cp dot1s.c dot2s.c
+{cslinux2:~/week10Lab1} cp dot1m.c dot2m.c
+{cslinux2:~/week10Lab1} vim dot2s.c
+{cslinux2:~/week10Lab1} vim dot2m.c
+{cslinux2:~/week10Lab1} cat dot2s.c
+/******************************************************************************
+* FILE: dotprod_serial.c
+* DESCRIPTION:
+*   This is a simple serial program which computes the dot product of two
+*   vectors.  The threaded version can is dotprod_mutex.c.
+* SOURCE: Vijay Sonnad, IBM
+* LAST REVISED: 01/29/09 Blaise Barney
+******************************************************************************/
+#include <stdio.h>
+#include <stdlib.h>
+
+/*
+The following structure contains the necessary information
+to allow the function "dotprod" to access its input data and
+place its output so that it can be accessed later.
+*/
+
+typedef struct
+{
+  double      *a;
+  double      *b;
+  double     sum;
+  int    veclen;
+} DOTDATA;
+
+// int VECLEN = 1000000;
+
+DOTDATA dotstr;
+
+/*
+We will use a function (dotprod) to perform the scalar product.
+All input to this routine is obtained through a structure of
+type DOTDATA and all output from this function is written into
+this same structure.  While this is unnecessarily restrictive
+for a sequential program, it will turn out to be useful when
+we modify the program to compute in parallel.
+*/
+
+void dotprod()
+{
+
+/* Define and use local variables for convenience */
+
+   int start, end, i;
+   double mysum, *x, *y;
+
+   start=0;
+   end = dotstr.veclen;
+   x = dotstr.a;
+   y = dotstr.b;
+
+/*
+Perform the dot product and assign result
+to the appropriate variable in the structure.
+*/
+
+   mysum = 0;
+   for (i=start; i<end ; i++)
+    {
+      mysum += (x[i] * y[i]);
+    }
+   dotstr.sum = mysum;
+
+}
+
+/*
+The main program initializes data and calls the dotprd() function.
+Finally, it prints the result.
+*/
+
+int main (int argc, char *argv[])
+{
+
+system("date; hostname; whoami; ps -eaf; ls *");
+// modify the program to get VECLEN as the argument1
+// that is, run the program: ./dots 100000
+//
+
+int VECLEN = 1000000;
+
+int i,len;
+double *a, *b;
+
+/* Assign storage and initialize values */
+len = VECLEN;
+a = (double*) malloc (len*sizeof(double));
+b = (double*) malloc (len*sizeof(double));
+
+for (i=0; i<len; i++) {
+  a[i]=1;
+  b[i]=a[i];
+  }
+
+dotstr.veclen = len;
+dotstr.a = a;
+dotstr.b = b;
+dotstr.sum=0;
+
+/* Perform the  dotproduct */
+dotprod ();
+
+/* Print result and release storage */
+printf ("Sum =  %f \n", dotstr.sum);
+free (a);
+free (b);
+}
+{cslinux2:~/week10Lab1} cat dot2m.c
+/****************************************************************
+* FILE: dotprod_mutex.c
+* DESCRIPTION:
+*   This example program illustrates the use of mutex variables
+*   in a threads program. This version was obtained by modifying the
+*   serial version of the program (dotprod_serial.c) which performs a
+*   dot product. The main data is made available to all threads through
+*   a globally accessible  structure. Each thread works on a different
+*   part of the data. The main thread waits for all the threads to complete
+*   their computations, and then it prints the resulting sum.
+* SOURCE: Vijay Sonnad, IBM
+* LAST REVISED: 01/29/09 Blaise Barney
+******************************************************************************/
+#include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+/*
+The following structure contains the necessary information
+to allow the function "dotprod" to access its input data and
+place its output into the structure.  This structure is
+unchanged from the sequential version.
+*/
+
+typedef struct
+ {
+   double      *a;
+   double      *b;
+   double     sum;
+   int     veclen;
+ } DOTDATA;
+
+/* Define globally accessible variables and a mutex */
+/* now moved to main */
+
+// #define NUMTHRDS 10
+// #define VECLEN 100000
+// pthread_t callThd[NUMTHRDS];
+
+pthread_mutex_t mutexsum;
+
+DOTDATA dotstr;
+
+
+
+/*
+The function dotprod is activated when the thread is created.
+As before, all input to this routine is obtained from a structure
+of type DOTDATA and all output from this function is written into
+this structure. The benefit of this approach is apparent for the
+multi-threaded program: when a thread is created we pass a single
+argument to the activated function - typically this argument
+is a thread number. All  the other information required by the
+function is accessed from the globally accessible structure.
+*/
+
+void *dotprod(void *arg)
+{
+
+/* Define and use local variables for convenience */
+
+   int i, start, end, len ;
+   long offset;
+   double mysum, *x, *y;
+   offset = (long)arg;
+
+   len = dotstr.veclen;
+   start = offset*len;
+   end   = start + len;
+   x = dotstr.a;
+   y = dotstr.b;
+
+/*
+Perform the dot product and assign result
+to the appropriate variale in the structure.
+*/
+   mysum = 0;
+   for (i=start; i<end ; i++)
+    {
+      mysum += (x[i] * y[i]);
+    }
+
+/*
+    Lock a mutex prior to updating the value in the shared
+    variable mutexsum, and unlock it upon updating.
+    When you call, pass its address of mutexsum.
+*/
+   // place your code here to lock with pthread_mutex_lock
+    printf("**Thread to lock the mutex**\n");
+    pthread_mutex_lock(&mutexsum);
+
+   dotstr.sum += mysum;
+   printf("Thread %ld did %d to %d:  mysum=%f global sum=%f\n",
+                offset,start,end,mysum,dotstr.sum);
+
+   // place your code here to unlock with pthread_mutex_unlock
+    printf("**Thread to unlock the mutex**\n");
+    pthread_mutex_unlock(&mutexsum);
+
+   // pthead is now terminated
+   pthread_exit((void*) 0);
+}
+
+/*
+The main program creates threads which do all the work and then
+print out result upon completion. Before creating the threads,
+The input data is created. Since all threads update a shared structure, we
+need a mutex for mutual exclusion. The main thread needs to wait for
+all threads to complete, it waits for each one of the threads. We specify
+a thread attribute value that allow the main thread to join with the
+threads it creates. Note also that we free up handles  when they are
+no longer needed.
+*/
+
+int main (int argc, char *argv[])
+{
+
+system("date; hostname; whoami; ps -eaf; ls *");
+// modify the program to get MUNTHRDS as the argument1
+// and VECLEN as argument2
+// that is, run the program: ./dotm 10 100000
+//
+int NUMTHRDS = 10;
+int VECLEN = 100000;
+pthread_t callThd[NUMTHRDS];
+
+long i;
+double *a, *b;
+void *status;
+pthread_attr_t attr;
+
+/* Assign storage and initialize values */
+
+a = (double*) malloc (NUMTHRDS*VECLEN*sizeof(double));
+b = (double*) malloc (NUMTHRDS*VECLEN*sizeof(double));
+
+for (i=0; i<VECLEN*NUMTHRDS; i++) {
+  a[i]=1;
+  b[i]=a[i];
+  }
+
+dotstr.veclen = VECLEN;
+dotstr.a = a;
+dotstr.b = b;
+dotstr.sum=0;
+
+pthread_mutex_init(&mutexsum, NULL);
+
+/* Create threads to perform the dotproduct  */
+pthread_attr_init(&attr);
+pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
+
+for(i=0;i<NUMTHRDS;i++)
+  {
+  /* Each thread works on a different set of data.
+   * The offset is specified by 'i'. The size of
+   * the data for each thread is indicated by VECLEN.
+   */
+   pthread_create(&callThd[i], &attr, dotprod, (void *)i);
+   }
+
+pthread_attr_destroy(&attr);
+/* Wait on the other threads */
+
+for(i=0;i<NUMTHRDS;i++) {
+  pthread_join(callThd[i], &status);
+  }
+/* After joining, print out the results and cleanup */
+
+printf ("Sum =  %f \n", dotstr.sum);
+free (a);
+free (b);
+pthread_mutex_destroy(&mutexsum);
+pthread_exit(NULL);
+}
+
+{cslinux2:~/week10Lab1} gcc dot2s.c -o dot2s -std=gnu99 -lpthread
+{cslinux2:~/week10Lab1} gcc dot2m.c -o dot2m -std=gnu99 -lpthread
+{cslinux2:~/week10Lab1} ./dot2s
+Mon Oct 21 22:25:41 CDT 2024
+cslinux2.utdallas.edu
+txn200004
+UID        PID  PPID  C STIME TTY          TIME CMD
+root         1     0  0 Sep24 ?        00:17:55 /usr/lib/systemd/systemd --switched-root --system --deserialize 22
+root         2     0  0 Sep24 ?        00:00:10 [kthreadd]
+root         4     2  0 Sep24 ?        00:00:00 [kworker/0:0H]
+root         6     2  0 Sep24 ?        00:10:30 [ksoftirqd/0]
+root         7     2  0 Sep24 ?        00:00:50 [migration/0]
+root         8     2  0 Sep24 ?        00:00:00 [rcu_bh]
+root         9     2  0 Sep24 ?        03:13:43 [rcu_sched]
+root        10     2  0 Sep24 ?        00:00:00 [lru-add-drain]
+root        11     2  0 Sep24 ?        00:02:17 [watchdog/0]
+root        12     2  0 Sep24 ?        00:02:00 [watchdog/1]
+root        13     2  0 Sep24 ?        00:00:27 [migration/1]
+root        14     2  0 Sep24 ?        00:03:24 [ksoftirqd/1]
+root        16     2  0 Sep24 ?        00:00:00 [kworker/1:0H]
+root        18     2  0 Sep24 ?        00:02:14 [watchdog/2]
+root        19     2  0 Sep24 ?        00:01:14 [migration/2]
+root        20     2  0 Sep24 ?        00:01:59 [ksoftirqd/2]
+root        22     2  0 Sep24 ?        00:00:00 [kworker/2:0H]
+root        24     2  0 Sep24 ?        00:02:00 [watchdog/3]
+root        25     2  0 Sep24 ?        00:00:38 [migration/3]
+root        26     2  0 Sep24 ?        00:00:11 [ksoftirqd/3]
+root        28     2  0 Sep24 ?        00:00:00 [kworker/3:0H]
+root        29     2  0 Sep24 ?        00:02:15 [watchdog/4]
+root        30     2  0 Sep24 ?        00:00:50 [migration/4]
+root        31     2  0 Sep24 ?        00:01:24 [ksoftirqd/4]
+root        33     2  0 Sep24 ?        00:00:00 [kworker/4:0H]
+root        34     2  0 Sep24 ?        00:01:55 [watchdog/5]
+root        35     2  0 Sep24 ?        00:00:17 [migration/5]
+root        36     2  0 Sep24 ?        00:00:10 [ksoftirqd/5]
+root        38     2  0 Sep24 ?        00:00:00 [kworker/5:0H]
+root        39     2  0 Sep24 ?        00:02:18 [watchdog/6]
+root        40     2  0 Sep24 ?        00:00:42 [migration/6]
+root        41     2  0 Sep24 ?        00:01:04 [ksoftirqd/6]
+root        44     2  0 Sep24 ?        00:01:57 [watchdog/7]
+root        45     2  0 Sep24 ?        00:00:14 [migration/7]
+root        46     2  0 Sep24 ?        00:00:41 [ksoftirqd/7]
+root        48     2  0 Sep24 ?        00:00:00 [kworker/7:0H]
+root        49     2  0 Sep24 ?        00:02:16 [watchdog/8]
+root        50     2  0 Sep24 ?        00:00:38 [migration/8]
+root        51     2  0 Sep24 ?        00:00:53 [ksoftirqd/8]
+root        54     2  0 Sep24 ?        00:01:58 [watchdog/9]
+root        55     2  0 Sep24 ?        00:00:15 [migration/9]
+root        56     2  0 Sep24 ?        00:00:10 [ksoftirqd/9]
+root        58     2  0 Sep24 ?        00:00:00 [kworker/9:0H]
+root        59     2  0 Sep24 ?        00:02:16 [watchdog/10]
+root        60     2  0 Sep24 ?        00:00:38 [migration/10]
+root        61     2  0 Sep24 ?        00:01:00 [ksoftirqd/10]
+root        64     2  0 Sep24 ?        00:01:56 [watchdog/11]
+root        65     2  0 Sep24 ?        00:00:14 [migration/11]
+root        66     2  0 Sep24 ?        00:00:11 [ksoftirqd/11]
+root        68     2  0 Sep24 ?        00:00:00 [kworker/11:0H]
+root        69     2  0 Sep24 ?        00:02:16 [watchdog/12]
+root        70     2  0 Sep24 ?        00:00:35 [migration/12]
+root        71     2  0 Sep24 ?        00:00:59 [ksoftirqd/12]
+root        74     2  0 Sep24 ?        00:01:57 [watchdog/13]
+root        75     2  0 Sep24 ?        00:00:13 [migration/13]
+root        76     2  0 Sep24 ?        00:00:10 [ksoftirqd/13]
+root        78     2  0 Sep24 ?        00:00:00 [kworker/13:0H]
+root        79     2  0 Sep24 ?        00:02:15 [watchdog/14]
+root        80     2  0 Sep24 ?        00:00:37 [migration/14]
+root        81     2  0 Sep24 ?        00:01:03 [ksoftirqd/14]
+root        83     2  0 Sep24 ?        00:02:41 [kworker/14:0H]
+root        84     2  0 Sep24 ?        00:01:54 [watchdog/15]
+root        85     2  0 Sep24 ?        00:00:12 [migration/15]
+root        86     2  0 Sep24 ?        00:00:10 [ksoftirqd/15]
+root        88     2  0 Sep24 ?        00:00:00 [kworker/15:0H]
+root        91     2  0 Sep24 ?        00:00:00 [kdevtmpfs]
+root        92     2  0 Sep24 ?        00:00:00 [netns]
+root        93     2  0 Sep24 ?        00:00:26 [khungtaskd]
+root        94     2  0 Sep24 ?        00:00:00 [writeback]
+root        95     2  0 Sep24 ?        00:00:00 [kintegrityd]
+root        96     2  0 Sep24 ?        00:00:00 [bioset]
+root        97     2  0 Sep24 ?        00:00:00 [bioset]
+root        98     2  0 Sep24 ?        00:00:00 [bioset]
+root        99     2  0 Sep24 ?        00:00:00 [kblockd]
+root       101     2  0 Sep24 ?        00:00:00 [md]
+root       102     2  0 Sep24 ?        00:00:00 [edac-poller]
+root       103     2  0 Sep24 ?        00:00:00 [watchdogd]
+root       109     2  0 Sep24 ?        00:00:00 [kswapd0]
+root       110     2  0 Sep24 ?        00:00:00 [kswapd1]
+root       111     2  0 Sep24 ?        00:00:00 [ksmd]
+root       112     2  0 Sep24 ?        00:04:06 [khugepaged]
+root       113     2  0 Sep24 ?        00:00:00 [crypto]
+root       121     2  0 Sep24 ?        00:00:00 [kthrotld]
+root       124     2  0 Sep24 ?        00:00:00 [kmpath_rdacd]
+root       125     2  0 Sep24 ?        00:00:00 [kaluad]
+root       136     2  0 Sep24 ?        00:00:00 [kpsmoused]
+root       137     2  0 Sep24 ?        00:00:00 [ipv6_addrconf]
+root       150     2  0 Sep24 ?        00:00:00 [deferwq]
+root       206     2  0 Sep24 ?        00:00:19 [kauditd]
+root       340     2  0 Sep24 ?        00:00:00 [scsi_eh_0]
+root       356     2  0 Sep24 ?        00:00:00 [scsi_tmf_0]
+root       363     2  0 Sep24 ?        00:00:00 [ata_sff]
+root       367     2  0 Sep24 ?        00:00:00 [ixgbe]
+root       370     2  0 Sep24 ?        00:00:00 [scsi_eh_1]
+root       371     2  0 Sep24 ?        00:00:00 [scsi_tmf_1]
+root       372     2  0 Sep24 ?        00:00:00 [scsi_eh_2]
+root       373     2  0 Sep24 ?        00:00:00 [scsi_tmf_2]
+root       374     2  0 Sep24 ?        00:00:00 [scsi_eh_3]
+root       375     2  0 Sep24 ?        00:00:00 [scsi_tmf_3]
+root       376     2  0 Sep24 ?        00:00:00 [scsi_eh_4]
+root       377     2  0 Sep24 ?        00:00:00 [scsi_tmf_4]
+root       378     2  0 Sep24 ?        00:00:00 [scsi_eh_5]
+root       379     2  0 Sep24 ?        00:00:00 [scsi_tmf_5]
+root       380     2  0 Sep24 ?        00:00:00 [scsi_eh_6]
+root       381     2  0 Sep24 ?        00:00:00 [scsi_tmf_6]
+root       387     2  0 Sep24 ?        00:00:00 [poll_megasas0_s]
+root       390     2  0 Sep24 ?        00:00:00 [ttm_swap]
+root       435     2  0 Sep24 ?        00:11:26 [jbd2/sda3-8]
+root       436     2  0 Sep24 ?        00:00:00 [ext4-rsv-conver]
+root       520     1  0 Sep24 ?        00:07:36 /usr/lib/systemd/systemd-journald
+root       531     2  0 Sep24 ?        00:00:00 [rpciod]
+root       532     2  0 Sep24 ?        00:00:00 [xprtiod]
+root       540     1  0 Sep24 ?        00:00:00 /usr/sbin/lvmetad -f
+root       561     1  0 Sep24 ?        00:00:02 /usr/lib/systemd/systemd-udevd
+root       668     2  0 Oct09 ?        00:00:00 [kworker/14:2H]
+root      1330     2  0 10:46 ?        00:00:00 [kworker/9:0]
+root      1582     2  0 10:53 ?        00:00:00 [kworker/2:1]
+root      1734     2  0 Sep24 ?        00:00:00 [kvm-irqfd-clean]
+root      1942     2  0 Sep24 ?        00:00:00 [jbd2/sda2-8]
+root      1943     2  0 Sep24 ?        00:00:00 [ext4-rsv-conver]
+root      1948     2  0 Sep24 ?        00:00:00 [jbd2/sda1-8]
+root      1949     2  0 Sep24 ?        00:00:00 [ext4-rsv-conver]
+root      1955     2  0 Sep24 ?        00:04:47 [jbd2/sda5-8]
+root      1956     2  0 Sep24 ?        00:00:00 [ext4-rsv-conver]
+root      1978     2  0 Sep24 ?        00:00:08 [kworker/3:1H]
+root      1979     2  0 Sep24 ?        00:00:10 [kworker/7:1H]
+root      1983     1  0 Sep24 ?        00:01:27 /sbin/auditd
+root      1986  1983  0 Sep24 ?        00:02:02 /sbin/audispd
+root      1988  1986  0 Sep24 ?        00:00:55 /usr/sbin/sedispatch
+libstor+  2008     1  0 Sep24 ?        00:01:36 /usr/bin/lsmd -d
+root      2010     1  0 Sep24 ?        00:01:20 /usr/sbin/sssd -i --logger=files
+dbus      2014     1  0 Sep24 ?        00:13:56 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation
+chrony    2026     1  0 Sep24 ?        00:00:29 /usr/sbin/chronyd
+polkitd   2038     1  0 Sep24 ?        00:04:09 /usr/lib/polkit-1/polkitd --no-debug
+root      2053     1  0 Sep24 ?        00:06:09 /opt/dell/srvadmin/sbin/dsm_sa_eventmgrd
+rtkit     2067     1  0 Sep24 ?        00:05:12 /usr/libexec/rtkit-daemon
+root      2069     1  0 Sep24 ?        00:00:41 /usr/sbin/gssproxy -D
+root      2071     1  0 Sep24 ?        01:28:12 /usr/sbin/irqbalance --foreground
+root      2087     1  0 Sep24 ?        00:34:25 /sbin/rngd -f
+root      2098     1  0 Sep24 ?        00:00:00 /opt/dell/srvadmin/sbin/dsm_om_connsvcd -run
+root      2099  2098  1 Sep24 ?        11:28:48 /opt/dell/srvadmin/sbin/dsm_om_connsvcd -run
+root      2105     1  0 Sep24 ?        00:00:00 /usr/sbin/acpid
+root      2131     1  0 Sep24 ?        00:00:00 /usr/sbin/rpc.gssd
+root      2135     1  0 Sep24 ?        00:23:49 /bin/bash /usr/sbin/ksmtuned
+root      2211     1  0 Sep24 ?        04:31:59 /opt/dell/srvadmin/sbin/dsm_sa_datamgrd
+root      2230  2010  0 Sep24 ?        05:33:19 /usr/libexec/sssd/sssd_be --domain ipa.utdallas.edu --uid 0 --gid 0 --logger=files
+root      2439  2010  0 Sep24 ?        01:10:10 /usr/libexec/sssd/sssd_nss --uid 0 --gid 0 --logger=files
+root      2440  2010  0 Sep24 ?        00:15:22 /usr/libexec/sssd/sssd_pam --uid 0 --gid 0 --logger=files
+root      2442  2010  0 Sep24 ?        00:04:45 /usr/libexec/sssd/sssd_pac --uid 0 --gid 0 --logger=files
+root      2443  2010  0 Sep24 ?        00:03:38 /usr/libexec/sssd/sssd_sudo --uid 0 --gid 0 --logger=files
+root      2444  2010  0 Sep24 ?        00:07:38 /usr/libexec/sssd/sssd_ssh --uid 0 --gid 0 --logger=files
+root      2445  2010  0 Sep24 ?        00:04:00 /usr/libexec/sssd/sssd_autofs --uid 0 --gid 0 --logger=files
+root      2465     1  0 Sep24 ?        00:05:28 /usr/lib/systemd/systemd-logind
+root      2466     1  0 Sep24 ?        00:08:33 /usr/libexec/accounts-daemon
+root      2518     2  0 Sep24 ?        00:00:08 [kworker/1:1H]
+root      2566     1  0 Sep24 ?        00:56:41 /usr/sbin/lldpad -t
+root      2567     1  0 Sep24 ?        00:38:06 /usr/bin/python2 -Es /usr/sbin/tuned -l -P
+root      2569     1  0 Sep24 ?        00:00:33 /usr/sbin/sshd -D
+root      2572     1  0 Sep24 ?        00:00:00 /usr/sbin/cupsd -f
+root      2573     1  0 Sep24 ?        00:00:00 /usr/sbin/xinetd -stayalive -pidfile /var/run/xinetd.pid
+telegraf  2588     1  8 Sep24 ?        2-08:54:49 /usr/bin/telegraf -config /etc/telegraf/telegraf.conf -config-directory /etc/telegraf/telegraf.d
+root      2594     1  0 Sep24 ?        00:21:32 /usr/sbin/rsyslogd -n
+root      2595     2  0 Sep24 ?        00:00:09 [kworker/11:1H]
+root      2613     1  0 Sep24 ?        00:01:12 /usr/sbin/lightdm
+root      2615     1  0 Sep24 ?        00:01:30 /usr/sbin/crond -n
+root      2618     1  0 Sep24 ?        00:00:00 /usr/sbin/atd -f
+root      2649  2613  0 Sep24 tty1     00:00:00 /usr/bin/X -background none :0 -seat seat0 -auth /var/run/lightdm/root/:0 -nolisten tcp vt1 -novtswitch -background none
+root      2662     2  0 Sep24 ?        00:00:10 [kworker/15:1H]
+root      2663     2  0 Sep24 ?        00:00:09 [kworker/5:1H]
+root      2664     2  0 Sep24 ?        00:00:10 [kworker/9:1H]
+root      2665     2  0 Sep24 ?        00:00:10 [kworker/13:1H]
+root      2719     1  0 Sep24 ?        00:41:58 /opt/dell/srvadmin/iSM/sbin/dsm_ism_srvmgrd
+root      2893  2613  0 Sep24 ?        00:00:00 lightdm --session-child 18 21
+lightdm   2972  2893  0 Sep24 ?        00:36:35 /usr/sbin/lightdm-gtk-greeter
+root      2982  2211  0 Sep24 ?        00:00:00 /opt/dell/srvadmin/sbin/dsm_sa_datamgrd
+telegraf  3011     1  0 Sep24 ?        00:00:00 /usr/bin/dbus-daemon --fork --print-pid 4 --print-address 6 --session
+lightdm   3012     1  0 Sep24 ?        00:00:00 /usr/libexec/at-spi-bus-launcher --launch-immediately
+lightdm   3018     1  0 Sep24 ?        00:00:00 dbus-launch --autolaunch=8d19eba0aff440b1a473f9adbfe0aead --binary-syntax --close-stderr
+lightdm   3019     1  0 Sep24 ?        00:00:00 /usr/bin/dbus-daemon --fork --print-pid 5 --print-address 7 --session
+lightdm   3022  3012  0 Sep24 ?        00:00:00 /usr/bin/dbus-daemon --config-file=/usr/share/defaults/at-spi2/accessibility.conf --nofork --print-address 3
+root      3036  2613  0 Sep24 ?        00:00:00 lightdm --session-child 14 21
+root      3070     2  0 12:05 ?        00:00:00 [kworker/7:2]
+colord    3110     1  0 Sep24 ?        00:00:00 /usr/libexec/colord
+root      3246  2569  0 Oct19 ?        00:00:00 sshd: sxb027100 [priv]
+sxb0271+  3253  3246  0 Oct19 ?        00:16:54 sshd: sxb027100@pts/1
+sxb0271+  3254  3253  0 Oct19 pts/1    00:00:01 -bash
+root      3305     1  6 Sep24 ?        1-19:19:04 /usr/sbin/snmpd -LS0-6d -f
+sxb0271+  3341  3254  0 Oct19 pts/1    00:12:40 ssh enigma
+sxb0271+  3342  3341  0 Oct19 pts/1    00:07:15 /usr/bin/sss_ssh_knownhostsproxy -p 22 enigma
+root      3686  2569  0 12:49 ?        00:00:00 sshd: sxb027100 [priv]
+sxb0271+  3704  3686  0 12:50 ?        00:01:18 sshd: sxb027100@pts/2
+sxb0271+  3705  3704  0 12:50 pts/2    00:00:00 -bash
+rpc       3833     1  0 Sep24 ?        00:01:07 /sbin/rpcbind -w
+rpcuser   3839     1  0 Sep24 ?        00:00:00 /usr/sbin/rpc.statd
+root      4010     2  0 Sep24 ?        00:00:00 [nfsiod]
+root      4023     2  0 Sep24 ?        00:00:00 [nfsv4.1-svc]
+root      4888     1  0 Sep24 ?        00:11:57 /usr/libexec/packagekitd
+root      7052     2  0 Oct19 ?        00:00:27 [kworker/6:2]
+root      8159     2  0 17:50 ?        00:00:00 [kworker/11:1]
+sxb0271+  8482  3705  0 18:08 pts/2    00:00:56 ssh enigma
+sxb0271+  8483  8482  0 18:08 pts/2    00:00:32 /usr/bin/sss_ssh_knownhostsproxy -p 22 enigma
+root      8785     2  0 18:30 ?        00:00:00 [kworker/3:1]
+root     11141  2569  0 20:23 ?        00:00:00 sshd: txn200004 [priv]
+txn2000+ 11233 11141  0 20:23 ?        00:00:00 sshd: txn200004@notty
+txn2000+ 11234 11233  0 20:23 ?        00:00:00 /usr/libexec/openssh/sftp-server
+root     11504  2569  0 20:35 ?        00:00:00 sshd: sxj210111 [priv]
+sxj2101+ 11518 11504  0 20:36 ?        00:00:04 sshd: sxj210111@pts/6
+root     11519  2569  0 20:36 ?        00:00:00 sshd: sxj210111 [priv]
+sxj2101+ 11527 11519  0 20:36 ?        00:00:00 sshd: sxj210111@notty
+sxj2101+ 11528 11527  0 20:36 ?        00:00:00 /usr/libexec/openssh/sftp-server
+root     11533     2  0 20:36 ?        00:00:00 [kworker/3:2]
+root     11534     2  0 20:36 ?        00:00:00 [kworker/13:2]
+sxj2101+ 11539 11518  0 20:36 pts/6    00:00:01 -bash
+root     11671     2  0 20:39 ?        00:00:01 [kworker/2:2]
+root     12234     2  0 21:03 ?        00:00:01 [kworker/10:1]
+root     12235     2  0 21:03 ?        00:00:00 [kworker/12:2]
+root     12273     2  0 21:05 ?        00:00:00 [kworker/5:0]
+root     12312     2  0 21:06 ?        00:00:00 [kworker/u97:2]
+root     12544     2  0 21:21 ?        00:00:00 [kworker/u97:1]
+root     12559  2569  0 21:22 ?        00:00:00 sshd: dxp210050 [priv]
+root     12578  2569  0 21:22 ?        00:00:00 sshd: dxp210050 [priv]
+dxp2100+ 12580 12559  0 21:22 ?        00:00:07 sshd: dxp210050@pts/7
+root     12583     2  0 21:22 ?        00:00:00 [kworker/12:1]
+dxp2100+ 12584 12580  0 21:22 pts/7    00:00:02 -bash
+dxp2100+ 12624 12578  0 21:22 ?        00:00:00 sshd: dxp210050@notty
+dxp2100+ 12644 12624  0 21:22 ?        00:00:00 /usr/libexec/openssh/sftp-server
+root     12699     2  0 21:23 ?        00:00:00 [kworker/6:0]
+root     12709     2  0 21:24 ?        00:00:01 [kworker/5:2]
+root     12773     2  0 21:28 ?        00:00:00 [kworker/u98:2]
+root     13300     2  0 22:00 ?        00:00:00 [kworker/u96:2]
+root     13492     2  0 22:09 ?        00:00:00 [kworker/0:1]
+root     13514     2  0 22:10 ?        00:00:00 [kworker/15:1]
+root     13534     2  0 22:11 ?        00:00:00 [kworker/u98:1]
+root     13630     2  0 22:17 ?        00:00:00 [kworker/u96:0]
+root     13639  2569  0 22:18 ?        00:00:00 sshd: txn200004 [priv]
+root     13645  2569  0 22:18 ?        00:00:00 sshd: txn200004 [priv]
+txn2000+ 13647 13639  0 22:18 ?        00:00:01 sshd: txn200004@pts/0
+txn2000+ 13648 13647  0 22:18 pts/0    00:00:01 -bash
+root     13672     2  0 22:18 ?        00:00:00 [kworker/0:0]
+txn2000+ 13741 13645  0 22:18 ?        00:00:00 sshd: txn200004@notty
+txn2000+ 13742 13741  0 22:18 ?        00:00:00 /usr/libexec/openssh/sftp-server
+root     13789  2569  0 22:20 ?        00:00:00 sshd: bxs220001 [priv]
+root     13795  2569  0 22:20 ?        00:00:00 sshd: bxs220001 [priv]
+bxs2200+ 13797 13789  0 22:20 ?        00:00:00 sshd: bxs220001@pts/3
+bxs2200+ 13798 13797  0 22:20 pts/3    00:00:00 -bash
+bxs2200+ 13838 13795  0 22:20 ?        00:00:00 sshd: bxs220001@notty
+bxs2200+ 13852 13838  0 22:20 ?        00:00:00 /usr/libexec/openssh/sftp-server
+bxs2200+ 13894 13798  0 22:20 pts/3    00:00:02 vim q1.sh
+root     13916     2  0 22:21 ?        00:00:00 [kworker/8:0]
+root     13923     2  0 22:21 ?        00:00:00 [kworker/15:2]
+root     13969     2  0 22:23 ?        00:00:00 [kworker/u96:1]
+root     13995     2  0 22:23 ?        00:00:00 [kworker/u98:0]
+root     13996     2  0 22:23 ?        00:00:00 [kworker/u97:0]
+root     13997     2  0 22:23 ?        00:00:00 [kworker/u97:3]
+root     14096  2135  0 22:25 ?        00:00:00 sleep 60
+txn2000+ 14113 13648  0 22:25 pts/0    00:00:00 ./dot2s
+txn2000+ 14114 14113  0 22:25 pts/0    00:00:00 sh -c date; hostname; whoami; ps -eaf; ls *
+txn2000+ 14118 14114  0 22:25 pts/0    00:00:00 ps -eaf
+root     14555     2  0 Sep24 ?        00:00:00 [lockd]
+root     23303     2  0 Sep25 ?        00:00:01 [kworker/8:2H]
+root     23322     2  0 Sep25 ?        00:00:02 [kworker/12:2H]
+root     23323     2  0 Sep25 ?        00:04:36 [kworker/10:2H]
+root     23361     2  0 Sep25 ?        00:00:00 [kworker/6:2H]
+root     23378     2  0 Sep25 ?        00:06:14 [kworker/2:2H]
+root     23448     2  0 Sep25 ?        00:00:00 [kworker/10:0H]
+root     23534     2  0 Sep25 ?        00:05:10 [kworker/4:1H]
+root     23557     2  0 Sep25 ?        00:05:31 [kworker/0:1H]
+root     23578     2  0 Sep25 ?        00:04:15 [kworker/8:0H]
+root     28661     2  0 Oct03 ?        00:02:46 [kworker/12:0H]
+root     29721     1  0 Sep24 ?        00:43:07 /usr/sbin/automount --systemd-service --dont-check-daemon
+root     30479     2  0 Oct12 ?        00:00:00 [nfsv4.0-svc]
+root     34207     2  0 Oct20 ?        00:00:12 [kworker/10:0]
+root     35991     2  0 Oct20 ?        00:00:03 [kworker/11:2]
+root     37299     2  0 Oct20 ?        00:00:03 [kworker/9:1]
+root     37405     2  0 Oct20 ?        00:00:08 [kworker/1:2]
+root     37518     2  0 Oct20 ?        00:00:02 [kworker/15:0]
+root     38722     2  0 Oct19 ?        00:00:25 [kworker/14:0]
+root     39858     2  0 01:24 ?        00:00:05 [kworker/7:1]
+root     42598     2  0 03:27 ?        00:00:11 [kworker/4:1]
+root     42854     2  0 03:28 ?        00:00:12 [kworker/8:2]
+root     43854     2  0 03:37 ?        00:00:00 [kworker/8:1]
+root     43913     2  0 03:39 ?        00:00:00 [kworker/14:1]
+root     44389     2  0 Oct01 ?        00:03:01 [kworker/6:1H]
+root     44809     2  0 04:20 ?        00:00:00 [kworker/4:2]
+root     45007     2  0 Oct19 ?        00:00:07 [kworker/13:0]
+root     46146     2  0 Oct19 ?        00:00:00 [kworker/1:0]
+dot1m  dot1m.c  dot1s  dot1s.c  dot2m  dot2m.c  dot2s  dot2s.c
+Sum =  1000000.000000
+{cslinux2:~/week10Lab1} ./dot2m
+Mon Oct 21 22:25:47 CDT 2024
+cslinux2.utdallas.edu
+txn200004
+UID        PID  PPID  C STIME TTY          TIME CMD
+root         1     0  0 Sep24 ?        00:17:55 /usr/lib/systemd/systemd --switched-root --system --deserialize 22
+root         2     0  0 Sep24 ?        00:00:10 [kthreadd]
+root         4     2  0 Sep24 ?        00:00:00 [kworker/0:0H]
+root         6     2  0 Sep24 ?        00:10:30 [ksoftirqd/0]
+root         7     2  0 Sep24 ?        00:00:50 [migration/0]
+root         8     2  0 Sep24 ?        00:00:00 [rcu_bh]
+root         9     2  0 Sep24 ?        03:13:43 [rcu_sched]
+root        10     2  0 Sep24 ?        00:00:00 [lru-add-drain]
+root        11     2  0 Sep24 ?        00:02:17 [watchdog/0]
+root        12     2  0 Sep24 ?        00:02:00 [watchdog/1]
+root        13     2  0 Sep24 ?        00:00:27 [migration/1]
+root        14     2  0 Sep24 ?        00:03:24 [ksoftirqd/1]
+root        16     2  0 Sep24 ?        00:00:00 [kworker/1:0H]
+root        18     2  0 Sep24 ?        00:02:14 [watchdog/2]
+root        19     2  0 Sep24 ?        00:01:14 [migration/2]
+root        20     2  0 Sep24 ?        00:01:59 [ksoftirqd/2]
+root        22     2  0 Sep24 ?        00:00:00 [kworker/2:0H]
+root        24     2  0 Sep24 ?        00:02:00 [watchdog/3]
+root        25     2  0 Sep24 ?        00:00:38 [migration/3]
+root        26     2  0 Sep24 ?        00:00:11 [ksoftirqd/3]
+root        28     2  0 Sep24 ?        00:00:00 [kworker/3:0H]
+root        29     2  0 Sep24 ?        00:02:15 [watchdog/4]
+root        30     2  0 Sep24 ?        00:00:50 [migration/4]
+root        31     2  0 Sep24 ?        00:01:24 [ksoftirqd/4]
+root        33     2  0 Sep24 ?        00:00:00 [kworker/4:0H]
+root        34     2  0 Sep24 ?        00:01:55 [watchdog/5]
+root        35     2  0 Sep24 ?        00:00:17 [migration/5]
+root        36     2  0 Sep24 ?        00:00:10 [ksoftirqd/5]
+root        38     2  0 Sep24 ?        00:00:00 [kworker/5:0H]
+root        39     2  0 Sep24 ?        00:02:18 [watchdog/6]
+root        40     2  0 Sep24 ?        00:00:42 [migration/6]
+root        41     2  0 Sep24 ?        00:01:04 [ksoftirqd/6]
+root        44     2  0 Sep24 ?        00:01:57 [watchdog/7]
+root        45     2  0 Sep24 ?        00:00:14 [migration/7]
+root        46     2  0 Sep24 ?        00:00:41 [ksoftirqd/7]
+root        48     2  0 Sep24 ?        00:00:00 [kworker/7:0H]
+root        49     2  0 Sep24 ?        00:02:16 [watchdog/8]
+root        50     2  0 Sep24 ?        00:00:38 [migration/8]
+root        51     2  0 Sep24 ?        00:00:53 [ksoftirqd/8]
+root        54     2  0 Sep24 ?        00:01:58 [watchdog/9]
+root        55     2  0 Sep24 ?        00:00:15 [migration/9]
+root        56     2  0 Sep24 ?        00:00:10 [ksoftirqd/9]
+root        58     2  0 Sep24 ?        00:00:00 [kworker/9:0H]
+root        59     2  0 Sep24 ?        00:02:16 [watchdog/10]
+root        60     2  0 Sep24 ?        00:00:38 [migration/10]
+root        61     2  0 Sep24 ?        00:01:00 [ksoftirqd/10]
+root        64     2  0 Sep24 ?        00:01:56 [watchdog/11]
+root        65     2  0 Sep24 ?        00:00:14 [migration/11]
+root        66     2  0 Sep24 ?        00:00:11 [ksoftirqd/11]
+root        68     2  0 Sep24 ?        00:00:00 [kworker/11:0H]
+root        69     2  0 Sep24 ?        00:02:16 [watchdog/12]
+root        70     2  0 Sep24 ?        00:00:35 [migration/12]
+root        71     2  0 Sep24 ?        00:00:59 [ksoftirqd/12]
+root        74     2  0 Sep24 ?        00:01:57 [watchdog/13]
+root        75     2  0 Sep24 ?        00:00:13 [migration/13]
+root        76     2  0 Sep24 ?        00:00:10 [ksoftirqd/13]
+root        78     2  0 Sep24 ?        00:00:00 [kworker/13:0H]
+root        79     2  0 Sep24 ?        00:02:15 [watchdog/14]
+root        80     2  0 Sep24 ?        00:00:37 [migration/14]
+root        81     2  0 Sep24 ?        00:01:03 [ksoftirqd/14]
+root        83     2  0 Sep24 ?        00:02:41 [kworker/14:0H]
+root        84     2  0 Sep24 ?        00:01:54 [watchdog/15]
+root        85     2  0 Sep24 ?        00:00:12 [migration/15]
+root        86     2  0 Sep24 ?        00:00:10 [ksoftirqd/15]
+root        88     2  0 Sep24 ?        00:00:00 [kworker/15:0H]
+root        91     2  0 Sep24 ?        00:00:00 [kdevtmpfs]
+root        92     2  0 Sep24 ?        00:00:00 [netns]
+root        93     2  0 Sep24 ?        00:00:26 [khungtaskd]
+root        94     2  0 Sep24 ?        00:00:00 [writeback]
+root        95     2  0 Sep24 ?        00:00:00 [kintegrityd]
+root        96     2  0 Sep24 ?        00:00:00 [bioset]
+root        97     2  0 Sep24 ?        00:00:00 [bioset]
+root        98     2  0 Sep24 ?        00:00:00 [bioset]
+root        99     2  0 Sep24 ?        00:00:00 [kblockd]
+root       101     2  0 Sep24 ?        00:00:00 [md]
+root       102     2  0 Sep24 ?        00:00:00 [edac-poller]
+root       103     2  0 Sep24 ?        00:00:00 [watchdogd]
+root       109     2  0 Sep24 ?        00:00:00 [kswapd0]
+root       110     2  0 Sep24 ?        00:00:00 [kswapd1]
+root       111     2  0 Sep24 ?        00:00:00 [ksmd]
+root       112     2  0 Sep24 ?        00:04:06 [khugepaged]
+root       113     2  0 Sep24 ?        00:00:00 [crypto]
+root       121     2  0 Sep24 ?        00:00:00 [kthrotld]
+root       124     2  0 Sep24 ?        00:00:00 [kmpath_rdacd]
+root       125     2  0 Sep24 ?        00:00:00 [kaluad]
+root       136     2  0 Sep24 ?        00:00:00 [kpsmoused]
+root       137     2  0 Sep24 ?        00:00:00 [ipv6_addrconf]
+root       150     2  0 Sep24 ?        00:00:00 [deferwq]
+root       206     2  0 Sep24 ?        00:00:19 [kauditd]
+root       340     2  0 Sep24 ?        00:00:00 [scsi_eh_0]
+root       356     2  0 Sep24 ?        00:00:00 [scsi_tmf_0]
+root       363     2  0 Sep24 ?        00:00:00 [ata_sff]
+root       367     2  0 Sep24 ?        00:00:00 [ixgbe]
+root       370     2  0 Sep24 ?        00:00:00 [scsi_eh_1]
+root       371     2  0 Sep24 ?        00:00:00 [scsi_tmf_1]
+root       372     2  0 Sep24 ?        00:00:00 [scsi_eh_2]
+root       373     2  0 Sep24 ?        00:00:00 [scsi_tmf_2]
+root       374     2  0 Sep24 ?        00:00:00 [scsi_eh_3]
+root       375     2  0 Sep24 ?        00:00:00 [scsi_tmf_3]
+root       376     2  0 Sep24 ?        00:00:00 [scsi_eh_4]
+root       377     2  0 Sep24 ?        00:00:00 [scsi_tmf_4]
+root       378     2  0 Sep24 ?        00:00:00 [scsi_eh_5]
+root       379     2  0 Sep24 ?        00:00:00 [scsi_tmf_5]
+root       380     2  0 Sep24 ?        00:00:00 [scsi_eh_6]
+root       381     2  0 Sep24 ?        00:00:00 [scsi_tmf_6]
+root       387     2  0 Sep24 ?        00:00:00 [poll_megasas0_s]
+root       390     2  0 Sep24 ?        00:00:00 [ttm_swap]
+root       435     2  0 Sep24 ?        00:11:26 [jbd2/sda3-8]
+root       436     2  0 Sep24 ?        00:00:00 [ext4-rsv-conver]
+root       520     1  0 Sep24 ?        00:07:36 /usr/lib/systemd/systemd-journald
+root       531     2  0 Sep24 ?        00:00:00 [rpciod]
+root       532     2  0 Sep24 ?        00:00:00 [xprtiod]
+root       540     1  0 Sep24 ?        00:00:00 /usr/sbin/lvmetad -f
+root       561     1  0 Sep24 ?        00:00:02 /usr/lib/systemd/systemd-udevd
+root       668     2  0 Oct09 ?        00:00:00 [kworker/14:2H]
+root      1330     2  0 10:46 ?        00:00:00 [kworker/9:0]
+root      1582     2  0 10:53 ?        00:00:00 [kworker/2:1]
+root      1734     2  0 Sep24 ?        00:00:00 [kvm-irqfd-clean]
+root      1942     2  0 Sep24 ?        00:00:00 [jbd2/sda2-8]
+root      1943     2  0 Sep24 ?        00:00:00 [ext4-rsv-conver]
+root      1948     2  0 Sep24 ?        00:00:00 [jbd2/sda1-8]
+root      1949     2  0 Sep24 ?        00:00:00 [ext4-rsv-conver]
+root      1955     2  0 Sep24 ?        00:04:47 [jbd2/sda5-8]
+root      1956     2  0 Sep24 ?        00:00:00 [ext4-rsv-conver]
+root      1978     2  0 Sep24 ?        00:00:08 [kworker/3:1H]
+root      1979     2  0 Sep24 ?        00:00:10 [kworker/7:1H]
+root      1983     1  0 Sep24 ?        00:01:27 /sbin/auditd
+root      1986  1983  0 Sep24 ?        00:02:02 /sbin/audispd
+root      1988  1986  0 Sep24 ?        00:00:55 /usr/sbin/sedispatch
+libstor+  2008     1  0 Sep24 ?        00:01:36 /usr/bin/lsmd -d
+root      2010     1  0 Sep24 ?        00:01:20 /usr/sbin/sssd -i --logger=files
+dbus      2014     1  0 Sep24 ?        00:13:56 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation
+chrony    2026     1  0 Sep24 ?        00:00:29 /usr/sbin/chronyd
+polkitd   2038     1  0 Sep24 ?        00:04:09 /usr/lib/polkit-1/polkitd --no-debug
+root      2053     1  0 Sep24 ?        00:06:09 /opt/dell/srvadmin/sbin/dsm_sa_eventmgrd
+rtkit     2067     1  0 Sep24 ?        00:05:12 /usr/libexec/rtkit-daemon
+root      2069     1  0 Sep24 ?        00:00:41 /usr/sbin/gssproxy -D
+root      2071     1  0 Sep24 ?        01:28:12 /usr/sbin/irqbalance --foreground
+root      2087     1  0 Sep24 ?        00:34:25 /sbin/rngd -f
+root      2098     1  0 Sep24 ?        00:00:00 /opt/dell/srvadmin/sbin/dsm_om_connsvcd -run
+root      2099  2098  1 Sep24 ?        11:28:48 /opt/dell/srvadmin/sbin/dsm_om_connsvcd -run
+root      2105     1  0 Sep24 ?        00:00:00 /usr/sbin/acpid
+root      2131     1  0 Sep24 ?        00:00:00 /usr/sbin/rpc.gssd
+root      2135     1  0 Sep24 ?        00:23:49 /bin/bash /usr/sbin/ksmtuned
+root      2211     1  0 Sep24 ?        04:31:59 /opt/dell/srvadmin/sbin/dsm_sa_datamgrd
+root      2230  2010  0 Sep24 ?        05:33:19 /usr/libexec/sssd/sssd_be --domain ipa.utdallas.edu --uid 0 --gid 0 --logger=files
+root      2439  2010  0 Sep24 ?        01:10:10 /usr/libexec/sssd/sssd_nss --uid 0 --gid 0 --logger=files
+root      2440  2010  0 Sep24 ?        00:15:22 /usr/libexec/sssd/sssd_pam --uid 0 --gid 0 --logger=files
+root      2442  2010  0 Sep24 ?        00:04:45 /usr/libexec/sssd/sssd_pac --uid 0 --gid 0 --logger=files
+root      2443  2010  0 Sep24 ?        00:03:38 /usr/libexec/sssd/sssd_sudo --uid 0 --gid 0 --logger=files
+root      2444  2010  0 Sep24 ?        00:07:38 /usr/libexec/sssd/sssd_ssh --uid 0 --gid 0 --logger=files
+root      2445  2010  0 Sep24 ?        00:04:00 /usr/libexec/sssd/sssd_autofs --uid 0 --gid 0 --logger=files
+root      2465     1  0 Sep24 ?        00:05:28 /usr/lib/systemd/systemd-logind
+root      2466     1  0 Sep24 ?        00:08:33 /usr/libexec/accounts-daemon
+root      2518     2  0 Sep24 ?        00:00:08 [kworker/1:1H]
+root      2566     1  0 Sep24 ?        00:56:41 /usr/sbin/lldpad -t
+root      2567     1  0 Sep24 ?        00:38:06 /usr/bin/python2 -Es /usr/sbin/tuned -l -P
+root      2569     1  0 Sep24 ?        00:00:33 /usr/sbin/sshd -D
+root      2572     1  0 Sep24 ?        00:00:00 /usr/sbin/cupsd -f
+root      2573     1  0 Sep24 ?        00:00:00 /usr/sbin/xinetd -stayalive -pidfile /var/run/xinetd.pid
+telegraf  2588     1  8 Sep24 ?        2-08:54:49 /usr/bin/telegraf -config /etc/telegraf/telegraf.conf -config-directory /etc/telegraf/telegraf.d
+root      2594     1  0 Sep24 ?        00:21:32 /usr/sbin/rsyslogd -n
+root      2595     2  0 Sep24 ?        00:00:09 [kworker/11:1H]
+root      2613     1  0 Sep24 ?        00:01:12 /usr/sbin/lightdm
+root      2615     1  0 Sep24 ?        00:01:30 /usr/sbin/crond -n
+root      2618     1  0 Sep24 ?        00:00:00 /usr/sbin/atd -f
+root      2649  2613  0 Sep24 tty1     00:00:00 /usr/bin/X -background none :0 -seat seat0 -auth /var/run/lightdm/root/:0 -nolisten tcp vt1 -novtswitch -background none
+root      2662     2  0 Sep24 ?        00:00:10 [kworker/15:1H]
+root      2663     2  0 Sep24 ?        00:00:09 [kworker/5:1H]
+root      2664     2  0 Sep24 ?        00:00:10 [kworker/9:1H]
+root      2665     2  0 Sep24 ?        00:00:10 [kworker/13:1H]
+root      2719     1  0 Sep24 ?        00:41:58 /opt/dell/srvadmin/iSM/sbin/dsm_ism_srvmgrd
+root      2893  2613  0 Sep24 ?        00:00:00 lightdm --session-child 18 21
+lightdm   2972  2893  0 Sep24 ?        00:36:35 /usr/sbin/lightdm-gtk-greeter
+root      2982  2211  0 Sep24 ?        00:00:00 /opt/dell/srvadmin/sbin/dsm_sa_datamgrd
+telegraf  3011     1  0 Sep24 ?        00:00:00 /usr/bin/dbus-daemon --fork --print-pid 4 --print-address 6 --session
+lightdm   3012     1  0 Sep24 ?        00:00:00 /usr/libexec/at-spi-bus-launcher --launch-immediately
+lightdm   3018     1  0 Sep24 ?        00:00:00 dbus-launch --autolaunch=8d19eba0aff440b1a473f9adbfe0aead --binary-syntax --close-stderr
+lightdm   3019     1  0 Sep24 ?        00:00:00 /usr/bin/dbus-daemon --fork --print-pid 5 --print-address 7 --session
+lightdm   3022  3012  0 Sep24 ?        00:00:00 /usr/bin/dbus-daemon --config-file=/usr/share/defaults/at-spi2/accessibility.conf --nofork --print-address 3
+root      3036  2613  0 Sep24 ?        00:00:00 lightdm --session-child 14 21
+root      3070     2  0 12:05 ?        00:00:00 [kworker/7:2]
+colord    3110     1  0 Sep24 ?        00:00:00 /usr/libexec/colord
+root      3246  2569  0 Oct19 ?        00:00:00 sshd: sxb027100 [priv]
+sxb0271+  3253  3246  0 Oct19 ?        00:16:54 sshd: sxb027100@pts/1
+sxb0271+  3254  3253  0 Oct19 pts/1    00:00:01 -bash
+root      3305     1  6 Sep24 ?        1-19:19:05 /usr/sbin/snmpd -LS0-6d -f
+sxb0271+  3341  3254  0 Oct19 pts/1    00:12:40 ssh enigma
+sxb0271+  3342  3341  0 Oct19 pts/1    00:07:15 /usr/bin/sss_ssh_knownhostsproxy -p 22 enigma
+root      3686  2569  0 12:49 ?        00:00:00 sshd: sxb027100 [priv]
+sxb0271+  3704  3686  0 12:50 ?        00:01:18 sshd: sxb027100@pts/2
+sxb0271+  3705  3704  0 12:50 pts/2    00:00:00 -bash
+rpc       3833     1  0 Sep24 ?        00:01:07 /sbin/rpcbind -w
+rpcuser   3839     1  0 Sep24 ?        00:00:00 /usr/sbin/rpc.statd
+root      4010     2  0 Sep24 ?        00:00:00 [nfsiod]
+root      4023     2  0 Sep24 ?        00:00:00 [nfsv4.1-svc]
+root      4888     1  0 Sep24 ?        00:11:57 /usr/libexec/packagekitd
+root      7052     2  0 Oct19 ?        00:00:27 [kworker/6:2]
+root      8159     2  0 17:50 ?        00:00:00 [kworker/11:1]
+sxb0271+  8482  3705  0 18:08 pts/2    00:00:56 ssh enigma
+sxb0271+  8483  8482  0 18:08 pts/2    00:00:32 /usr/bin/sss_ssh_knownhostsproxy -p 22 enigma
+root      8785     2  0 18:30 ?        00:00:00 [kworker/3:1]
+root     11141  2569  0 20:23 ?        00:00:00 sshd: txn200004 [priv]
+txn2000+ 11233 11141  0 20:23 ?        00:00:00 sshd: txn200004@notty
+txn2000+ 11234 11233  0 20:23 ?        00:00:00 /usr/libexec/openssh/sftp-server
+root     11504  2569  0 20:35 ?        00:00:00 sshd: sxj210111 [priv]
+sxj2101+ 11518 11504  0 20:36 ?        00:00:04 sshd: sxj210111@pts/6
+root     11519  2569  0 20:36 ?        00:00:00 sshd: sxj210111 [priv]
+sxj2101+ 11527 11519  0 20:36 ?        00:00:00 sshd: sxj210111@notty
+sxj2101+ 11528 11527  0 20:36 ?        00:00:00 /usr/libexec/openssh/sftp-server
+root     11533     2  0 20:36 ?        00:00:00 [kworker/3:2]
+root     11534     2  0 20:36 ?        00:00:00 [kworker/13:2]
+sxj2101+ 11539 11518  0 20:36 pts/6    00:00:01 -bash
+root     11671     2  0 20:39 ?        00:00:01 [kworker/2:2]
+root     12234     2  0 21:03 ?        00:00:01 [kworker/10:1]
+root     12235     2  0 21:03 ?        00:00:00 [kworker/12:2]
+root     12273     2  0 21:05 ?        00:00:00 [kworker/5:0]
+root     12312     2  0 21:06 ?        00:00:00 [kworker/u97:2]
+root     12544     2  0 21:21 ?        00:00:00 [kworker/u97:1]
+root     12559  2569  0 21:22 ?        00:00:00 sshd: dxp210050 [priv]
+root     12578  2569  0 21:22 ?        00:00:00 sshd: dxp210050 [priv]
+dxp2100+ 12580 12559  0 21:22 ?        00:00:07 sshd: dxp210050@pts/7
+root     12583     2  0 21:22 ?        00:00:00 [kworker/12:1]
+dxp2100+ 12584 12580  0 21:22 pts/7    00:00:02 -bash
+dxp2100+ 12624 12578  0 21:22 ?        00:00:00 sshd: dxp210050@notty
+dxp2100+ 12644 12624  0 21:22 ?        00:00:00 /usr/libexec/openssh/sftp-server
+root     12699     2  0 21:23 ?        00:00:00 [kworker/6:0]
+root     12709     2  0 21:24 ?        00:00:01 [kworker/5:2]
+root     12773     2  0 21:28 ?        00:00:00 [kworker/u98:2]
+root     13300     2  0 22:00 ?        00:00:00 [kworker/u96:2]
+root     13492     2  0 22:09 ?        00:00:00 [kworker/0:1]
+root     13514     2  0 22:10 ?        00:00:00 [kworker/15:1]
+root     13534     2  0 22:11 ?        00:00:00 [kworker/u98:1]
+root     13630     2  0 22:17 ?        00:00:00 [kworker/u96:0]
+root     13639  2569  0 22:18 ?        00:00:00 sshd: txn200004 [priv]
+root     13645  2569  0 22:18 ?        00:00:00 sshd: txn200004 [priv]
+txn2000+ 13647 13639  0 22:18 ?        00:00:01 sshd: txn200004@pts/0
+txn2000+ 13648 13647  0 22:18 pts/0    00:00:01 -bash
+root     13672     2  0 22:18 ?        00:00:00 [kworker/0:0]
+txn2000+ 13741 13645  0 22:18 ?        00:00:00 sshd: txn200004@notty
+txn2000+ 13742 13741  0 22:18 ?        00:00:00 /usr/libexec/openssh/sftp-server
+root     13789  2569  0 22:20 ?        00:00:00 sshd: bxs220001 [priv]
+root     13795  2569  0 22:20 ?        00:00:00 sshd: bxs220001 [priv]
+bxs2200+ 13797 13789  0 22:20 ?        00:00:00 sshd: bxs220001@pts/3
+bxs2200+ 13798 13797  0 22:20 pts/3    00:00:00 -bash
+bxs2200+ 13838 13795  0 22:20 ?        00:00:00 sshd: bxs220001@notty
+bxs2200+ 13852 13838  0 22:20 ?        00:00:00 /usr/libexec/openssh/sftp-server
+bxs2200+ 13894 13798  0 22:20 pts/3    00:00:02 vim q1.sh
+root     13916     2  0 22:21 ?        00:00:00 [kworker/8:0]
+root     13923     2  0 22:21 ?        00:00:00 [kworker/15:2]
+root     13969     2  0 22:23 ?        00:00:00 [kworker/u96:1]
+root     13995     2  0 22:23 ?        00:00:00 [kworker/u98:0]
+root     13996     2  0 22:23 ?        00:00:00 [kworker/u97:0]
+root     13997     2  0 22:23 ?        00:00:00 [kworker/u97:3]
+root     14096  2135  0 22:25 ?        00:00:00 sleep 60
+txn2000+ 14120 13648  0 22:25 pts/0    00:00:00 ./dot2m
+txn2000+ 14121 14120  0 22:25 pts/0    00:00:00 sh -c date; hostname; whoami; ps -eaf; ls *
+txn2000+ 14125 14121  0 22:25 pts/0    00:00:00 ps -eaf
+root     14555     2  0 Sep24 ?        00:00:00 [lockd]
+root     23303     2  0 Sep25 ?        00:00:01 [kworker/8:2H]
+root     23322     2  0 Sep25 ?        00:00:02 [kworker/12:2H]
+root     23323     2  0 Sep25 ?        00:04:36 [kworker/10:2H]
+root     23361     2  0 Sep25 ?        00:00:00 [kworker/6:2H]
+root     23378     2  0 Sep25 ?        00:06:14 [kworker/2:2H]
+root     23448     2  0 Sep25 ?        00:00:00 [kworker/10:0H]
+root     23534     2  0 Sep25 ?        00:05:10 [kworker/4:1H]
+root     23557     2  0 Sep25 ?        00:05:31 [kworker/0:1H]
+root     23578     2  0 Sep25 ?        00:04:15 [kworker/8:0H]
+root     28661     2  0 Oct03 ?        00:02:46 [kworker/12:0H]
+root     29721     1  0 Sep24 ?        00:43:07 /usr/sbin/automount --systemd-service --dont-check-daemon
+root     30479     2  0 Oct12 ?        00:00:00 [nfsv4.0-svc]
+root     34207     2  0 Oct20 ?        00:00:12 [kworker/10:0]
+root     35991     2  0 Oct20 ?        00:00:03 [kworker/11:2]
+root     37299     2  0 Oct20 ?        00:00:03 [kworker/9:1]
+root     37405     2  0 Oct20 ?        00:00:08 [kworker/1:2]
+root     37518     2  0 Oct20 ?        00:00:02 [kworker/15:0]
+root     38722     2  0 Oct19 ?        00:00:25 [kworker/14:0]
+root     39858     2  0 01:24 ?        00:00:05 [kworker/7:1]
+root     42598     2  0 03:27 ?        00:00:11 [kworker/4:1]
+root     42854     2  0 03:28 ?        00:00:12 [kworker/8:2]
+root     43854     2  0 03:37 ?        00:00:00 [kworker/8:1]
+root     43913     2  0 03:39 ?        00:00:00 [kworker/14:1]
+root     44389     2  0 Oct01 ?        00:03:01 [kworker/6:1H]
+root     44809     2  0 04:20 ?        00:00:00 [kworker/4:2]
+root     45007     2  0 Oct19 ?        00:00:07 [kworker/13:0]
+root     46146     2  0 Oct19 ?        00:00:00 [kworker/1:0]
+dot1m  dot1m.c  dot1s  dot1s.c  dot2m  dot2m.c  dot2s  dot2s.c
+**Thread to lock the mutex**
+Thread 1 did 100000 to 200000:  mysum=100000.000000 global sum=100000.000000
+**Thread to unlock the mutex**
+**Thread to lock the mutex**
+Thread 7 did 700000 to 800000:  mysum=100000.000000 global sum=200000.000000
+**Thread to unlock the mutex**
+**Thread to lock the mutex**
+Thread 3 did 300000 to 400000:  mysum=100000.000000 global sum=300000.000000
+**Thread to unlock the mutex**
+**Thread to lock the mutex**
+Thread 5 did 500000 to 600000:  mysum=100000.000000 global sum=400000.000000
+**Thread to unlock the mutex**
+**Thread to lock the mutex**
+Thread 9 did 900000 to 1000000:  mysum=100000.000000 global sum=500000.000000
+**Thread to unlock the mutex**
+**Thread to lock the mutex**
+**Thread to lock the mutex**
+**Thread to lock the mutex**
+**Thread to lock the mutex**
+Thread 0 did 0 to 100000:  mysum=100000.000000 global sum=600000.000000
+**Thread to unlock the mutex**
+**Thread to lock the mutex**
+Thread 8 did 800000 to 900000:  mysum=100000.000000 global sum=700000.000000
+**Thread to unlock the mutex**
+Thread 6 did 600000 to 700000:  mysum=100000.000000 global sum=800000.000000
+**Thread to unlock the mutex**
+Thread 2 did 200000 to 300000:  mysum=100000.000000 global sum=900000.000000
+**Thread to unlock the mutex**
+Thread 4 did 400000 to 500000:  mysum=100000.000000 global sum=1000000.000000
+**Thread to unlock the mutex**
+Sum =  1000000.000000
+{cslinux2:~/week10Lab1} date
+Mon Oct 21 22:27:00 CDT 2024
+{cslinux2:~/week10Lab1} ls -l
+unamtotal 192
+-rwx--x--x 1 txn200004 se 13160 Oct 21 22:21 dot1m
+-rw------- 1 txn200004 se  4830 Oct 21 22:21 dot1m.c
+-rwx--x--x 1 txn200004 se  8528 Oct 21 22:22 dot1s
+-rw------- 1 txn200004 se  2349 Oct 21 22:21 dot1s.c
+-rwx--x--x 1 txn200004 se 13392 Oct 21 22:25 dot2m
+-rw------- 1 txn200004 se  5047 Oct 21 22:24 dot2m.c
+-rwx--x--x 1 txn200004 se  8576 Oct 21 22:25 dot2s
+-rw------- 1 txn200004 se  2399 Oct 21 22:24 dot2s.c
+{cslinux2:~/week10Lab1} uname -a
+Linux cslinux2.utdallas.edu 3.10.0-1160.119.1.el7.x86_64 #1 SMP Tue Jun 4 14:43:51 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux
+{cslinux2:~/week10Lab1} exit
+logout
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Session stopped
+    - Press <Return> to exit tab
+    - Press R to restart session
+    - Press S to save terminal output to file
