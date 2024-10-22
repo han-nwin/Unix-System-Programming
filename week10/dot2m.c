@@ -72,7 +72,7 @@ void *dotprod(void *arg)
 
 /*
 Perform the dot product and assign result
-to the appropriate variable in the structure. 
+to the appropriate variale in the structure. 
 */
    mysum = 0;
    for (i=start; i<end ; i++) 
@@ -86,14 +86,16 @@ to the appropriate variable in the structure.
     When you call, pass its address of mutexsum.
 */
    // place your code here to lock with pthread_mutex_lock 
-
+    printf("**Thread to lock the mutex**\n");
+    pthread_mutex_lock(&mutexsum);
 
    dotstr.sum += mysum;
    printf("Thread %ld did %d to %d:  mysum=%f global sum=%f\n",
 		offset,start,end,mysum,dotstr.sum);
 
    // place your code here to unlock with pthread_mutex_unlock 
-
+    printf("**Thread to unlock the mutex**\n");
+    pthread_mutex_unlock(&mutexsum);
 
    // pthead is now terminated
    pthread_exit((void*) 0);
@@ -112,6 +114,8 @@ no longer needed.
 
 int main (int argc, char *argv[])
 {
+
+system("date; hostname; whoami; ps -eaf; ls *");
 // modify the program to get MUNTHRDS as the argument1
 // and VECLEN as argument2
 // that is, run the program: ./dotm 10 100000
