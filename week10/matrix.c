@@ -79,6 +79,8 @@ void *mult_worker(void *arg)
   int start_col = p->start_col;
   int end_col = p->end_col;
 
+  printf("===== THREAD %d created, processing columns %d to %d =====\n", p->id , p->start_col, p->end_col);
+
   for(int j = start_col; j <= end_col; j++){
     for(int i = 0; i < size; i++){
       //multiply
@@ -149,7 +151,7 @@ int main(int argc, char **argv)
   printf("MAIN THREAD: The Matrix A is;\n");
   for(int row = 0; row < size; row ++) {
     for (int column = 0; column < size; column++) {
-      printf("%5d ",MA[row][column]);
+      printf("%3d ",MA[row][column]);
     }
     printf("\n");
   }
@@ -157,7 +159,7 @@ int main(int argc, char **argv)
   printf("MAIN THREAD: The Matrix B is\n");
   for(int row = 0; row < size; row ++) {
     for (int column = 0; column < size; column++) {
-      printf("%5d ",MB[row][column]);
+      printf("%3d ",MB[row][column]);
     }
     printf("\n");
   }
@@ -205,7 +207,6 @@ int main(int argc, char **argv)
     
     pthread_create(&threads[k], &pthread_custom_attr, mult_worker, (void *) p);
 
-    printf("MAIN THREAD: thread %d created, processing columns %d to %d\n", k, p->start_col, p->end_col);
   }
 
 
@@ -222,7 +223,7 @@ int main(int argc, char **argv)
   printf("MAIN THREAD: The resulting matrix C is;\n");
   for(int row = 0; row < size; row ++) {
     for (int column = 0; column < size; column++) {
-      printf("%5d ",MC[row][column]);
+      printf("%3d ",MC[row][column]);
     }
     printf("\n");
   }
