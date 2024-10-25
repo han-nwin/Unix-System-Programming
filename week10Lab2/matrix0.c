@@ -30,7 +30,7 @@
 #include <pthread.h>
 
 #define MIN_REQ_SSIZE 81920
-#define ARRAY_SIZE 1000
+#define ARRAY_SIZE 10
 
 typedef int matrix_t[ARRAY_SIZE][ARRAY_SIZE];
 
