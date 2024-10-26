@@ -114,6 +114,7 @@ int main(int argc, char **argv)
 {
   //Innitialize mutex variables
   pthread_mutex_init(&matrix_lock, NULL);
+  pthread_mutex_init(&diag_sum_lock, NULL);
 
 
   //process input 
@@ -233,6 +234,11 @@ int main(int argc, char **argv)
   free_matrix(MA, size);
   free_matrix(MB, size);
   free_matrix(MC, size);
+
+  /* Destroy mutex */ 
+  pthread_mutex_destroy(&matrix_lock);
+  pthread_mutex_destroy(&diag_sum_lock);
+
   /* Diagonal sum */ 
   printf("=============================================\n");
   printf("MAIN THREAD: Diagonal sum is: %d\n", diag_sum);
