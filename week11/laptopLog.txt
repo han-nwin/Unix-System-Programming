@@ -1,0 +1,26 @@
+     +--------------------------------------------------------------------+
+     ¦                • MobaXterm Personal Edition v24.2 •                ¦
+     ¦              (X server, SSH client and network tools)              ¦
+     ¦                                                                    ¦
+     ¦ ? Your computer drives are accessible through the /drives path     ¦
+     ¦ ? Your DISPLAY is set to 192.168.1.124:0.0                         ¦
+     ¦ ? When using SSH, your remote DISPLAY is automatically forwarded   ¦
+     ¦ ? Each command status is specified by a special symbol (? or ?)    ¦
+     ¦                                                                    ¦
+     ¦ • Important:                                                       ¦
+     ¦ This is MobaXterm Personal Edition. The Professional edition       ¦
+     ¦ allows you to customize MobaXterm for your company: you can add    ¦
+     ¦ your own logo, your parameters, your welcome message and generate  ¦
+     ¦ either an MSI installation package or a portable executable.       ¦
+     ¦ We can also modify MobaXterm or develop the plugins you need.      ¦
+     ¦ For more information: https://mobaxterm.mobatek.net/download.html  ¦
+     +--------------------------------------------------------------------+
+
+[2024-10-28 14:32.37]  ~
+[Han.DESKTOP-ENTHTDC] ?  netstat -aont | grep 10.176.92.16:22
+  TCP    10.50.240.7:60969      10.176.92.16:22        ESTABLISHED     27476    InHost
+  TCP    10.50.240.7:60971      10.176.92.16:22        ESTABLISHED     28360    InHost
+                                                                                                                                              ?
+-----------------------------------------------------------------------------------------------------------------------------------------------
+[2024-10-28 14:33.02]  ~
+[Han.DESKTOP-ENTHTDC] ?
