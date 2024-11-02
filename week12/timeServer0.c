@@ -35,8 +35,8 @@ int check_running_server (char * prog_name, int curr_pid){
   while(fgets(line, sizeof(line), fp) != NULL) {
     int pid;
     sscanf(line, "%*s %d", &pid);
-    printf("**timeServer: Found running server PID: %d\n", pid);
-    printf("*timeServer: Killing running server PID: %d...\n", pid);
+    printf("\n**timeServer: Found running server PID: %d\n", pid);
+    printf("\n**timeServer: Killing running server PID: %d...\n", pid);
 
     kill(pid, SIGKILL);
     return_val = 1;
@@ -53,9 +53,9 @@ int main(int argc, char *argv[])
 {   
     int curr_pid = getpid();
     if (check_running_server(argv[0], curr_pid) == 1) {
-      sleep(1);
-      printf("**timeServer: Waiting for port to free before connecting (15s)...\n");
-      sleep(15);
+      sleep(10);
+      printf("\n**timeServer: Waiting for port to free before connecting (20s)...\n");
+      sleep(20);
     }//check and kill previous server
 
 
@@ -80,11 +80,11 @@ int main(int argc, char *argv[])
     } 
 
     if(listen(listenfd, 10) == -1) {
-      perror("listen");
+      perror("listen\n");
       return -1;
     }
-    
-    printf("**timeServer: Server is up and listening through Port %d...\n", PORT);
+    sleep(1);   
+    printf("\n**timeServer: Server is up and listening through Port %d...\n", PORT);
   
 
     while(1)
@@ -98,14 +98,14 @@ int main(int argc, char *argv[])
         ticks = time(NULL);
         snprintf(sendBuff, sizeof(sendBuff), "%.24s\r\n", ctime(&ticks));
 
-        printf("**timeServer: Writing to client...\n");
+        printf("\n**timeServer: Writing to client...\n");
         if(write(connfd, sendBuff, strlen(sendBuff)) == -1) {
-          perror("write");
+          perror("write\n");
           return -1;
         }
         
         close(connfd);
-        printf("**timeServer: Client disconnected \n\n");
+        printf("\n**timeServer: Client disconnected \n\n");
         sleep(1);
      }
 }

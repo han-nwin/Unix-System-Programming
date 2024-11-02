@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     serv_addr.sin_port = htons(PORT); 
 
     system(" date; hostname; whoami ");
-    system(" netstat -aont | grep \" `hostname -i`:2271[0-9] \" ");
+    system(" netstat -aont | grep \":2271[0-9]\"");
 
 
     printf("\n timeClient: connecting to 127.0.0.1 Port# = %d \n", PORT);
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 
     printf("\n timeClient: connected to timeServer. \n");
     system("ps");
-    system(" netstat -aont | grep \":2271[0-9] \" ");
+    system(" netstat -aont | grep \":2271[0-9]\"");
     printf("\n\n");
 
     printf("\n timeClient: reading from timeServer. \n");
