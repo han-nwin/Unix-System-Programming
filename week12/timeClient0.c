@@ -17,6 +17,7 @@ int main(int argc, char *argv[])
 {
     char ip[] = "127.0.0.1";  // default IP of the server
     //int port = 12345;         // default port# of the server
+    argv[1] = ip;
 
     int sockfd = 0, n = 0;
     char recvBuff[1024];
@@ -33,8 +34,12 @@ int main(int argc, char *argv[])
     memset(&serv_addr, '0', sizeof(serv_addr)); 
 
     serv_addr.sin_family = AF_INET;
+    if(inet_pton(AF_INET, argv[1], &serv_addr.sin_addr)<=0)
+    {
+        printf("\n inet_pton error occured\n");
+        return 1;
+    } 
     serv_addr.sin_port = htons(PORT); 
-    argv[1] = ip;
 
     system(" date; hostname; whoami ");
     system(" netstat -aont | grep \" `hostname -i`:2271[0-9] \" ");
@@ -42,12 +47,6 @@ int main(int argc, char *argv[])
 
     printf("\n timeClient: connecting to 127.0.0.1 Port# = %d \n", PORT);
 
-
-    if(inet_pton(AF_INET, argv[1], &serv_addr.sin_addr)<=0)
-    {
-        printf("\n inet_pton error occured\n");
-        return 1;
-    } 
 
     if( connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
     {
@@ -60,6 +59,7 @@ int main(int argc, char *argv[])
     system(" netstat -aont | grep \":2271[0-9] \" ");
     printf("\n\n");
 
+    printf("\n timeClient: reading from timeServer. \n");
     while ( (n = read(sockfd, recvBuff, sizeof(recvBuff)-1)) > 0)
     {
         recvBuff[n] = 0;
