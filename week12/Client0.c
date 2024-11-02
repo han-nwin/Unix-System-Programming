@@ -9,10 +9,12 @@
 #include <errno.h>
 #include <arpa/inet.h> 
 
+#define PORT 9999
+
 int main(int argc, char *argv[])
 {
     char ip[] = "127.0.0.1";  // default IP of the server
-    int port = 23456;         // default port# of the server
+    int port = 5555;         // default port# of the server
 
     int sockfd = 0, n = 0;
     char recvBuff[1024];
@@ -29,13 +31,13 @@ int main(int argc, char *argv[])
     memset(&serv_addr, '0', sizeof(serv_addr)); 
 
     serv_addr.sin_family = AF_INET;
-    serv_addr.sin_port = htons(port); 
+    serv_addr.sin_port = htons(PORT); 
     argv[1] = ip;
 
-    system(" date; hostname; whoami ");
-    system(" netstat -aont | grep \" `hostname -i`:23456 \" ");
+   // system(" date; hostname; whoami ");
+   // system(" netstat -aont | grep \" `hostname -i`:23456 \" ");
 
-    printf("\n timeClient: connecting to 127.0.0.1 Port#=23456 \n");
+    printf("\n timeClient: connecting to 127.0.0.1 Port#=%d \n", PORT);
 
 
     if(inet_pton(AF_INET, argv[1], &serv_addr.sin_addr)<=0)
@@ -51,8 +53,8 @@ int main(int argc, char *argv[])
     } 
 
     printf("\n timeClient: connected to timeServer. \n");
-    system("ps");
-    system(" netstat -aont | grep \":23456 \" ");
+   // system("ps");
+   // system(" netstat -aont | grep \":5555 \" ");
     printf("\n\n");
 
     while ( (n = read(sockfd, recvBuff, sizeof(recvBuff)-1)) > 0)

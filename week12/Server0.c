@@ -9,6 +9,8 @@
 #include <sys/types.h>
 #include <time.h> 
 
+#define PORT 9999
+
 int main(int argc, char *argv[])
 {
     int listenfd = 0, connfd = 0;
@@ -23,14 +25,18 @@ int main(int argc, char *argv[])
 
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
-    serv_addr.sin_port = htons(23450); 
+    serv_addr.sin_port = htons(PORT); 
 
-    bind(listenfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr)); 
+    if(bind(listenfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) < 0){
+    printf("Bind Failed\n");
+    exit(1);
+  }
 
     listen(listenfd, 10); 
 
     while(1)
     {
+        printf("\nWaiting for connection...\n");
         connfd = accept(listenfd, (struct sockaddr*)NULL, NULL); 
 
         ticks = time(NULL);
@@ -40,4 +46,5 @@ int main(int argc, char *argv[])
         close(connfd);
         sleep(1);
      }
+  //return 0;
 }
