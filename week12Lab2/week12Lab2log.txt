@@ -1,0 +1,584 @@
+Pre-authentication banner message from server:
+|                       University of Texas at Dallas
+|                       Department of Computer Science
+|
+|                 Use of UTD Information Systems is subject to
+|           the UTD Information Security and Acceptable Use Policy.
+|
+|   Pursuant to Texas Administrative Code 202:
+|   (1) Unauthorized use is prohibited;
+|   (2) Usage may be subject to security testing and monitoring;
+|   (3) Misuse is subject to criminal prosecution; and
+|   (4) No expectation of privacy except as otherwise provided by applicable
+|       privacy laws.
+|
+|        ATTENTION: utdnetid != utdnetid@utdallas.edu (UTD != Google!)
+|
+|  ***** This system will require a connection to the GlobalProtect VPN startin
+> g
+|  on the following dates:
+|
+|  cslinux1.utdallas.edu - June 15, 2020
+|  cslinux2.utdallas.edu - June 22, 2020
+|
+|  ***** GlobalProtect VPN Instructions: https://www.utdallas.edu/oit/howto/vpn
+> /
+|
+End of banner message from server
+Keyboard-interactive authentication prompts from server:
+| Password:
+End of keyboard-interactive prompts from server
+    +----------------------------------------------------------------------+
+    ¦                 • MobaXterm Personal Edition v24.2 •                 ¦
+    ¦               (SSH client, X server and network tools)               ¦
+    ¦                                                                      ¦
+    ¦ ? SSH session to txn200004@cslinux2.utdallas.edu                     ¦
+    ¦   • Direct SSH      :  ?                                             ¦
+    ¦   • SSH compression :  ?                                             ¦
+    ¦   • SSH-browser     :  ?                                             ¦
+    ¦   • X11-forwarding  :  ?  (remote display is forwarded through SSH)  ¦
+    ¦                                                                      ¦
+    ¦ ? For more info, ctrl+click on help or visit our website.            ¦
+    +----------------------------------------------------------------------+
+
+Last login: Sun Nov  3 00:17:53 2024 from 10.50.242.44
+
+                       ***---***---***---***---***---***
+                    csgrads1.utdallas.edu - CentOS Linux 7.9
+                 --All CS Graduate Students should use csgrads1--
+                      cs1.utdallas.edu - CentOS Linux 7.9
+                      cs2.utdallas.edu - CentOS Linux 7.9
+                       ***---***---***---***---***---***
+
+This system is for use by CS students who need a general purpose Linux system
+to complete homework assignments.  Computationally or resource intensive
+simulations will be throttled automatically.
+
+Thank you,
+CS Lab Manager
+cs-labs@utdallas.edu
+
+               /scratch disk space can be used for temporary files.
+      All files within /scratch will be erased on a regular basis (Sunday 0300).
+
+{cslinux2:~} mkdir week12Lab2; cd week12Lab2
+{cslinux2:~/week12Lab2} vim Server2.c
+{cslinux2:~/week12Lab2} vim Client2.c
+{cslinux2:~/week12Lab2} cat Server2.c
+// Server2.c
+
+#include <stdio.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <errno.h>
+#include <string.h>
+#include <sys/types.h>
+#include <time.h>
+#include <signal.h>
+
+
+//return 1 if there's a previous server running. 0 otherwise
+int check_running_server (char * prog_name, int curr_pid){
+  int return_val = 0;
+
+  //export previous running server to a temp file
+  char command[100];
+  snprintf(command, sizeof(command), "ps -f | grep -v %d | grep -v grep | grep \' %s\' > .server_check.temp", curr_pid, prog_name);
+  system(command);
+
+  //open temp file
+  FILE *fp = fopen(".server_check.temp", "r");
+    if (fp == NULL) {
+        perror("Error opening file");
+        exit(1);
+    }
+
+    //Extracting PID from .server_check.temp
+  char line[1024];
+  while(fgets(line, sizeof(line), fp) != NULL) {
+    int pid;
+    sscanf(line, "%*s %d", &pid);
+    printf("\n**SERVER**: Found running server PID: %d\n", pid);
+    printf("\n**SERVER**: Killing running server PID: %d...\n", pid);
+
+    kill(pid, SIGKILL);
+    return_val = 1;
+  }
+
+  fclose(fp);
+  system("rm -f .server_check.temp"); //delete temp file
+
+  return return_val;
+
+}
+
+void handle_sigalrm(int sig){
+  printf("**SERVER**: TIME UP !!! Terminating server... \n");
+  printf("**SERVER**: server ends\n");
+  exit(0);
+}
+
+int main(int argc, char *argv[])
+{
+    signal(SIGALRM, handle_sigalrm);
+    if (argc != 3) {
+      printf("Usage: %s <port-number> <time-duration>", argv[0]);
+      return -1;
+    } else {
+      printf("\n**SERVER**: Binding to Port: %s, Wait time: %s\n", argv[1], argv[2]);
+    }
+
+    int port = atoi(argv[1]);
+    int time_to_live = atoi(argv[2]);
+
+    int curr_pid = getpid();
+    if (check_running_server(argv[0], curr_pid) == 1) {
+      printf("\n**SERVER**: Waiting for port to free before connecting...\n");
+
+    //Wait until the port is free using a temp file
+      int is_not_empty = 1;
+      while(is_not_empty) {
+        char command[100];
+        snprintf(command, sizeof(command), "netstat -aont | grep \"%d\" > .check_port.temp", port);
+        system(command);
+        FILE *fp = fopen(".check_port.temp", "r");
+        if (fp == NULL) {
+            perror("File open failed");
+            return -1; // Error in accessing the file
+        }
+
+        is_not_empty = (fgetc(fp) != EOF); // Check if first character is EOF
+        fclose(fp);
+
+        if(is_not_empty){
+          printf("Port %d still in use...\n", port);
+          sleep(5);
+        }
+      }
+      system("rm -f .check_port.temp"); //delete temp file
+      printf("\n**SERVER**: Done waiting! Port %d is freed and ready to bind\n", port);
+      //sleep(60);
+    }//check and kill previous server
+
+
+    int listenfd = 0, connfd = 0;
+    struct sockaddr_in serv_addr;
+
+    char sendBuff[1025];
+    time_t ticks;
+
+    listenfd = socket(AF_INET, SOCK_STREAM, 0);
+
+    memset(&serv_addr, 0, sizeof(serv_addr));
+    memset(sendBuff, 0, sizeof(sendBuff));
+
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    serv_addr.sin_port = htons(port);
+
+    if (bind(listenfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) == -1) {
+      perror("bind failed\n");
+      return -1;
+    }
+
+    if(listen(listenfd, 10) == -1) {
+      perror("listen\n");
+      return -1;
+    }
+    printf("\n**SERVER**: Server is up and listening through Port %d...\n", port);
+
+    system("ps");
+    char command[100];
+    snprintf(command, sizeof(command), "netstat -aont | grep \"%d\"", port);
+    system(command);
+
+    while(1)
+    {
+        alarm(time_to_live);
+        printf("\n**SERVER** Server will stay for %d seconds then terminate if no client connected\n", time_to_live);
+        printf("\n**SERVER** Step 1: Waiting for a client...\n");
+        system("ps; netstat -aont | grep \"`hostname -i`:2271[0-9]\"");
+        connfd = accept(listenfd, (struct sockaddr*)NULL, NULL);
+        if(connfd == -1){
+          perror("accept");
+          return -1;
+        }
+        printf("\n**SERVER** Step 2: A client connected.\n");
+        system("ps; netstat -aont | grep \"`hostname -i`:2271[0-9]\"");
+        alarm(0);//reset alarm
+        printf("\n**SERVER**: Wait time resetted");
+
+        ticks = time(NULL);
+        snprintf(sendBuff, sizeof(sendBuff), "%.24s\r\n", ctime(&ticks));
+
+        printf("\n**SERVER**: Writing to client...\n");
+        if(write(connfd, sendBuff, strlen(sendBuff)) == -1) {
+          perror("write\n");
+          return -1;
+        }
+
+        close(connfd);
+
+        printf("\n**SERVER** Step 3: Client disconnected \n\n");
+        system("ps; netstat -aont | grep \"`hostname -i`:2271[0-9]\"");
+        sleep(1);
+     }
+}
+{cslinux2:~/week12Lab2} cat Client2.c
+// Client2.c
+
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <netdb.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <errno.h>
+#include <arpa/inet.h>
+
+
+int main(int argc, char *argv[])
+{
+    if (argc != 3) {
+      printf("Usage: %s <IPv4-address> <port-number>", argv[0]);
+      return -1;
+    } else {
+      printf("\n**CLIENT**: Connecting to IP: %s Port: %s\n", argv[1], argv[2]);
+    }
+
+    system("echo server; date; hostname; whoami; ps; ls -l");
+
+    int port = atoi(argv[2]);
+
+    int sockfd = 0, n = 0;
+    char recvBuff[1024];
+    struct sockaddr_in serv_addr;
+
+
+    memset(recvBuff, 0,sizeof(recvBuff));
+    if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+    {
+        printf("\n**CLIENT**: Error - Could not create socket \n");
+        return 1;
+    }
+
+    memset(&serv_addr, 0, sizeof(serv_addr));
+
+    serv_addr.sin_family = AF_INET;
+    if(inet_pton(AF_INET, argv[1], &serv_addr.sin_addr)<=0)
+    {
+        perror("\n**CLIENT**: Invalid address / Address not supported\n");
+        return 1;
+    }
+    serv_addr.sin_port = htons(port);
+
+    printf("\n**CLIENT** Step 1: connecting to %s Port# = %d \n", argv[1], port);
+    system("ps; netstat -aont | grep \"`hostname -i`:2271[0-9]\"");
+
+    if( connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
+    {
+       printf("\n**CLIENT**: Error - Connect Failed \n");
+       return 1;
+    }
+    printf("\n**CLIENT** Step 2: connected to Server2. \n");
+    system("ps; netstat -aont | grep \"`hostname -i`:2271[0-9]\"");
+
+    printf("\n**CLIENT**: reading from Server2. \n");
+    while ( (n = read(sockfd, recvBuff, sizeof(recvBuff)-1)) > 0)
+    {
+        recvBuff[n] = 0;
+        if(fputs(recvBuff, stdout) == EOF)
+        {
+            printf("\n**CLIENT**: Error - Fputs error\n");
+        }
+    }
+
+    if(n < 0)
+    {
+      printf("\n**CLIENT**: Read error \n");
+            exit(0);
+    }
+    printf("\n**CLIENT** Step 3: Client disconnected\n");
+    system("ps; netstat -aont | grep \"`hostname -i`:2271[0-9]\"");
+    printf("\n**CLIENT**: client ends! \n");
+    return 0;
+}
+{cslinux2:~/week12Lab2} gcc Server2.c -o Server2
+{cslinux2:~/week12Lab2} gcc Client2.c -o Client2
+{cslinux2:~/week12Lab2} ps
+  PID TTY          TIME CMD
+10757 pts/0    00:00:00 bash
+11114 pts/0    00:00:00 ps
+{cslinux2:~/week12Lab2} netstat -aont | grep 22791
+{cslinux2:~/week12Lab2} ./Server2 22791 10 &
+[1] 11139
+{cslinux2:~/week12Lab2}
+**SERVER**: Binding to Port: 22791, Wait time: 10
+
+**SERVER**: Server is up and listening through Port 22791...
+  PID TTY          TIME CMD
+10757 pts/0    00:00:00 bash
+11139 pts/0    00:00:00 Server2
+11146 pts/0    00:00:00 ps
+tcp        0      0 0.0.0.0:22791           0.0.0.0:*               LISTEN      off (0.00/0/0)
+
+**SERVER** Server will stay for 10 seconds then terminate if no client connected
+
+**SERVER** Step 1: Waiting for a client...
+  PID TTY          TIME CMD
+10757 pts/0    00:00:00 bash
+11139 pts/0    00:00:00 Server2
+11150 pts/0    00:00:00 sh
+11151 pts/0    00:00:00 ps
+**SERVER**: TIME UP !!! Terminating server...
+**SERVER**: server ends
+ps
+  PID TTY          TIME CMD
+10757 pts/0    00:00:00 bash
+11183 pts/0    00:00:00 ps
+[1]+  Done                    ./Server2 22791 10
+{cslinux2:~/week12Lab2} netstat -aont | grep 22791
+{cslinux2:~/week12Lab2} ./Server2 22791 120 &
+[1] 11246
+{cslinux2:~/week12Lab2}
+**SERVER**: Binding to Port: 22791, Wait time: 120
+
+**SERVER**: Server is up and listening through Port 22791...
+  PID TTY          TIME CMD
+10757 pts/0    00:00:00 bash
+11246 pts/0    00:00:00 Server2
+11253 pts/0    00:00:00 ps
+tcp        0      0 0.0.0.0:22791           0.0.0.0:*               LISTEN      off (0.00/0/0)
+
+**SERVER** Server will stay for 120 seconds then terminate if no client connected
+
+**SERVER** Step 1: Waiting for a client...
+  PID TTY          TIME CMD
+10757 pts/0    00:00:00 bash
+11246 pts/0    00:00:00 Server2
+11257 pts/0    00:00:00 sh
+11258 pts/0    00:00:00 ps
+./Client2 0.0.0.0 22791
+
+**CLIENT**: Connecting to IP: 0.0.0.0 Port: 22791
+server
+Sun Nov  3 00:35:07 CDT 2024
+cslinux2.utdallas.edu
+txn200004
+  PID TTY          TIME CMD
+10757 pts/0    00:00:00 bash
+11246 pts/0    00:00:00 Server2
+11281 pts/0    00:00:00 Client2
+11282 pts/0    00:00:00 sh
+11286 pts/0    00:00:00 ps
+total 96
+-rwx--x--x 1 txn200004 se 13104 Nov  3 00:32 Client2
+-rw------- 1 txn200004 se  2224 Nov  3 00:32 Client2.c
+-rwx--x--x 1 txn200004 se 13928 Nov  3 00:32 Server2
+-rw------- 1 txn200004 se  4936 Nov  3 00:32 Server2.c
+
+**CLIENT** Step 1: connecting to 0.0.0.0 Port# = 22791
+  PID TTY          TIME CMD
+10757 pts/0    00:00:00 bash
+11246 pts/0    00:00:00 Server2
+11281 pts/0    00:00:00 Client2
+11288 pts/0    00:00:00 sh
+11289 pts/0    00:00:00 ps
+
+**CLIENT** Step 2: connected to Server2.
+
+**SERVER** Step 2: A client connected.
+  PID TTY          TIME CMD
+10757 pts/0    00:00:00 bash
+11246 pts/0    00:00:00 Server2
+11281 pts/0    00:00:00 Client2
+11294 pts/0    00:00:00 sh
+11295 pts/0    00:00:00 sh
+11296 pts/0    00:00:00 ps
+11297 pts/0    00:00:00 ps
+  PID TTY          TIME CMD
+10757 pts/0    00:00:00 bash
+11246 pts/0    00:00:00 Server2
+11281 pts/0    00:00:00 Client2
+11294 pts/0    00:00:00 sh
+11295 pts/0    00:00:00 sh
+11296 pts/0    00:00:00 ps
+
+**SERVER**: Wait time resetted
+**SERVER**: Writing to client...
+
+**CLIENT**: reading from Server2.
+Sun Nov  3 00:35:08 2024
+
+**SERVER** Step 3: Client disconnected
+
+
+**CLIENT** Step 3: Client disconnected
+  PID TTY          TIME CMD
+  PID TTY          TIME CMD
+10757 pts/0    00:00:00 bash
+10757 pts/0    00:00:00 bash
+11246 pts/0    00:00:00 Server2
+11246 pts/0    00:00:00 Server2
+11281 pts/0    00:00:00 Client2
+11281 pts/0    00:00:00 Client2
+11306 pts/0    00:00:00 sh
+11306 pts/0    00:00:00 sh
+11307 pts/0    00:00:00 sh
+11307 pts/0    00:00:00 sh
+11308 pts/0    00:00:00 ps
+11308 pts/0    00:00:00 ps
+11309 pts/0    00:00:00 ps
+11309 pts/0    00:00:00 ps
+
+**CLIENT**: client ends!
+{cslinux2:~/week12Lab2}
+**SERVER** Server will stay for 120 seconds then terminate if no client connected
+
+**SERVER** Step 1: Waiting for a client...
+  PID TTY          TIME CMD
+10757 pts/0    00:00:00 bash
+11246 pts/0    00:00:00 Server2
+11318 pts/0    00:00:00 sh
+11319 pts/0    00:00:00 ps
+kill 11246
+{cslinux2:~/week12Lab2} ps
+  PID TTY          TIME CMD
+10757 pts/0    00:00:00 bash
+11340 pts/0    00:00:00 ps
+[1]+  Terminated              ./Server2 22791 120
+{cslinux2:~/week12Lab2} netstat -aont | grep 22791
+{cslinux2:~/week12Lab2} ./Server2 22719 30 &
+[1] 11609
+{cslinux2:~/week12Lab2}
+**SERVER**: Binding to Port: 22719, Wait time: 30
+
+**SERVER**: Server is up and listening through Port 22719...
+  PID TTY          TIME CMD
+10757 pts/0    00:00:00 bash
+11609 pts/0    00:00:00 Server2
+11616 pts/0    00:00:00 ps
+tcp        0      0 0.0.0.0:22719           0.0.0.0:*               LISTEN      off (0.00/0/0)
+
+**SERVER** Server will stay for 30 seconds then terminate if no client connected
+
+**SERVER** Step 1: Waiting for a client...
+  PID TTY          TIME CMD
+10757 pts/0    00:00:00 bash
+11609 pts/0    00:00:00 Server2
+11620 pts/0    00:00:00 sh
+11621 pts/0    00:00:00 ps
+
+./Client2 0.0.0.0 22719
+
+**CLIENT**: Connecting to IP: 0.0.0.0 Port: 22719
+server
+Sun Nov  3 00:40:00 CDT 2024
+cslinux2.utdallas.edu
+txn200004
+  PID TTY          TIME CMD
+10757 pts/0    00:00:01 bash
+11609 pts/0    00:00:00 Server2
+11643 pts/0    00:00:00 Client2
+11644 pts/0    00:00:00 sh
+11648 pts/0    00:00:00 ps
+total 96
+-rwx--x--x 1 txn200004 se 13104 Nov  3 00:32 Client2
+-rw------- 1 txn200004 se  2224 Nov  3 00:32 Client2.c
+-rwx--x--x 1 txn200004 se 13928 Nov  3 00:32 Server2
+-rw------- 1 txn200004 se  4936 Nov  3 00:32 Server2.c
+
+**CLIENT** Step 1: connecting to 0.0.0.0 Port# = 22719
+  PID TTY          TIME CMD
+10757 pts/0    00:00:01 bash
+11609 pts/0    00:00:00 Server2
+11643 pts/0    00:00:00 Client2
+11650 pts/0    00:00:00 sh
+11651 pts/0    00:00:00 ps
+
+**CLIENT** Step 2: connected to Server2.
+
+**SERVER** Step 2: A client connected.
+  PID TTY          TIME CMD
+10757 pts/0    00:00:01 bash
+11609 pts/0    00:00:00 Server2
+11643 pts/0    00:00:00 Client2
+11656 pts/0    00:00:00 sh
+11657 pts/0    00:00:00 sh
+11658 pts/0    00:00:00 ps
+11659 pts/0    00:00:00 ps
+  PID TTY          TIME CMD
+10757 pts/0    00:00:01 bash
+11609 pts/0    00:00:00 Server2
+11643 pts/0    00:00:00 Client2
+11656 pts/0    00:00:00 sh
+11657 pts/0    00:00:00 sh
+11659 pts/0    00:00:00 ps
+
+**SERVER**: Wait time resetted
+**SERVER**: Writing to client...
+
+**SERVER** Step 3: Client disconnected
+
+
+**CLIENT**: reading from Server2.
+Sun Nov  3 00:40:00 2024
+
+**CLIENT** Step 3: Client disconnected
+  PID TTY          TIME CMD
+10757 pts/0    00:00:01 bash
+11609 pts/0    00:00:00 Server2
+11643 pts/0    00:00:00 Client2
+11664 pts/0    00:00:00 sh
+11667 pts/0    00:00:00 ps
+  PID TTY          TIME CMD
+10757 pts/0    00:00:01 bash
+11609 pts/0    00:00:00 Server2
+11643 pts/0    00:00:00 Client2
+11664 pts/0    00:00:00 sh
+11670 pts/0    00:00:00 sh
+11671 pts/0    00:00:00 ps
+
+**CLIENT**: client ends!
+{cslinux2:~/week12Lab2}
+**SERVER** Server will stay for 30 seconds then terminate if no client connected
+
+**SERVER** Step 1: Waiting for a client...
+  PID TTY          TIME CMD
+10757 pts/0    00:00:01 bash
+11609 pts/0    00:00:00 Server2
+11687 pts/0    00:00:00 sh
+11688 pts/0    00:00:00 ps
+**SERVER**: TIME UP !!! Terminating server...
+**SERVER**: server ends
+ps
+  PID TTY          TIME CMD
+10757 pts/0    00:00:01 bash
+11727 pts/0    00:00:00 ps
+[1]+  Done                    ./Server2 22719 30
+{cslinux2:~/week12Lab2} netstat -aont | grep 22719
+{cslinux2:~/week12Lab2} date
+Sun Nov  3 00:42:15 CDT 2024
+{cslinux2:~/week12Lab2} uname -a
+Linux cslinux2.utdallas.edu 3.10.0-1160.119.1.el7.x86_64 #1 SMP Tue Jun 4 14:43:51 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux
+{cslinux2:~/week12Lab2} ls -l
+total 96
+-rwx--x--x 1 txn200004 se 13104 Nov  3 00:32 Client2
+-rw------- 1 txn200004 se  2224 Nov  3 00:32 Client2.c
+-rwx--x--x 1 txn200004 se 13928 Nov  3 00:32 Server2
+-rw------- 1 txn200004 se  4936 Nov  3 00:32 Server2.c
+{cslinux2:~/week12Lab2} exit
+logout
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+Session stopped
+    - Press <Return> to exit tab
+    - Press R to restart session
+    - Press S to save terminal output to file
