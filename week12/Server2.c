@@ -13,7 +13,6 @@
 #include <time.h>
 #include <signal.h>
 
-#define PORT 22719
 
 //return 1 if there's a previous server running. 0 otherwise
 int check_running_server (char * prog_name, int curr_pid){
@@ -50,8 +49,22 @@ int check_running_server (char * prog_name, int curr_pid){
 
 }
 
+void handle_sigalrm(int sig){
+  printf("Caught ALARM signal %d. Terminating server... \n", sig);
+  exit(0);
+}
+
 int main(int argc, char *argv[])
-{   
+{  
+    signal(SIGALRM, handle_sigalrm);
+    if (argc != 3) {
+      printf("Usage: %s <port-number> <time-duration>", argv[0]);
+      return -1;
+    }
+    
+    int port = atoi(argv[1]);
+    int time_to_live = atoi(argv[2]);
+    
     int curr_pid = getpid();
     if (check_running_server(argv[0], curr_pid) == 1) {
       printf("\n**timeServer: Waiting for port to free before connecting...\n");
@@ -60,7 +73,7 @@ int main(int argc, char *argv[])
       int is_not_empty = 1;
       while(is_not_empty) {
         char command[100];
-        snprintf(command, sizeof(command), "netstat -aont | grep \"%d\" > .check_port.temp", PORT);
+        snprintf(command, sizeof(command), "netstat -aont | grep \"%d\" > .check_port.temp", port);
         system(command);
         FILE *fp = fopen(".check_port.temp", "r");
         if (fp == NULL) {
@@ -72,12 +85,12 @@ int main(int argc, char *argv[])
         fclose(fp);
 
         if(is_not_empty){
-          printf("Port %d still in use...\n", PORT);
+          printf("Port %d still in use...\n", port);
           sleep(5);
         }
       }
       system("rm -f .check_port.temp"); //delete temp file
-      printf("\n**timeServer: Done waiting! Port %d is freed and ready to bind\n", PORT);
+      printf("\n**timeServer: Done waiting! Port %d is freed and ready to bind\n", port);
       //sleep(60);
     }//check and kill previous server
 
@@ -95,7 +108,7 @@ int main(int argc, char *argv[])
 
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
-    serv_addr.sin_port = htons(PORT); 
+    serv_addr.sin_port = htons(port); 
 
     if (bind(listenfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) == -1) {
       perror("bind failed\n");
@@ -106,21 +119,25 @@ int main(int argc, char *argv[])
       perror("listen\n");
       return -1;
     } 
-    printf("\n**timeServer: Server is up and listening through Port %d...\n", PORT);
+    printf("\n**timeServer: Server is up and listening through Port %d...\n", port);
     
     system("ps");
     char command[100];
-    snprintf(command, sizeof(command), "netstat -aont | grep \"%d\"", PORT);
+    snprintf(command, sizeof(command), "netstat -aont | grep \"%d\"", port);
     system(command);
 
     while(1)
-    {
+    {   
+        alarm(time_to_live);
+        printf("Server lives for %d seconds before terminated\n", time_to_live);
         connfd = accept(listenfd, (struct sockaddr*)NULL, NULL); 
         if(connfd == -1){
           perror("accept");
           return -1;
         }
-        printf("\n**timeServer: A client connected \n");
+        printf("\n**timeServer: A client connected. Reset wait time... \n");
+        alarm(0);//reset alarm
+                 
         ticks = time(NULL);
         snprintf(sendBuff, sizeof(sendBuff), "%.24s\r\n", ctime(&ticks));
 
