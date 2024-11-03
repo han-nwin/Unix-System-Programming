@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
       printf("Usage: %s <IPv4-address> <port-number>", argv[0]);
       return -1;
     } else {
-      printf("Connecting to IP: %s Port: %s\n", argv[1], argv[2]);
+      printf("\n**CLIENT**: Connecting to IP: %s Port: %s\n", argv[1], argv[2]);
     }
 
     system("echo server; date; hostname; whoami; ps; ls -l");

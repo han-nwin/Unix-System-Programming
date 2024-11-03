@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
       printf("Usage: %s <port-number> <time-duration>", argv[0]);
       return -1;
     } else {
-      printf("Binding to Port: %s, Wait time: %s\n", argv[1], argv[2]);
+      printf("\n**SERVER**: Binding to Port: %s, Wait time: %s\n", argv[1], argv[2]);
     }
     
     int port = atoi(argv[1]);
@@ -132,8 +132,8 @@ int main(int argc, char *argv[])
     while(1)
     {   
         alarm(time_to_live);
-        printf("Server will stay for %d seconds then terminate if no client connected\n", time_to_live);
-        printf("\n**SERVER** step 1: Waiting for a client...\n");
+        printf("\n**SERVER** Server will stay for %d seconds then terminate if no client connected\n", time_to_live);
+        printf("\n**SERVER** Step 1: Waiting for a client...\n");
         system("ps; netstat -aont | grep \"`hostname -i`:2271[0-9]\"");
         connfd = accept(listenfd, (struct sockaddr*)NULL, NULL); 
         if(connfd == -1){
