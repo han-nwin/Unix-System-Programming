@@ -15,6 +15,7 @@
 
 #define PORT 22719
 
+//return 1 if there's a previous server running. 0 otherwise
 int check_running_server (char * prog_name, int curr_pid){
   int return_val = 0;
 
@@ -53,9 +54,31 @@ int main(int argc, char *argv[])
 {   
     int curr_pid = getpid();
     if (check_running_server(argv[0], curr_pid) == 1) {
-      sleep(10);
-      printf("\n**timeServer: Waiting for port to free before connecting (20s)...\n");
-      sleep(20);
+      printf("\n**timeServer: Waiting for port to free before connecting...\n");
+      
+    //Wait until the port is free using a temp file
+      int is_not_empty = 1;
+      while(is_not_empty) {
+        char command[100];
+        snprintf(command, sizeof(command), "netstat -aont | grep \"%d\" > .check_port.temp", PORT);
+        system(command);
+        FILE *fp = fopen(".check_port.temp", "r");
+        if (fp == NULL) {
+            perror("File open failed");
+            return -1; // Error in accessing the file
+        }
+
+        is_not_empty = (fgetc(fp) != EOF); // Check if first character is EOF
+        fclose(fp);
+
+        if(is_not_empty){
+          printf("Port %d still in use...", PORT);
+          sleep(5);
+        }
+      }
+      system("rm -f .check_port.temp"); //delete temp file
+      printf("\n**timeServer: Done waiting! Port %d is freed and ready to bind\n", PORT);
+      //sleep(60);
     }//check and kill previous server
 
 
@@ -82,8 +105,7 @@ int main(int argc, char *argv[])
     if(listen(listenfd, 10) == -1) {
       perror("listen\n");
       return -1;
-    }
-    sleep(1);   
+    } 
     printf("\n**timeServer: Server is up and listening through Port %d...\n", PORT);
   
 
