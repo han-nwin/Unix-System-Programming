@@ -35,8 +35,8 @@ int check_running_server (char * prog_name, int curr_pid){
   while(fgets(line, sizeof(line), fp) != NULL) {
     int pid;
     sscanf(line, "%*s %d", &pid);
-    printf("\n**timeServer: Found running server PID: %d\n", pid);
-    printf("\n**timeServer: Killing running server PID: %d...\n", pid);
+    printf("\n**SERVER**: Found running server PID: %d\n", pid);
+    printf("\n**SERVER**: Killing running server PID: %d...\n", pid);
 
     kill(pid, SIGKILL);
     return_val = 1;
@@ -50,7 +50,8 @@ int check_running_server (char * prog_name, int curr_pid){
 }
 
 void handle_sigalrm(int sig){
-  printf("Caught ALARM signal %d. Terminating server... \n", sig);
+  printf("**SERVER**: TIME UP !!! Terminating server... \n");
+  printf("**SERVER**: server ends\n");
   exit(0);
 }
 
@@ -60,6 +61,8 @@ int main(int argc, char *argv[])
     if (argc != 3) {
       printf("Usage: %s <port-number> <time-duration>", argv[0]);
       return -1;
+    } else {
+      printf("Binding to Port: %s, Wait time: %s\n", argv[1], argv[2]);
     }
     
     int port = atoi(argv[1]);
@@ -67,7 +70,7 @@ int main(int argc, char *argv[])
     
     int curr_pid = getpid();
     if (check_running_server(argv[0], curr_pid) == 1) {
-      printf("\n**timeServer: Waiting for port to free before connecting...\n");
+      printf("\n**SERVER**: Waiting for port to free before connecting...\n");
       
     //Wait until the port is free using a temp file
       int is_not_empty = 1;
@@ -90,7 +93,7 @@ int main(int argc, char *argv[])
         }
       }
       system("rm -f .check_port.temp"); //delete temp file
-      printf("\n**timeServer: Done waiting! Port %d is freed and ready to bind\n", port);
+      printf("\n**SERVER**: Done waiting! Port %d is freed and ready to bind\n", port);
       //sleep(60);
     }//check and kill previous server
 
@@ -119,7 +122,7 @@ int main(int argc, char *argv[])
       perror("listen\n");
       return -1;
     } 
-    printf("\n**timeServer: Server is up and listening through Port %d...\n", port);
+    printf("\n**SERVER**: Server is up and listening through Port %d...\n", port);
     
     system("ps");
     char command[100];
@@ -129,26 +132,32 @@ int main(int argc, char *argv[])
     while(1)
     {   
         alarm(time_to_live);
-        printf("Server lives for %d seconds before terminated\n", time_to_live);
+        printf("Server will stay for %d seconds then terminate if no client connected\n", time_to_live);
+        printf("\n**SERVER** step 1: Waiting for a client...\n");
+        system("ps; netstat -aont | grep \"`hostname -i`:2271[0-9]\"");
         connfd = accept(listenfd, (struct sockaddr*)NULL, NULL); 
         if(connfd == -1){
           perror("accept");
           return -1;
         }
-        printf("\n**timeServer: A client connected. Reset wait time... \n");
+        printf("\n**SERVER** Step 2: A client connected.\n");
+        system("ps; netstat -aont | grep \"`hostname -i`:2271[0-9]\"");
         alarm(0);//reset alarm
+        printf("\n**SERVER**: Wait time resetted");
                  
         ticks = time(NULL);
         snprintf(sendBuff, sizeof(sendBuff), "%.24s\r\n", ctime(&ticks));
 
-        printf("\n**timeServer: Writing to client...\n");
+        printf("\n**SERVER**: Writing to client...\n");
         if(write(connfd, sendBuff, strlen(sendBuff)) == -1) {
           perror("write\n");
           return -1;
         }
         
         close(connfd);
-        printf("\n**timeServer: Client disconnected \n\n");
+
+        printf("\n**SERVER** Step 3: Client disconnected \n\n");
+        system("ps; netstat -aont | grep \"`hostname -i`:2271[0-9]\"");
         sleep(1);
      }
 }

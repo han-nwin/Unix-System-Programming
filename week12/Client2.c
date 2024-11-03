@@ -11,13 +11,19 @@
 #include <errno.h>
 #include <arpa/inet.h> 
 
-#define PORT 22719
 
 int main(int argc, char *argv[])
 {
-    char ip[] = "127.0.0.1";  // default IP of the server
-    //int port = 12345;         // default port# of the server
-    argv[1] = ip;
+    if (argc != 3) {
+      printf("Usage: %s <IPv4-address> <port-number>", argv[0]);
+      return -1;
+    } else {
+      printf("Connecting to IP: %s Port: %s\n", argv[1], argv[2]);
+    }
+
+    system("echo server; date; hostname; whoami; ps; ls -l");
+    
+    int port = atoi(argv[2]);
 
     int sockfd = 0, n = 0;
     char recvBuff[1024];
@@ -27,7 +33,7 @@ int main(int argc, char *argv[])
     memset(recvBuff, 0,sizeof(recvBuff));
     if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
     {
-        printf("\n Error : Could not create socket \n");
+        printf("\n**CLIENT**: Error - Could not create socket \n");
         return 1;
     } 
 
@@ -36,45 +42,39 @@ int main(int argc, char *argv[])
     serv_addr.sin_family = AF_INET;
     if(inet_pton(AF_INET, argv[1], &serv_addr.sin_addr)<=0)
     {
-        printf("\n inet_pton error occured\n");
+        perror("\n**CLIENT**: Invalid address / Address not supported\n");
         return 1;
     } 
-    serv_addr.sin_port = htons(PORT); 
+    serv_addr.sin_port = htons(port); 
 
-    system(" date; hostname; whoami ");
-    system(" netstat -aont | grep \":2271[0-9]\"");
-
-
-    printf("\n timeClient: connecting to %s Port# = %d \n", ip, PORT);
-
+    printf("\n**CLIENT** Step 1: connecting to %s Port# = %d \n", argv[1], port);
+    system("ps; netstat -aont | grep \"`hostname -i`:2271[0-9]\"");
 
     if( connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
     {
-       printf("\n Error : Connect Failed \n");
+       printf("\n**CLIENT**: Error - Connect Failed \n");
        return 1;
     } 
+    printf("\n**CLIENT** Step 2: connected to Server2. \n");
+    system("ps; netstat -aont | grep \"`hostname -i`:2271[0-9]\"");
 
-    printf("\n timeClient: connected to timeServer. \n");
-    system("ps");
-    system(" netstat -aont | grep \":2271[0-9]\"");
-    printf("\n\n");
-
-    printf("\n timeClient: reading from timeServer. \n");
+    printf("\n**CLIENT**: reading from Server2. \n");
     while ( (n = read(sockfd, recvBuff, sizeof(recvBuff)-1)) > 0)
     {
         recvBuff[n] = 0;
         if(fputs(recvBuff, stdout) == EOF)
         {
-            printf("\n Error : Fputs error\n");
+            printf("\n**CLIENT**: Error - Fputs error\n");
         }
     } 
 
     if(n < 0)
     {
-        printf("\n Read error \n");
-	   exit(0);
+      printf("\n**CLIENT**: Read error \n");
+	    exit(0);
     } 
-
-    printf("\n timeClient: now terminated. \n");
+    printf("\n**CLIENT** Step 3: Client disconnected\n");
+    system("ps; netstat -aont | grep \"`hostname -i`:2271[0-9]\"");
+    printf("\n**CLIENT**: client ends! \n");
     return 0;
 }
