@@ -24,14 +24,14 @@ int main(int argc, char *argv[])
     struct sockaddr_in serv_addr; 
 
 
-    memset(recvBuff, '0',sizeof(recvBuff));
+    memset(recvBuff, 0,sizeof(recvBuff));
     if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
     {
         printf("\n Error : Could not create socket \n");
         return 1;
     } 
 
-    memset(&serv_addr, '0', sizeof(serv_addr)); 
+    memset(&serv_addr, 0, sizeof(serv_addr)); 
 
     serv_addr.sin_family = AF_INET;
     if(inet_pton(AF_INET, argv[1], &serv_addr.sin_addr)<=0)
@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
     system(" netstat -aont | grep \":2271[0-9]\"");
 
 
-    printf("\n timeClient: connecting to 127.0.0.1 Port# = %d \n", PORT);
+    printf("\n timeClient: connecting to %s Port# = %d \n", ip, PORT);
 
 
     if( connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)

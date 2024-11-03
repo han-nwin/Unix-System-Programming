@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
         fclose(fp);
 
         if(is_not_empty){
-          printf("Port %d still in use...", PORT);
+          printf("Port %d still in use...\n", PORT);
           sleep(5);
         }
       }
@@ -107,7 +107,11 @@ int main(int argc, char *argv[])
       return -1;
     } 
     printf("\n**timeServer: Server is up and listening through Port %d...\n", PORT);
-  
+    
+    system("ps");
+    char command[100];
+    snprintf(command, sizeof(command), "netstat -aont | grep \"%d\"", PORT);
+    system(command);
 
     while(1)
     {
