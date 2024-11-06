@@ -41,7 +41,7 @@ End of keyboard-interactive prompts from server
     ¦ ? For more info, ctrl+click on help or visit our website.            ¦
     +----------------------------------------------------------------------+
 
-Last login: Sun Nov  3 00:17:53 2024 from 10.50.242.44
+Last login: Wed Nov  6 16:50:22 2024 from 10.50.240.241
 
                        ***---***---***---***---***---***
                     csgrads1.utdallas.edu - CentOS Linux 7.9
@@ -126,7 +126,7 @@ int main(int argc, char *argv[])
 {
     signal(SIGALRM, handle_sigalrm);
     if (argc != 3) {
-      printf("Usage: %s <port-number> <time-duration>", argv[0]);
+      printf("Usage: %s <port-number> <time-duration>\n", argv[0]);
       return -1;
     } else {
       printf("\n**SERVER**: Binding to Port: %s, Wait time: %s\n", argv[1], argv[2]);
@@ -246,7 +246,7 @@ int main(int argc, char *argv[])
 int main(int argc, char *argv[])
 {
     if (argc != 3) {
-      printf("Usage: %s <IPv4-address> <port-number>", argv[0]);
+      printf("Usage: %s <IPv4-address> <port-number>\n", argv[0]);
       return -1;
     } else {
       printf("\n**CLIENT**: Connecting to IP: %s Port: %s\n", argv[1], argv[2]);
@@ -313,129 +313,136 @@ int main(int argc, char *argv[])
 {cslinux2:~/week12Lab2} gcc Client2.c -o Client2
 {cslinux2:~/week12Lab2} ps
   PID TTY          TIME CMD
-10757 pts/0    00:00:00 bash
-11114 pts/0    00:00:00 ps
-{cslinux2:~/week12Lab2} netstat -aont | grep 22791
-{cslinux2:~/week12Lab2} ./Server2 22791 10 &
-[1] 11139
+ 8180 pts/0    00:00:00 bash
+ 8605 pts/0    00:00:00 ps
+{cslinux2:~/week12Lab2} netstat -aont | grep 22719
+{cslinux2:~/week12Lab2} ./Server2 22719 10 &
+[1] 8638
 {cslinux2:~/week12Lab2}
-**SERVER**: Binding to Port: 22791, Wait time: 10
+**SERVER**: Binding to Port: 22719, Wait time: 10
 
-**SERVER**: Server is up and listening through Port 22791...
+**SERVER**: Server is up and listening through Port 22719...
   PID TTY          TIME CMD
-10757 pts/0    00:00:00 bash
-11139 pts/0    00:00:00 Server2
-11146 pts/0    00:00:00 ps
-tcp        0      0 0.0.0.0:22791           0.0.0.0:*               LISTEN      off (0.00/0/0)
+ 8180 pts/0    00:00:00 bash
+ 8638 pts/0    00:00:00 Server2
+ 8645 pts/0    00:00:00 ps
+tcp        0      0 0.0.0.0:22719           0.0.0.0:*               LISTEN      off (0.00/0/0)
 
 **SERVER** Server will stay for 10 seconds then terminate if no client connected
 
 **SERVER** Step 1: Waiting for a client...
   PID TTY          TIME CMD
-10757 pts/0    00:00:00 bash
-11139 pts/0    00:00:00 Server2
-11150 pts/0    00:00:00 sh
-11151 pts/0    00:00:00 ps
+ 8180 pts/0    00:00:00 bash
+ 8638 pts/0    00:00:00 Server2
+ 8649 pts/0    00:00:00 sh
+ 8650 pts/0    00:00:00 ps
 **SERVER**: TIME UP !!! Terminating server...
 **SERVER**: server ends
 ps
   PID TTY          TIME CMD
-10757 pts/0    00:00:00 bash
-11183 pts/0    00:00:00 ps
-[1]+  Done                    ./Server2 22791 10
-{cslinux2:~/week12Lab2} netstat -aont | grep 22791
-{cslinux2:~/week12Lab2} ./Server2 22791 120 &
-[1] 11246
+ 8180 pts/0    00:00:00 bash
+ 8679 pts/0    00:00:00 ps
+[1]+  Done                    ./Server2 22719 10
+{cslinux2:~/week12Lab2} netstat -aont | grep 22719
+{cslinux2:~/week12Lab2} ./Server2 22719 120 &
+[1] 8741
 {cslinux2:~/week12Lab2}
-**SERVER**: Binding to Port: 22791, Wait time: 120
+**SERVER**: Binding to Port: 22719, Wait time: 120
 
-**SERVER**: Server is up and listening through Port 22791...
+**SERVER**: Server is up and listening through Port 22719...
   PID TTY          TIME CMD
-10757 pts/0    00:00:00 bash
-11246 pts/0    00:00:00 Server2
-11253 pts/0    00:00:00 ps
-tcp        0      0 0.0.0.0:22791           0.0.0.0:*               LISTEN      off (0.00/0/0)
+ 8180 pts/0    00:00:00 bash
+ 8741 pts/0    00:00:00 Server2
+ 8748 pts/0    00:00:00 ps
+tcp        0      0 0.0.0.0:22719           0.0.0.0:*               LISTEN      off (0.00/0/0)
 
 **SERVER** Server will stay for 120 seconds then terminate if no client connected
 
 **SERVER** Step 1: Waiting for a client...
   PID TTY          TIME CMD
-10757 pts/0    00:00:00 bash
-11246 pts/0    00:00:00 Server2
-11257 pts/0    00:00:00 sh
-11258 pts/0    00:00:00 ps
-./Client2 0.0.0.0 22791
+ 8180 pts/0    00:00:00 bash
+ 8741 pts/0    00:00:00 Server2
+ 8752 pts/0    00:00:00 sh
+ 8753 pts/0    00:00:00 ps
+hostname -i
+10.176.92.16
+{cslinux2:~/week12Lab2} ./Client2 10.176.92.16 22719
 
-**CLIENT**: Connecting to IP: 0.0.0.0 Port: 22791
+**CLIENT**: Connecting to IP: 10.176.92.16 Port: 22719
 server
-Sun Nov  3 00:35:07 CDT 2024
+Wed Nov  6 17:04:59 CST 2024
 cslinux2.utdallas.edu
 txn200004
   PID TTY          TIME CMD
-10757 pts/0    00:00:00 bash
-11246 pts/0    00:00:00 Server2
-11281 pts/0    00:00:00 Client2
-11282 pts/0    00:00:00 sh
-11286 pts/0    00:00:00 ps
+ 8180 pts/0    00:00:00 bash
+ 8741 pts/0    00:00:00 Server2
+ 8782 pts/0    00:00:00 Client2
+ 8783 pts/0    00:00:00 sh
+ 8787 pts/0    00:00:00 ps
 total 96
--rwx--x--x 1 txn200004 se 13104 Nov  3 00:32 Client2
--rw------- 1 txn200004 se  2224 Nov  3 00:32 Client2.c
--rwx--x--x 1 txn200004 se 13928 Nov  3 00:32 Server2
--rw------- 1 txn200004 se  4936 Nov  3 00:32 Server2.c
+-rwx--x--x 1 txn200004 se 13104 Nov  6 17:02 Client2
+-rw------- 1 txn200004 se  2226 Nov  6 17:00 Client2.c
+-rwx--x--x 1 txn200004 se 13928 Nov  6 17:02 Server2
+-rw------- 1 txn200004 se  4938 Nov  6 17:00 Server2.c
 
-**CLIENT** Step 1: connecting to 0.0.0.0 Port# = 22791
+**CLIENT** Step 1: connecting to 10.176.92.16 Port# = 22719
   PID TTY          TIME CMD
-10757 pts/0    00:00:00 bash
-11246 pts/0    00:00:00 Server2
-11281 pts/0    00:00:00 Client2
-11288 pts/0    00:00:00 sh
-11289 pts/0    00:00:00 ps
+ 8180 pts/0    00:00:00 bash
+ 8741 pts/0    00:00:00 Server2
+ 8782 pts/0    00:00:00 Client2
+ 8789 pts/0    00:00:00 sh
+ 8790 pts/0    00:00:00 ps
 
 **CLIENT** Step 2: connected to Server2.
 
 **SERVER** Step 2: A client connected.
   PID TTY          TIME CMD
-10757 pts/0    00:00:00 bash
-11246 pts/0    00:00:00 Server2
-11281 pts/0    00:00:00 Client2
-11294 pts/0    00:00:00 sh
-11295 pts/0    00:00:00 sh
-11296 pts/0    00:00:00 ps
-11297 pts/0    00:00:00 ps
   PID TTY          TIME CMD
-10757 pts/0    00:00:00 bash
-11246 pts/0    00:00:00 Server2
-11281 pts/0    00:00:00 Client2
-11294 pts/0    00:00:00 sh
-11295 pts/0    00:00:00 sh
-11296 pts/0    00:00:00 ps
+ 8180 pts/0    00:00:00 bash
+ 8180 pts/0    00:00:00 bash
+ 8741 pts/0    00:00:00 Server2
+ 8741 pts/0    00:00:00 Server2
+ 8782 pts/0    00:00:00 Client2
+ 8782 pts/0    00:00:00 Client2
+ 8795 pts/0    00:00:00 sh
+ 8795 pts/0    00:00:00 sh
+ 8796 pts/0    00:00:00 sh
+ 8796 pts/0    00:00:00 sh
+ 8797 pts/0    00:00:00 ps
+ 8797 pts/0    00:00:00 ps
+ 8798 pts/0    00:00:00 ps
+ 8798 pts/0    00:00:00 ps
+tcp        0      0 10.176.92.16:36428      10.176.92.16:22719      ESTABLISHED off (0.00/0/0)
+tcp        0      0 10.176.92.16:22719      10.176.92.16:36428      ESTABLISHED off (0.00/0/0)
 
 **SERVER**: Wait time resetted
 **SERVER**: Writing to client...
 
-**CLIENT**: reading from Server2.
-Sun Nov  3 00:35:08 2024
-
 **SERVER** Step 3: Client disconnected
 
+tcp        0      0 10.176.92.16:36428      10.176.92.16:22719      ESTABLISHED off (0.00/0/0)
+tcp        0      0 10.176.92.16:22719      10.176.92.16:36428      ESTABLISHED off (0.00/0/0)
+  PID TTY          TIME CMD
+ 8180 pts/0    00:00:00 bash
+
+**CLIENT**: reading from Server2.
+Wed Nov  6 17:04:59 2024
 
 **CLIENT** Step 3: Client disconnected
+ 8741 pts/0    00:00:00 Server2
+ 8782 pts/0    00:00:00 Client2
+ 8807 pts/0    00:00:00 sh
+ 8808 pts/0    00:00:00 ps
+tcp        0      0 10.176.92.16:36428      10.176.92.16:22719      CLOSE_WAIT  off (0.00/0/0)
+tcp        0      1 10.176.92.16:22719      10.176.92.16:36428      FIN_WAIT1   on (0.16/0/0)
   PID TTY          TIME CMD
-  PID TTY          TIME CMD
-10757 pts/0    00:00:00 bash
-10757 pts/0    00:00:00 bash
-11246 pts/0    00:00:00 Server2
-11246 pts/0    00:00:00 Server2
-11281 pts/0    00:00:00 Client2
-11281 pts/0    00:00:00 Client2
-11306 pts/0    00:00:00 sh
-11306 pts/0    00:00:00 sh
-11307 pts/0    00:00:00 sh
-11307 pts/0    00:00:00 sh
-11308 pts/0    00:00:00 ps
-11308 pts/0    00:00:00 ps
-11309 pts/0    00:00:00 ps
-11309 pts/0    00:00:00 ps
+ 8180 pts/0    00:00:00 bash
+ 8741 pts/0    00:00:00 Server2
+ 8782 pts/0    00:00:00 Client2
+ 8809 pts/0    00:00:00 sh
+ 8810 pts/0    00:00:00 ps
+tcp        0      0 10.176.92.16:36428      10.176.92.16:22719      CLOSE_WAIT  off (0.00/0/0)
+tcp        0      0 10.176.92.16:22719      10.176.92.16:36428      FIN_WAIT2   timewait (59.76/0/0)
 
 **CLIENT**: client ends!
 {cslinux2:~/week12Lab2}
@@ -443,83 +450,91 @@ Sun Nov  3 00:35:08 2024
 
 **SERVER** Step 1: Waiting for a client...
   PID TTY          TIME CMD
-10757 pts/0    00:00:00 bash
-11246 pts/0    00:00:00 Server2
-11318 pts/0    00:00:00 sh
-11319 pts/0    00:00:00 ps
-kill 11246
+ 8180 pts/0    00:00:00 bash
+ 8741 pts/0    00:00:00 Server2
+ 8821 pts/0    00:00:00 sh
+ 8822 pts/0    00:00:00 ps
+tcp        0      0 10.176.92.16:22719      10.176.92.16:36428      TIME_WAIT   timewait (59.19/0/0)
+kill 8741
 {cslinux2:~/week12Lab2} ps
   PID TTY          TIME CMD
-10757 pts/0    00:00:00 bash
-11340 pts/0    00:00:00 ps
-[1]+  Terminated              ./Server2 22791 120
-{cslinux2:~/week12Lab2} netstat -aont | grep 22791
+ 8180 pts/0    00:00:00 bash
+ 8853 pts/0    00:00:00 ps
+[1]+  Terminated              ./Server2 22719 120
+{cslinux2:~/week12Lab2} netstat -aont | grep 22719
 {cslinux2:~/week12Lab2} ./Server2 22719 30 &
-[1] 11609
+[1] 8968
 {cslinux2:~/week12Lab2}
 **SERVER**: Binding to Port: 22719, Wait time: 30
 
 **SERVER**: Server is up and listening through Port 22719...
   PID TTY          TIME CMD
-10757 pts/0    00:00:00 bash
-11609 pts/0    00:00:00 Server2
-11616 pts/0    00:00:00 ps
+ 8180 pts/0    00:00:00 bash
+ 8968 pts/0    00:00:00 Server2
+ 8975 pts/0    00:00:00 ps
 tcp        0      0 0.0.0.0:22719           0.0.0.0:*               LISTEN      off (0.00/0/0)
 
 **SERVER** Server will stay for 30 seconds then terminate if no client connected
 
 **SERVER** Step 1: Waiting for a client...
   PID TTY          TIME CMD
-10757 pts/0    00:00:00 bash
-11609 pts/0    00:00:00 Server2
-11620 pts/0    00:00:00 sh
-11621 pts/0    00:00:00 ps
+ 8180 pts/0    00:00:00 bash
+ 8968 pts/0    00:00:00 Server2
+ 8979 pts/0    00:00:00 sh
+ 8980 pts/0    00:00:00 ps
+./Client2 10.176.92.16 22719
 
-./Client2 0.0.0.0 22719
-
-**CLIENT**: Connecting to IP: 0.0.0.0 Port: 22719
+**CLIENT**: Connecting to IP: 10.176.92.16 Port: 22719
 server
-Sun Nov  3 00:40:00 CDT 2024
+Wed Nov  6 17:07:23 CST 2024
 cslinux2.utdallas.edu
 txn200004
   PID TTY          TIME CMD
-10757 pts/0    00:00:01 bash
-11609 pts/0    00:00:00 Server2
-11643 pts/0    00:00:00 Client2
-11644 pts/0    00:00:00 sh
-11648 pts/0    00:00:00 ps
+ 8180 pts/0    00:00:00 bash
+ 8968 pts/0    00:00:00 Server2
+ 8995 pts/0    00:00:00 Client2
+ 8996 pts/0    00:00:00 sh
+ 9000 pts/0    00:00:00 ps
 total 96
--rwx--x--x 1 txn200004 se 13104 Nov  3 00:32 Client2
--rw------- 1 txn200004 se  2224 Nov  3 00:32 Client2.c
--rwx--x--x 1 txn200004 se 13928 Nov  3 00:32 Server2
--rw------- 1 txn200004 se  4936 Nov  3 00:32 Server2.c
+-rwx--x--x 1 txn200004 se 13104 Nov  6 17:02 Client2
+-rw------- 1 txn200004 se  2226 Nov  6 17:00 Client2.c
+-rwx--x--x 1 txn200004 se 13928 Nov  6 17:02 Server2
+-rw------- 1 txn200004 se  4938 Nov  6 17:00 Server2.c
 
-**CLIENT** Step 1: connecting to 0.0.0.0 Port# = 22719
+**CLIENT** Step 1: connecting to 10.176.92.16 Port# = 22719
   PID TTY          TIME CMD
-10757 pts/0    00:00:01 bash
-11609 pts/0    00:00:00 Server2
-11643 pts/0    00:00:00 Client2
-11650 pts/0    00:00:00 sh
-11651 pts/0    00:00:00 ps
+ 8180 pts/0    00:00:00 bash
+ 8968 pts/0    00:00:00 Server2
+ 8995 pts/0    00:00:00 Client2
+ 9003 pts/0    00:00:00 sh
+ 9004 pts/0    00:00:00 ps
 
 **CLIENT** Step 2: connected to Server2.
 
 **SERVER** Step 2: A client connected.
   PID TTY          TIME CMD
-10757 pts/0    00:00:01 bash
-11609 pts/0    00:00:00 Server2
-11643 pts/0    00:00:00 Client2
-11656 pts/0    00:00:00 sh
-11657 pts/0    00:00:00 sh
-11658 pts/0    00:00:00 ps
-11659 pts/0    00:00:00 ps
+ 8180 pts/0    00:00:00 bash
   PID TTY          TIME CMD
-10757 pts/0    00:00:01 bash
-11609 pts/0    00:00:00 Server2
-11643 pts/0    00:00:00 Client2
-11656 pts/0    00:00:00 sh
-11657 pts/0    00:00:00 sh
-11659 pts/0    00:00:00 ps
+ 8968 pts/0    00:00:00 Server2
+ 8180 pts/0    00:00:00 bash
+ 8995 pts/0    00:00:00 Client2
+ 9011 pts/0    00:00:00 sh
+ 9012 pts/0    00:00:00 sh
+ 9013 pts/0    00:00:00 ps
+ 9014 pts/0    00:00:00 ps
+ 8968 pts/0    00:00:00 Server2
+ 8995 pts/0    00:00:00 Client2
+ 9011 pts/0    00:00:00 sh
+ 9012 pts/0    00:00:00 sh
+ 9013 pts/0    00:00:00 ps
+ 9014 pts/0    00:00:00 ps
+tcp        0      0 10.176.92.16:22719      10.176.92.16:36432      ESTABLISHED off (0.00/0/0)
+tcp        0      0 10.176.92.16:36432      10.176.92.16:22719      ESTABLISHED off (0.00/0/0)
+tcp        0      0 10.176.92.16:22719      10.176.92.16:36432      ESTABLISHED off (0.00/0/0)
+tcp        0      0 10.176.92.16:36432      10.176.92.16:22719      ESTABLISHED off (0.00/0/0)
+
+**CLIENT**: reading from Server2.
+Wed Nov  6 17:07:25 2024
 
 **SERVER**: Wait time resetted
 **SERVER**: Writing to client...
@@ -527,52 +542,57 @@ total 96
 **SERVER** Step 3: Client disconnected
 
 
-**CLIENT**: reading from Server2.
-Sun Nov  3 00:40:00 2024
-
 **CLIENT** Step 3: Client disconnected
   PID TTY          TIME CMD
-10757 pts/0    00:00:01 bash
-11609 pts/0    00:00:00 Server2
-11643 pts/0    00:00:00 Client2
-11664 pts/0    00:00:00 sh
-11667 pts/0    00:00:00 ps
+ 8180 pts/0    00:00:00 bash
+ 8968 pts/0    00:00:00 Server2
+ 8995 pts/0    00:00:00 Client2
   PID TTY          TIME CMD
-10757 pts/0    00:00:01 bash
-11609 pts/0    00:00:00 Server2
-11643 pts/0    00:00:00 Client2
-11664 pts/0    00:00:00 sh
-11670 pts/0    00:00:00 sh
-11671 pts/0    00:00:00 ps
+ 9024 pts/0    00:00:00 sh
+ 9025 pts/0    00:00:00 sh
+ 8180 pts/0    00:00:00 bash
+ 9026 pts/0    00:00:00 ps
+ 9027 pts/0    00:00:00 ps
+ 8968 pts/0    00:00:00 Server2
+ 8995 pts/0    00:00:00 Client2
+ 9024 pts/0    00:00:00 sh
+ 9025 pts/0    00:00:00 sh
+ 9026 pts/0    00:00:00 ps
+ 9027 pts/0    00:00:00 ps
+tcp        0      0 10.176.92.16:22719      10.176.92.16:36432      FIN_WAIT2   timewait (59.61/0/0)
+tcp        1      0 10.176.92.16:36432      10.176.92.16:22719      CLOSE_WAIT  off (0.00/0/0)
 
 **CLIENT**: client ends!
-{cslinux2:~/week12Lab2}
+{cslinux2:~/week12Lab2} tcp        0      0 10.176.92.16:22719      10.176.92.16:36432      FIN_WAIT2   timewait (59.58/0/0)
+tcp        1      0 10.176.92.16:36432      10.176.92.16:22719      CLOSE_WAIT  off (0.00/0/0)
+
 **SERVER** Server will stay for 30 seconds then terminate if no client connected
 
 **SERVER** Step 1: Waiting for a client...
   PID TTY          TIME CMD
-10757 pts/0    00:00:01 bash
-11609 pts/0    00:00:00 Server2
-11687 pts/0    00:00:00 sh
-11688 pts/0    00:00:00 ps
+ 8180 pts/0    00:00:00 bash
+ 8968 pts/0    00:00:00 Server2
+ 9038 pts/0    00:00:00 sh
+ 9039 pts/0    00:00:00 ps
+tcp        0      0 10.176.92.16:22719      10.176.92.16:36432      TIME_WAIT   timewait (58.52/0/0)
 **SERVER**: TIME UP !!! Terminating server...
 **SERVER**: server ends
 ps
   PID TTY          TIME CMD
-10757 pts/0    00:00:01 bash
-11727 pts/0    00:00:00 ps
+ 8180 pts/0    00:00:00 bash
+ 9088 pts/0    00:00:00 ps
 [1]+  Done                    ./Server2 22719 30
 {cslinux2:~/week12Lab2} netstat -aont | grep 22719
 {cslinux2:~/week12Lab2} date
-Sun Nov  3 00:42:15 CDT 2024
-{cslinux2:~/week12Lab2} uname -a
-Linux cslinux2.utdallas.edu 3.10.0-1160.119.1.el7.x86_64 #1 SMP Tue Jun 4 14:43:51 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux
+Wed Nov  6 17:09:22 CST 2024
 {cslinux2:~/week12Lab2} ls -l
 total 96
--rwx--x--x 1 txn200004 se 13104 Nov  3 00:32 Client2
--rw------- 1 txn200004 se  2224 Nov  3 00:32 Client2.c
--rwx--x--x 1 txn200004 se 13928 Nov  3 00:32 Server2
--rw------- 1 txn200004 se  4936 Nov  3 00:32 Server2.c
+-rwx--x--x 1 txn200004 se 13104 Nov  6 17:02 Client2
+-rw------- 1 txn200004 se  2226 Nov  6 17:00 Client2.c
+-rwx--x--x 1 txn200004 se 13928 Nov  6 17:02 Server2
+-rw------- 1 txn200004 se  4938 Nov  6 17:00 Server2.c
+{cslinux2:~/week12Lab2} uname -a
+Linux cslinux2.utdallas.edu 3.10.0-1160.119.1.el7.x86_64 #1 SMP Tue Jun 4 14:43:51 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux
 {cslinux2:~/week12Lab2} exit
 logout
 

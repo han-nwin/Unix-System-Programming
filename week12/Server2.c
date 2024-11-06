@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 {  
     signal(SIGALRM, handle_sigalrm);
     if (argc != 3) {
-      printf("Usage: %s <port-number> <time-duration>", argv[0]);
+      printf("Usage: %s <port-number> <time-duration>\n", argv[0]);
       return -1;
     } else {
       printf("\n**SERVER**: Binding to Port: %s, Wait time: %s\n", argv[1], argv[2]);

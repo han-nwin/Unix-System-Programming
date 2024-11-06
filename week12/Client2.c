@@ -15,7 +15,7 @@
 int main(int argc, char *argv[])
 {
     if (argc != 3) {
-      printf("Usage: %s <IPv4-address> <port-number>", argv[0]);
+      printf("Usage: %s <IPv4-address> <port-number>\n", argv[0]);
       return -1;
     } else {
       printf("\n**CLIENT**: Connecting to IP: %s Port: %s\n", argv[1], argv[2]);
