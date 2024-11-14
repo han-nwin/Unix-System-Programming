@@ -1,0 +1,1 @@
+cc lex.yy.c -lfl -o fb1-1
